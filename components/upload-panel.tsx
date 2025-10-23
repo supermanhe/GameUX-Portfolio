@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -49,14 +49,12 @@ export function UploadPanel({ storageKey }: { storageKey: string }) {
           caption: '',
           local: true,
         } as LocalItem
-      })
+      }),
     )
     setItems((x) => [...converted, ...x])
   }
 
   const remove = (id: string) => setItems((x) => x.filter((i) => i.id !== id))
-
-  const exported: Media[] = useMemo(() => items.map(({ id, alt, ...m }) => m), [items])
 
   return (
     <div className="rounded-2xl border border-border p-4">
@@ -84,7 +82,7 @@ export function UploadPanel({ storageKey }: { storageKey: string }) {
                     <video src={it.src} controls className="w-full" />
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={it.src} alt={it.caption} className="w-full" />
+                    <img src={it.src} alt={it.caption || ''} className="w-full" />
                   )}
                 </div>
                 <div className="space-y-2">
@@ -111,7 +109,6 @@ export function UploadPanel({ storageKey }: { storageKey: string }) {
   )
 }
 
-export function useUploadedMedia(storageKey: string) {
+export function readUploadedMedia(storageKey: string) {
   return safeLocalStorageGet<Media[]>(storageKey, [])
 }
-

@@ -65,3 +65,46 @@ body {
   @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
 }
 
+.tiptap {
+  @apply text-sm leading-relaxed;
+}
+
+.tiptap h2 {
+  @apply mt-6 text-xl font-semibold;
+}
+
+.tiptap h3 {
+  @apply mt-4 text-lg font-semibold;
+}
+
+.tiptap p {
+  @apply mt-3 whitespace-pre-wrap;
+}
+
+.tiptap ul {
+  @apply mt-3 list-disc pl-6;
+}
+
+.tiptap ol {
+  @apply mt-3 list-decimal pl-6;
+}
+
+.tiptap blockquote {
+  @apply mt-3 border-l-2 border-border/60 pl-4 italic text-muted-foreground;
+}
+
+.tiptap a {
+  @apply text-primary underline underline-offset-4;
+}
+
+.tiptap img {
+  @apply my-4 w-full rounded-xl border border-border/60 object-cover;
+}
+
+.tiptap-video-wrapper {
+  @apply my-4 rounded-xl border border-border/60 bg-black/60 p-2;
+}
+
+.tiptap-video {
+  @apply h-64 w-full rounded-lg object-cover;
+}

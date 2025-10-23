@@ -1,5 +1,6 @@
+"use client"
+
 import Image from 'next/image'
-import Link from 'next/link'
 import type { Project } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
@@ -9,15 +10,23 @@ const gradients = [
   'from-cyan-500/40 via-cyan-400/20 to-transparent',
 ]
 
-export function CaseCard({ slug, c, index = 0 }: { slug: string; c: Project['cases'][number]; index?: number }) {
+type CaseCardProps = {
+  slug: string
+  c: Project['cases'][number]
+  index?: number
+  onOpen?: (payload: { slug: string; caseId: string; index: number }) => void
+}
+
+export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
   const cover = c.media.find((m) => m.type === 'image' || m.type === 'gif')
   const video = !cover ? c.media.find((m) => m.type === 'video') : undefined
   const gradient = gradients[index % gradients.length]
 
   return (
-    <Link
-      href={`/projects/${slug}/${c.id}`}
-      className="block rounded-2xl border border-border/60 bg-card/70 shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft focus-ring"
+    <button
+      type="button"
+      onClick={() => onOpen?.({ slug, caseId: c.id, index })}
+      className="block w-full rounded-2xl border border-border/60 bg-card/70 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft focus-ring"
     >
       <div className="relative overflow-hidden rounded-t-2xl">
         {cover ? (
@@ -46,13 +55,13 @@ export function CaseCard({ slug, c, index = 0 }: { slug: string; c: Project['cas
         </div>
       </div>
       <div className="space-y-2 p-5 text-sm text-muted-foreground">
-        <p>点击查看细节与媒体</p>
+        <p>{'\u70B9\u51FB\u6253\u5F00\u53EF\u7F16\u8F91\u5F39\u7A97\uFF0C\u67E5\u770B\u7EC6\u8282\u4E0E\u5A92\u4F53\u3002'}</p>
         <ul className="list-disc space-y-1 pl-4">
           {c.highlights.map((h, i) => (
             <li key={i}>{h}</li>
           ))}
         </ul>
       </div>
-    </Link>
+    </button>
   )
 }
