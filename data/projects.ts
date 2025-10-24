@@ -1,4 +1,4 @@
-export type Project = {
+﻿export type Project = {
   slug: string
   title: string
   subtitle?: string
@@ -33,7 +33,7 @@ export const projects: Project[] = [
     subtitle: '科幻多人战斗 · 实时PVP',
     role: 'UI/UX 负责人',
     period: '2023.02 - 2024.02',
-    team: '25人（设计3 / 客户端8 / 服务器6 / 策划5 / 测试3）',
+    team: '25人（设计3 / 客户端 / 服务端 / 策划5 / 测试3）',
     platform: ['iOS', 'Android'],
     kpis: [
       { label: '次日留存', value: '+7.8%' },
@@ -73,12 +73,48 @@ export const projects: Project[] = [
         articleMDX: md`
 ### 目标
 在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
-
 ### 方法
 - 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
 - 在关键交互处加入轻量动效（放大/高亮/抖动）。
 - 使用 12 名真实玩家进行走查与回放分析。
-
+### 结果
+- 引导完成率 +12.3%，Day2 留存 +7.8%。
+- 玩家反馈“更清楚下一步该做什么”。
+        `,
+      },
+      {
+        id: 'test',
+        title: 'test',
+        highlights: [
+          'highlight1',
+          'highlight2',
+          'highlight3',
+        ],
+        media: [
+          {
+            type: 'image',
+            src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop',
+            caption: '分步引导的结构图',
+          },
+          {
+            type: 'gif',
+            src: 'https://i.imgur.com/2RM4QyM.gif',
+            caption: '箭头与放大动效',
+          },
+          {
+            type: 'video',
+            src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+            caption: '关键动效演示',
+            poster: 'https://placehold.co/800x450/000000/FFFFFF?text=Motion+Demo',
+          },
+        ],
+        articleMDX: md`
+### 目标
+在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
+### 方法
+- 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
+- 在关键交互处加入轻量动效（放大/高亮/抖动）。
+- 使用 12 名真实玩家进行走查与回放分析。
 ### 结果
 - 引导完成率 +12.3%，Day2 留存 +7.8%。
 - 玩家反馈“更清楚下一步该做什么”。
@@ -87,7 +123,7 @@ export const projects: Project[] = [
       {
         id: 'hud',
         title: '战斗 HUD 优化',
-        highlights: ['信息层级梳理', '端内热力图观察点击', '色彩与对比度无障碍优化'],
+        highlights: ['信息层级梳理', '端内热力图观察点位', '色彩与对比度无障碍优化'],
         media: [
           {
             type: 'image',
@@ -116,7 +152,7 @@ export const projects: Project[] = [
     cover: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?q=80&w=1200&auto=format&fit=crop',
     tags: ['放置', '养成', '移动端'],
     summary:
-      '主导背包与强化、活动页面的交互与UI落地，同时推动设计规范建立与组件化，使交付效率提升 20%。',
+      '主导背包与强化、活动页面的交互与 UI 落地，同时推动设计规范建立与组件化，使交付效率提升 20%。',
     cases: [
       {
         id: 'inventory-upgrade',
@@ -141,7 +177,7 @@ export const projects: Project[] = [
       {
         id: 'event-page',
         title: '活动页面组件化',
-        highlights: ['组件拼搭', '模板复用', 'A/B 测试位'],
+        highlights: ['组件拼搭', '模板复用', 'A/B 测试验证'],
         media: [
           {
             type: 'image',
@@ -150,10 +186,9 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
-抽象出 Banner、任务列表、奖励条、进度条四类组件，沉淀规范后平均配置时间从 2 天降到 1 天。
+抽象出 Banner、任务列表、奖励条、进度条四类组件，沉淀规范后平均配置时间从 2 天降至 1 天。
         `,
       },
     ],
   },
 ]
-

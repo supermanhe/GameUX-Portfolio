@@ -22,30 +22,51 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
   const [activeCaseIndex, setActiveCaseIndex] = useState<number | null>(null)
   const [activeMediaIndex, setActiveMediaIndex] = useState(0)
   const [drafts, setDrafts] = useState<DraftRecord>({})
+  const [editing, setEditing] = useState(false)
+  const [showEditToggle, setShowEditToggle] = useState(false)
   const editorRef = useRef<Editor | null>(null)
 
   const open = activeCaseIndex !== null
   const activeCase = open ? project.cases[activeCaseIndex!] : null
-
   const activeCaseId = activeCase?.id ?? null
   const activeCaseTitle = activeCase?.title ?? ''
   const activeCaseHighlights = activeCase?.highlights ?? []
   const activeCaseMedia = activeCase?.media ?? []
   const activeCaseArticle = activeCase?.articleMDX ?? ''
   const activeMedia = activeCaseMedia[activeMediaIndex]
+  const draft = activeCaseId ? drafts[activeCaseId] : undefined
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === 'g') {
+        event.preventDefault()
+        setShowEditToggle(true)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [open])
 
   useEffect(() => {
     if (!activeCaseId) return
     setActiveMediaIndex(0)
+    setEditing(false)
+    setShowEditToggle(false)
   }, [activeCaseId])
+
+  const baseHtml = useMemo(() => {
+    if (!activeCaseArticle) return ''
+    return marked.parse(activeCaseArticle) as string
+  }, [activeCaseArticle])
 
   const editorContent = useMemo(() => {
     if (!activeCaseId) return undefined
-    const draft = drafts[activeCaseId]
     if (draft) return draft
-    const html = marked.parse(activeCaseArticle || '') as string
-    return { html }
-  }, [activeCaseId, drafts, activeCaseArticle])
+    return { html: baseHtml }
+  }, [activeCaseId, draft, baseHtml])
+
+  const displayHtml = draft?.html ?? baseHtml
 
   const handleEditorChange = useCallback(
     (payload: { json: JSONContent; html: string }) => {
@@ -97,6 +118,8 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
           if (!next) {
             setActiveCaseIndex(null)
             setActiveMediaIndex(0)
+            setEditing(false)
+            setShowEditToggle(false)
             editorRef.current = null
           }
         }}
@@ -108,49 +131,61 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                 <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/60 p-6">
                   <div className="space-y-2">
                     <h2 className="text-xl font-semibold">{activeCaseTitle}</h2>
-                    <ul className="list-inside list-disc text-sm text-muted-foreground">
-                      {activeCaseHighlights.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
+                    {editing && activeCaseHighlights.length > 0 && (
+                      <ul className="list-inside list-disc text-sm text-muted-foreground">
+                        {activeCaseHighlights.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="default"
-                      size="sm"
-                      onClick={() => {
-                        const editor = editorRef.current
-                        const json = editor?.getJSON() ?? drafts[activeCaseId]?.json
-                        const html =
-                          editor?.getHTML() ??
-                          drafts[activeCaseId]?.html ??
-                          (marked.parse(activeCaseArticle || '') as string)
+                  <div className="flex flex-wrap justify-end gap-2">
+                    {showEditToggle && (
+                      <Button
+                        variant={editing ? 'default' : 'secondary'}
+                        size="sm"
+                        onClick={() => {
+                          if (editing) {
+                            editorRef.current = null
+                          }
+                          setEditing((prev) => !prev)
+                          setShowEditToggle(true)
+                        }}
+                      >
+                        {editing ? '退出编辑' : '进入编辑'}
+                      </Button>
+                    )}
+                    {editing && (
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() => {
+                          const payload = {
+                            project: project.slug,
+                            caseId: activeCaseId,
+                            title: activeCaseTitle,
+                            highlights: activeCaseHighlights,
+                            media: activeCaseMedia,
+                            article: {
+                              markdown: activeCaseArticle,
+                              html: displayHtml,
+                              json: draft?.json ?? editorRef.current?.getJSON() ?? null,
+                            },
+                            exportedAt: new Date().toISOString(),
+                          }
 
-                        const payload = {
-                          project: project.slug,
-                          caseId: activeCaseId,
-                          title: activeCaseTitle,
-                          highlights: activeCaseHighlights,
-                          media: activeCaseMedia,
-                          article: {
-                            markdown: activeCaseArticle,
-                            html,
-                            json,
-                          },
-                          exportedAt: new Date().toISOString(),
-                        }
-
-                        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
-                        const url = URL.createObjectURL(blob)
-                        const anchor = document.createElement('a')
-                        anchor.href = url
-                        anchor.download = `case-${project.slug}-${activeCaseId}.json`
-                        anchor.click()
-                        URL.revokeObjectURL(url)
-                      }}
-                    >
-                      {'\u5BFC\u51FA JSON'}
-                    </Button>
+                          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+                          const url = URL.createObjectURL(blob)
+                          const anchor = document.createElement('a')
+                          anchor.href = url
+                          anchor.download = `case-${project.slug}-${activeCaseId}.json`
+                          anchor.click()
+                          URL.revokeObjectURL(url)
+                        }}
+                      >
+                        {'\u5BFC\u51FA JSON'}
+                      </Button>
+                    )}
                     <Button variant="secondary" size="sm" onClick={goPrev}>
                       {'\u4E0A\u4E00\u6848\u4F8B'}
                     </Button>
@@ -162,49 +197,57 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
 
                 <div className="flex-1 overflow-hidden p-6 pt-4">
                   <div className="flex h-full flex-col gap-4">
-                    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40">
-                      {activeMedia?.type === 'image' || activeMedia?.type === 'gif' ? (
-                        <Image
-                          src={activeMedia.src}
-                          alt={activeMedia.caption || activeCaseTitle}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 65vw"
-                          className="object-cover"
-                        />
-                      ) : activeMedia?.type === 'video' ? (
-                        <video controls poster={activeMedia.poster} className="h-full w-full rounded-2xl object-cover">
-                          <source src={activeMedia.src} />
-                        </video>
-                      ) : activeMedia?.type === 'embed' ? (
-                        <iframe
-                          src={activeMedia.src}
-                          title={activeMedia.caption || activeCaseTitle}
-                          className="h-full w-full rounded-2xl border-0"
-                          allowFullScreen
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                          {'\u6682\u65E0\u5A92\u4F53\u5185\u5BB9'}
-                        </div>
-                      )}
-                    </div>
+                    {editing && (
+                      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40">
+                        {activeMedia?.type === 'image' || activeMedia?.type === 'gif' ? (
+                          <Image
+                            src={activeMedia.src}
+                            alt={activeMedia.caption || activeCaseTitle}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 65vw"
+                            className="object-cover"
+                          />
+                        ) : activeMedia?.type === 'video' ? (
+                          <video controls poster={activeMedia.poster} className="h-full w-full rounded-2xl object-cover">
+                            <source src={activeMedia.src} />
+                          </video>
+                        ) : activeMedia?.type === 'embed' ? (
+                          <iframe
+                            src={activeMedia.src}
+                            title={activeMedia.caption || activeCaseTitle}
+                            className="h-full w-full rounded-2xl border-0"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                            {'\u6682\u65E0\u5A92\u4F53\u5185\u5BB9'}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                    <RichEditor
-                      key={activeCaseId}
-                      content={editorContent}
-                      onChange={handleEditorChange}
-                      className="flex-1"
-                      onReady={(editorInstance) => {
-                        editorRef.current = editorInstance
-                        if (drafts[activeCaseId]) return
-                        const json = editorInstance.getJSON()
-                        const html = editorInstance.getHTML()
-                        setDrafts((prev) => ({
-                          ...prev,
-                          [activeCaseId]: { json, html },
-                        }))
-                      }}
-                    />
+                    {editing ? (
+                      <RichEditor
+                        key={activeCaseId}
+                        content={editorContent}
+                        onChange={handleEditorChange}
+                        className="flex-1"
+                        onReady={(editorInstance) => {
+                          editorRef.current = editorInstance
+                          if (drafts[activeCaseId]) return
+                          const json = editorInstance.getJSON()
+                          const html = editorInstance.getHTML()
+                          setDrafts((prev) => ({
+                            ...prev,
+                            [activeCaseId]: { json, html },
+                          }))
+                        }}
+                      />
+                    ) : (
+                      <div className="flex-1 overflow-y-auto rounded-2xl border border-border/60 bg-card/70 p-5">
+                        <div className="tiptap" dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
