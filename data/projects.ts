@@ -60,7 +60,7 @@ export const projects: Project[] = [
           },
           {
             type: 'gif',
-            src: 'https://i.imgur.com/2RM4QyM.gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
             caption: '箭头与放大动效',
           },
           {
@@ -98,7 +98,7 @@ export const projects: Project[] = [
           },
           {
             type: 'gif',
-            src: 'https://i.imgur.com/2RM4QyM.gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
             caption: '箭头与放大动效',
           },
           {
@@ -166,7 +166,7 @@ export const projects: Project[] = [
           },
           {
             type: 'gif',
-            src: 'https://i.imgur.com/Hw7o9.gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
             caption: '强化反馈动效草稿',
           },
         ],
@@ -192,3 +192,5 @@ export const projects: Project[] = [
     ],
   },
 ]
+
+

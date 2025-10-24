@@ -38,7 +38,7 @@ export function Gallery({ items }: { items: Media[] }) {
             className="group relative overflow-hidden rounded-xl border border-border focus-ring"
             onClick={() => openAt(i)}
           >
-            {m.type === 'image' || m.type === 'gif' ? (
+            {m.type === 'image' ? (
               <Image
                 src={m.src}
                 alt={m.caption || 'media'}
@@ -46,6 +46,15 @@ export function Gallery({ items }: { items: Media[] }) {
                 height={400}
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            ) : m.type === 'gif' ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={m.src}
+                alt={m.caption || 'media'}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                loading="lazy"
+                decoding="async"
               />
             ) : m.type === 'video' ? (
               <video

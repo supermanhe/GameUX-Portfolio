@@ -1,0 +1,33 @@
+﻿*** Begin Patch
+*** Update File: components/gallery.tsx
+@@
+-            {m.type === 'image' || m.type === 'gif' ? (
+-              <Image
+-                src={m.src}
+-                alt={m.caption || 'media'}
+-                width={600}
+-                height={400}
+-                loading="lazy"
+-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+-              />
+-            ) : m.type === 'video' ? (
++            {m.type === 'image' ? (
++              <Image
++                src={m.src}
++                alt={m.caption || 'media'}
++                width={600}
++                height={400}
++                loading="lazy"
++                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
++              />
++            ) : m.type === 'gif' ? (
++              // eslint-disable-next-line @next/next/no-img-element
++              <img
++                src={m.src}
++                alt={m.caption || 'media'}
++                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
++                loading="lazy"
++                decoding="async"
++              />
++            ) : m.type === 'video' ? (
+*** End Patch

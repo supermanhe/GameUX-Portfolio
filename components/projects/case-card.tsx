@@ -29,7 +29,10 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
       className="block w-full rounded-2xl border border-border/60 bg-card/70 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft focus-ring"
     >
       <div className="relative overflow-hidden rounded-t-2xl">
-        {cover ? (
+        {cover?.type === 'gif' ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={cover.src} alt={cover.caption || c.title} className="h-36 w-full object-cover" />
+        ) : cover ? (
           <Image
             src={cover.src}
             alt={cover.caption || c.title}

@@ -152,7 +152,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                           setShowEditToggle(true)
                         }}
                       >
-                        {editing ? 'Exit Edit' : 'Enter Edit'}
+                        {editing ? '退出编辑' : '进入编辑'}
                       </Button>
                     )}
                     {editing && (
@@ -199,22 +199,13 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                   <div className="flex h-full flex-col gap-4">
                     {editing && (
                       <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40">
-                        {activeMedia?.type === 'image' ? (
+                        {activeMedia?.type === 'image' || activeMedia?.type === 'gif' ? (
                           <Image
                             src={activeMedia.src}
                             alt={activeMedia.caption || activeCaseTitle}
                             fill
                             sizes="(max-width: 1024px) 100vw, 65vw"
                             className="object-cover"
-                          />
-                        ) : activeMedia?.type === 'gif' ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={activeMedia.src}
-                            alt={activeMedia.caption || activeCaseTitle}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
                           />
                         ) : activeMedia?.type === 'video' ? (
                           <video controls poster={activeMedia.poster} className="h-full w-full rounded-2xl object-cover">
@@ -310,5 +301,3 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
     </>
   )
 }
-
-
