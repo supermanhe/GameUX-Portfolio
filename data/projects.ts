@@ -104,10 +104,23 @@ export const projects: Project[] = [
 ### 目标
 在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
 
+<div class="tiptap-video-wrapper">
+  <video
+    class="tiptap-video"
+    controls="true"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4"
+  ></video>
+</div>
+
 ### 方法
 - 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
 - 在关键交互处加入轻量动效（放大/高亮/抖动）。
 - 使用 12 名真实玩家进行走查与回放分析。
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif"
+/>
 
 ### 结果
 - 引导完成率 +12.3%，Day2 留存 +7.8%。
