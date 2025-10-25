@@ -167,7 +167,6 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                             caseId: activeCaseId,
                             title: activeCaseTitle,
                             highlights: activeCaseHighlights,
-                            media: activeCaseMedia,
                             article: {
                               markdown: activeCaseArticle,
                               html: displayHtml,
