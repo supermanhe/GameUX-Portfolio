@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { CaseCard } from '@/components/projects/case-card'
 import { RichEditor } from '@/components/editor/rich-editor'
 import { cn } from '@/lib/utils'
+import { transformMediaLinks } from '@/lib/media'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
 
@@ -57,7 +58,8 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
 
   const baseHtml = useMemo(() => {
     if (!activeCaseArticle) return ''
-    return marked.parse(activeCaseArticle) as string
+    const parsed = marked.parse(activeCaseArticle) as string
+    return transformMediaLinks(parsed)
   }, [activeCaseArticle])
 
   const editorContent = useMemo(() => {
