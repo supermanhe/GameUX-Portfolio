@@ -92,29 +92,23 @@ export const projects: Project[] = [
         ],
         media: [
           {
-            type: 'image',
-            src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop',
-            caption: '分步引导的结构图',
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4',
           },
           {
             type: 'gif',
             src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
-            caption: '箭头与放大动效',
-          },
-          {
-            type: 'video',
-            src: 'https://www.w3schools.com/html/mov_bbb.mp4',
-            caption: '关键动效演示',
-            poster: 'https://placehold.co/800x450/000000/FFFFFF?text=Motion+Demo',
           },
         ],
         articleMDX: md`
 ### 目标
 在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
+
 ### 方法
 - 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
 - 在关键交互处加入轻量动效（放大/高亮/抖动）。
 - 使用 12 名真实玩家进行走查与回放分析。
+
 ### 结果
 - 引导完成率 +12.3%，Day2 留存 +7.8%。
 - 玩家反馈“更清楚下一步该做什么”。
