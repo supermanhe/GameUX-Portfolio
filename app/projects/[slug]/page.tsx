@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { projects } from '@/data/projects'
@@ -63,7 +64,20 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">{'\u8BBE\u8BA1\u70B9 / \u5DE5\u4F5C\u5185\u5BB9'}</h2>
-        <CasesShowcase project={project} />
+        <Suspense
+          fallback={
+            <div className="grid gap-4 md:grid-cols-2">
+              {Array.from({ length: Math.max(project.cases.length, 1) }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="h-32 rounded-2xl border border-border/60 bg-muted/40 animate-pulse"
+                />
+              ))}
+            </div>
+          }
+        >
+          <CasesShowcase project={project} />
+        </Suspense>
       </section>
     </div>
   )
