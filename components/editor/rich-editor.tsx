@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { classifyMediaUrl, normalizeMediaUrl, transformMediaLinks } from '@/lib/media'
 import { Video } from '@/lib/tiptap-video'
 
 type EditorContentValue = {
@@ -43,8 +44,37 @@ type RichEditorProps = {
 function buildEditorContent(content?: EditorContentValue) {
   if (!content) return '<p></p>'
   if (content.json) return content.json
-  if (content.html) return content.html
+  if (content.html) return transformMediaLinks(content.html)
   return '<p></p>'
+}
+
+function tryEmbedMedia(editor: Editor | null, rawUrl: string | null | undefined, options?: { poster?: string }) {
+  if (!editor) return false
+  const normalizedUrl = normalizeMediaUrl(rawUrl)
+  if (!normalizedUrl) return false
+
+  const mediaType = classifyMediaUrl(normalizedUrl)
+  if (mediaType === 'image') {
+    editor.chain().focus().setImage({ src: normalizedUrl }).run()
+    return true
+  }
+
+  if (mediaType === 'video') {
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: 'video',
+        attrs: {
+          src: normalizedUrl,
+          poster: options?.poster ?? null,
+        },
+      })
+      .run()
+    return true
+  }
+
+  return false
 }
 
 const menuItems = [
@@ -97,6 +127,7 @@ export function RichEditor({
 }: RichEditorProps) {
   const lastApplied = useRef<string | null>(null)
   const onChangeRef = useRef<RichEditorProps['onChange']>(onChange)
+  const editorInstanceRef = useRef<Editor | null>(null)
 
   useEffect(() => {
     onChangeRef.current = onChange
@@ -126,6 +157,17 @@ export function RichEditor({
       editorProps: {
         attributes: {
           class: 'tiptap prose prose-invert max-w-none focus:outline-none',
+        },
+        handlePaste(_view, event) {
+          const pastedText = event.clipboardData?.getData('text/plain')?.trim()
+          if (!pastedText) return false
+
+          if (tryEmbedMedia(editorInstanceRef.current, pastedText)) {
+            event.preventDefault()
+            return true
+          }
+
+          return false
         },
       },
       onUpdate({ editor }) {
@@ -157,10 +199,17 @@ export function RichEditor({
       editor.commands.setContent(content.json)
       lastApplied.current = JSON.stringify(content.json)
     } else if (content.html) {
-      editor.commands.setContent(content.html)
+      editor.commands.setContent(transformMediaLinks(content.html))
       lastApplied.current = content.html
     }
   }, [content, editor])
+
+  useEffect(() => {
+    editorInstanceRef.current = editor ?? null
+    return () => {
+      editorInstanceRef.current = null
+    }
+  }, [editor])
 
   const disabled = useMemo(() => !editor, [editor])
 
@@ -189,7 +238,10 @@ export function RichEditor({
           onClick={() => {
             const url = window.prompt('\u8F93\u5165\u94FE\u63A5 URL')
             if (!url) return
-            editor.chain().focus().setLink({ href: url }).run()
+            const shouldEmbed = editor.state.selection.empty && tryEmbedMedia(editor, url)
+            if (!shouldEmbed) {
+              editor.chain().focus().setLink({ href: url }).run()
+            }
           }}
           disabled={disabled}
           className="h-8 rounded-full px-2"
@@ -218,17 +270,19 @@ export function RichEditor({
             const src = window.prompt('\u8F93\u5165\u89C6\u9891\u5730\u5740\uFF08MP4 \u6216\u6D41\u5A92\u4F53\u94FE\u63A5\uFF09')
             if (!src) return
             const poster = window.prompt('\u53EF\u9009\uFF1A\u8F93\u5165\u5C01\u9762\u56FE URL\uFF08\u53EF\u7559\u7A7A\uFF09') || undefined
-            editor
-              .chain()
-              .focus()
-              .insertContent({
-                type: 'video',
-                attrs: {
-                  src,
-                  poster,
-                },
-              })
-              .run()
+            if (!tryEmbedMedia(editor, src, { poster })) {
+              editor
+                .chain()
+                .focus()
+                .insertContent({
+                  type: 'video',
+                  attrs: {
+                    src,
+                    poster,
+                  },
+                })
+                .run()
+            }
           }}
           disabled={disabled}
           className="h-8 rounded-full px-2"

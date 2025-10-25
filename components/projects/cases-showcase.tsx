@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { CaseCard } from '@/components/projects/case-card'
 import { RichEditor } from '@/components/editor/rich-editor'
 import { cn } from '@/lib/utils'
+import { transformMediaLinks } from '@/lib/media'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
 
@@ -34,6 +35,20 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
   const activeCaseMedia = activeCase?.media ?? []
   const activeCaseArticle = activeCase?.articleMDX ?? ''
   const activeMedia = activeCaseMedia[activeMediaIndex]
+
+  const getCaseCover = useCallback((c: Project['cases'][number]) => {
+    const cover = c.media.find((m) => m.type === 'image' || m.type === 'gif')
+    if (cover) {
+      return cover
+    }
+
+    const videoWithPoster = c.media.find((m) => m.type === 'video' && m.poster)
+    if (videoWithPoster) {
+      return { ...videoWithPoster, src: videoWithPoster.poster!, type: 'image' as const }
+    }
+
+    return null
+  }, [])
   const draft = activeCaseId ? drafts[activeCaseId] : undefined
 
   useEffect(() => {
@@ -57,7 +72,8 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
 
   const baseHtml = useMemo(() => {
     if (!activeCaseArticle) return ''
-    return marked.parse(activeCaseArticle) as string
+    const parsed = marked.parse(activeCaseArticle) as string
+    return transformMediaLinks(parsed)
   }, [activeCaseArticle])
 
   const editorContent = useMemo(() => {
@@ -263,44 +279,63 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
               <aside className="flex w-56 flex-col border-l border-border/60 bg-background/80">
                 <div className="border-b border-border/60 p-4">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    {'\u5A92\u4F53\u5BFC\u822A'}
+                    {'\u6848\u4F8B\u5BFC\u822A'}
                   </h3>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">
                   <div className="grid gap-3">
-                    {activeCaseMedia.map((media, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setActiveMediaIndex(idx)}
-                        className={cn(
-                          'relative h-24 w-full overflow-hidden rounded-xl border border-border/60 transition hover:border-primary/60',
-                          activeMediaIndex === idx && 'border-primary/80 ring-1 ring-primary/40',
-                        )}
-                      >
-                        {media.type === 'video' ? (
-                          <div className="flex h-full w-full items-center justify-center bg-black/80 text-xs text-foreground/80">
-                            {'\u89C6\u9891'}
+                    {project.cases.map((c, idx) => {
+                      const cover = getCaseCover(c)
+                      const isActive = activeCaseIndex === idx
+
+                      return (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => {
+                            setActiveCaseIndex(idx)
+                            setActiveMediaIndex(0)
+                          }}
+                          className={cn(
+                            'group relative block h-24 w-full overflow-hidden rounded-xl border border-border/60 text-left transition focus-ring',
+                            isActive ? 'border-primary/80 ring-1 ring-primary/40' : 'hover:border-primary/60',
+                          )}
+                        >
+                          <div className="absolute inset-0">
+                            {cover ? (
+                              cover.type === 'gif' ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={cover.src}
+                                  alt={cover.caption || c.title}
+                                  className="h-full w-full object-cover"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              ) : (
+                                <Image
+                                  src={cover.src}
+                                  alt={cover.caption || c.title}
+                                  fill
+                                  sizes="(max-width: 768px) 160px, 200px"
+                                  className="object-cover"
+                                />
+                              )
+                            ) : (
+                              <div className="h-full w-full bg-muted" />
+                            )}
                           </div>
-                        ) : media.type === 'embed' ? (
-                          <div className="flex h-full w-full items-center justify-center bg-secondary text-xs text-secondary-foreground/80">
-                            Embed
+                          <div className="absolute inset-0 bg-black/60 transition group-hover:bg-black/50" />
+                          <div className="relative flex h-full items-center justify-center px-3 text-center text-sm font-medium text-white">
+                            {c.title}
                           </div>
-                        ) : (
-                          <Image
-                            src={media.src}
-                            alt={media.caption || `${'\u5A92\u4F53'} ${idx + 1}`}
-                            fill
-                            sizes="128px"
-                            className="object-cover"
-                          />
-                        )}
-                      </button>
-                    ))}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
                 <div className="border-t border-border/60 p-4 text-xs text-muted-foreground">
-                  {activeMedia?.caption || '\u9009\u62E9\u53F3\u4FA7\u7F29\u7565\u56FE\u4EE5\u67E5\u770B / \u7F16\u8F91\u5BF9\u5E94\u7D20\u6750'}
+                  {activeCaseTitle ? `${'\u5F53\u524D\u6848\u4F8B'}：${activeCaseTitle}` : '\u9009\u62E9\u5DE6\u4FA7\u6848\u4F8B\u4EE5\u67E5\u770B / \u7F16\u8F91'}
                 </div>
               </aside>
             </div>
