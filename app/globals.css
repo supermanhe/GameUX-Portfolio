@@ -108,6 +108,6 @@ body {
   @apply my-4 rounded-xl border border-border/60 bg-black/60 p-2;
 }
 
-.tiptap-video {
-  @apply w-full rounded-lg;
+.tiptap-video-wrapper > .tiptap-video {
+  @apply block h-auto w-full rounded-lg;
 }
