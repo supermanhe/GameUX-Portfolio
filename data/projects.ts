@@ -44,44 +44,6 @@ export const projects: Project[] = [
       '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
     cases: [
       {
-        id: 'onboarding',
-        title: '新手引导体系重做',
-        highlights: [
-          '任务流拆解，降低早期认知负荷',
-          '关键节点动效加持，提升完成率',
-          '引导完成率 +12.3%'
-        ],
-        media: [
-          {
-            type: 'image',
-            src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop',
-            caption: '分步引导的结构图',
-          },
-          {
-            type: 'gif',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
-            caption: '箭头与放大动效',
-          },
-          {
-            type: 'video',
-            src: 'https://www.w3schools.com/html/mov_bbb.mp4',
-            caption: '关键动效演示',
-            poster: 'https://placehold.co/800x450/000000/FFFFFF?text=Motion+Demo',
-          },
-        ],
-        articleMDX: md`
-### 目标
-在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
-### 方法
-- 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
-- 在关键交互处加入轻量动效（放大/高亮/抖动）。
-- 使用 12 名真实玩家进行走查与回放分析。
-### 结果
-- 引导完成率 +12.3%，Day2 留存 +7.8%。
-- 玩家反馈“更清楚下一步该做什么”。
-        `,
-      },
-      {
         id: 'cangbao',
         title: '藏宝阁 优化',
         highlights: [
@@ -213,21 +175,6 @@ export const projects: Project[] = [
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png"
 />
-        `,
-      },
-      {
-        id: 'hud',
-        title: '战斗 HUD 优化',
-        highlights: ['信息层级梳理', '端内热力图观察点位', '色彩与对比度无障碍优化'],
-        media: [
-          {
-            type: 'image',
-            src: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1600&auto=format&fit=crop',
-            caption: 'HUD 信息层级',
-          },
-        ],
-        articleMDX: md`
-我们聚焦四个信息层级：核心状态 > 关键技能 > 资源 & 目标 > 次要信息。通过统一的栅格与色彩语义减少搜索时间，战斗胜率稳定性提升 3%。
         `,
       },
     ],
