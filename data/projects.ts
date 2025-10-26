@@ -44,6 +44,63 @@ export const projects: Project[] = [
       '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
     cases: [
       {
+        id: 'manage',
+        title: '团队协作管理',
+        highlights: ['规范整理', '重复工作模版化', '沙龙经验分享'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491629/23c2f799-7dc3-4368-aa25-173251f0f296.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491871/8b951c5f-5a0a-42c6-8451-cab9ce89a7e7.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491473/ffacd032-d67d-47cd-be65-e5af2886eb52.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491484/175612ed-136e-43eb-8d76-89cd93a4dc56.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491547/845be891-c94c-4afd-a1c7-50e443ab707c.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491580/248f0ec2-8a6c-4f98-983d-ca7ccbe5136a.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491629/23c2f799-7dc3-4368-aa25-173251f0f296.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491871/8b951c5f-5a0a-42c6-8451-cab9ce89a7e7.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491473/ffacd032-d67d-47cd-be65-e5af2886eb52.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491484/175612ed-136e-43eb-8d76-89cd93a4dc56.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491547/845be891-c94c-4afd-a1c7-50e443ab707c.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491580/248f0ec2-8a6c-4f98-983d-ca7ccbe5136a.png"
+/>
+        `,
+      },
+      {
         id: 'cangbao',
         title: '藏宝阁 优化',
         highlights: [
