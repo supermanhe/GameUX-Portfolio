@@ -109,5 +109,5 @@ body {
 }
 
 .tiptap-video {
-  @apply h-64 w-full rounded-lg object-cover;
+  @apply w-full rounded-lg;
 }
