@@ -177,6 +177,39 @@ export const projects: Project[] = [
 />
         `,
       },
+      {
+        id: 'social',
+        title: '社交优化',
+        highlights: ['回流玩法迭代', '社会临场感交互理论', '社交细节迭代'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761489967/a524ec4f-2ddd-45f5-ba36-09862769cf80.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480652/fe4d09db-fe8a-418b-895b-aeaf70b6b4d4.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480685/541e44d0-b95b-4e92-ab58-f6ae8cc1be2b.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761489967/a524ec4f-2ddd-45f5-ba36-09862769cf80.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480652/fe4d09db-fe8a-418b-895b-aeaf70b6b4d4.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480685/541e44d0-b95b-4e92-ab58-f6ae8cc1be2b.png"
+/>
+        `,
+      },
     ],
   },
   {
