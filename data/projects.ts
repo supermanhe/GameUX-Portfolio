@@ -82,48 +82,137 @@ export const projects: Project[] = [
         `,
       },
       {
-        id: 'test',
-        title: 'test',
+        id: 'cangbao',
+        title: '藏宝阁 优化',
         highlights: [
-          'highlight1',
-          'highlight2',
-          'highlight3',
+          '提升筛选、搜索、浏览效率',
+          '算法推荐UI迭代',
+          '提升交易费收入',
         ],
         media: [
           {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png',
+          },
+          {
             type: 'video',
-            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png',
+          },
+          {
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4',
           },
           {
             type: 'gif',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif',
           },
         ],
         articleMDX: md`
-### 目标
-在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
-
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png"
+/>
 <div class="tiptap-video-wrapper">
   <video
     class="tiptap-video"
     controls="true"
-    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4"
   ></video>
 </div>
-
-### 方法
-- 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
-- 在关键交互处加入轻量动效（放大/高亮/抖动）。
-- 使用 12 名真实玩家进行走查与回放分析。
-
 <img
   class="rounded-xl border border-border/40"
-  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png"
 />
-
-### 结果
-- 引导完成率 +12.3%，Day2 留存 +7.8%。
-- 玩家反馈“更清楚下一步该做什么”。
+<div class="tiptap-video-wrapper">
+  <video
+    class="tiptap-video"
+    controls="true"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4"
+  ></video>
+</div>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif"
+/>
+        `,
+      },
+      {
+        id: 'duobao',
+        title: '多宝阁 优化',
+        highlights: ['瀑布流设计', '算法推荐', '场景化设计'],
+        media: [
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png"
+/>
+        `,
+      },
+      {
+        id: 'liutong',
+        title: 'MMO资源流通 优化',
+        highlights: ['资源从何而来', '获得资源的瞬间', '更加便捷地消耗'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png"
+/>
+        `,
+      },
+      {
+        id: 'gaojiazhi',
+        title: '高价值奖励分享优化',
+        highlights: ['优化视觉呈现', '提升易用性', '移动端社交平台分享'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png"
+/>
         `,
       },
       {
