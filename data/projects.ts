@@ -28,7 +28,7 @@ const md = (strings: TemplateStringsArray) => strings[0]
 
 export const projects: Project[] = [
   {
-    slug: '大话西游2',
+    slug: 'dahua2',
     title: '大话西游2',
     subtitle: '经典国风MMO·持续运营20年+',
     role: 'UI交互负责人',
