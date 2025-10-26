@@ -46,7 +46,10 @@
   --ring: 259 94% 51%;
 }
 
-html { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+html {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  scroll-behavior: smooth;
+}
 
 body {
   background-color: hsl(var(--background));

@@ -2,9 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Download, Mail } from 'lucide-react'
+import { Download, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
 
 export function Hero() {
@@ -50,26 +49,6 @@ export function Hero() {
         <p className="mt-2 text-sm text-muted-foreground">
           Figma、Unity、Unreal、Three.js、Tailwind、shadcn、Framer Motion、Jira、Notion、UserTesting、Mixpanel
         </p>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <Link href="/projects" className="card-base hover-raise block p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">参与项目</h3>
-                <p className="mt-1 text-sm text-muted-foreground">两款上线游戏的核心设计工作与成果</p>
-              </div>
-              <ArrowRight className="h-5 w-5" />
-            </div>
-          </Link>
-          <Link href="/sites" className="card-base hover-raise block p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">已做项目</h3>
-                <p className="mt-1 text-sm text-muted-foreground">网站集合，可交互预览与技术栈</p>
-              </div>
-              <ArrowRight className="h-5 w-5" />
-            </div>
-          </Link>
-        </div>
       </motion.div>
     </section>
   )
