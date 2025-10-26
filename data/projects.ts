@@ -28,21 +28,20 @@ const md = (strings: TemplateStringsArray) => strings[0]
 
 export const projects: Project[] = [
   {
-    slug: 'star-arena',
-    title: 'Star Arena',
-    subtitle: '科幻多人战斗 · 实时PVP',
-    role: 'UI/UX 负责人',
-    period: '2023.02 - 2024.02',
-    team: '25人（设计3 / 客户端 / 服务端 / 策划5 / 测试3）',
-    platform: ['iOS', 'Android'],
+    slug: 'dahua2',
+    title: '大话西游2',
+    subtitle: '经典国风MMO·持续运营20年+',
+    role: 'UI交互负责人',
+    period: '2017-2022',
+    team: '3交互、5视觉',
+    platform: ['端游', '移动端'],
     kpis: [
-      { label: '次日留存', value: '+7.8%' },
-      { label: '完成新手引导', value: '+12.3%' },
+      { label: '营收创近十年新高', value: ' ' },
     ],
-    cover: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?q=80&w=1200&auto=format&fit=crop',
-    tags: ['PVP', '科幻', '移动端'],
+    cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761445555/2e3d2637-d53e-40f2-b514-5cf3c3f70181.png',
+    tags: ['MMO'],
     summary:
-      '负责整套界面体系与交互规范，主导新手引导、战斗HUD、货币化入口与活动模块的策略与落地。通过A/B测试与可用性测试持续优化。',
+      '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
     cases: [
       {
         id: 'onboarding',
