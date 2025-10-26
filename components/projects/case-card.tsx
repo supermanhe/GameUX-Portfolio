@@ -31,14 +31,14 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
       <div className="relative overflow-hidden rounded-t-2xl">
         {cover?.type === 'gif' ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={cover.src} alt={cover.caption || c.title} className="h-72 w-full object-cover" />
+          <img src={cover.src} alt={cover.caption || c.title} className="h-72 w-full object-cover object-top" />
         ) : cover ? (
           <Image
             src={cover.src}
             alt={cover.caption || c.title}
             width={640}
             height={360}
-            className="h-72 w-full object-cover"
+            className="h-72 w-full object-cover object-top"
             sizes="(max-width:768px) 100vw, 50vw"
           />
         ) : video?.poster ? (
@@ -47,7 +47,7 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
             alt={video.caption || c.title}
             width={640}
             height={360}
-            className="h-72 w-full object-cover"
+            className="h-72 w-full object-cover object-top"
             sizes="(max-width:768px) 100vw, 50vw"
           />
         ) : (
