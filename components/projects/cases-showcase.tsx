@@ -1,7 +1,8 @@
-﻿"use client"
+"use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import type { Editor } from '@tiptap/core'
 import type { JSONContent } from '@tiptap/react'
 import { marked } from 'marked'
@@ -20,6 +21,11 @@ type CasesShowcaseProps = {
 }
 
 export function CasesShowcase({ project }: CasesShowcaseProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const searchParamsString = searchParams.toString()
+  const caseIdFromQuery = searchParams.get('case')
   const [activeCaseIndex, setActiveCaseIndex] = useState<number | null>(null)
   const [activeMediaIndex, setActiveMediaIndex] = useState(0)
   const [drafts, setDrafts] = useState<DraftRecord>({})
@@ -84,6 +90,44 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
 
   const displayHtml = draft?.html ?? baseHtml
 
+  const selectCase = useCallback(
+    (caseId: string, indexHint?: number) => {
+      if (indexHint !== undefined) {
+        setActiveCaseIndex(indexHint)
+      }
+      if (caseIdFromQuery === caseId) return
+      const params = new URLSearchParams(searchParamsString)
+      params.set('case', caseId)
+      const query = params.toString()
+      const target = query ? `${pathname}?${query}` : pathname
+      router.replace(target, { scroll: false })
+    },
+    [caseIdFromQuery, pathname, router, searchParamsString],
+  )
+
+  const clearCaseParam = useCallback(() => {
+    const params = new URLSearchParams(searchParamsString)
+    if (!params.has('case')) return
+    params.delete('case')
+    const query = params.toString()
+    const target = query ? `${pathname}?${query}` : pathname
+    router.replace(target, { scroll: false })
+  }, [pathname, router, searchParamsString])
+
+  useEffect(() => {
+    if (!caseIdFromQuery) {
+      setActiveCaseIndex(null)
+      return
+    }
+    const nextIndex = project.cases.findIndex((c) => c.id === caseIdFromQuery)
+    if (nextIndex === -1) {
+      setActiveCaseIndex(null)
+      clearCaseParam()
+      return
+    }
+    setActiveCaseIndex(nextIndex)
+  }, [caseIdFromQuery, clearCaseParam, project.cases])
+
   const handleEditorChange = useCallback(
     (payload: { json: JSONContent; html: string }) => {
       if (!activeCaseId) return
@@ -99,9 +143,12 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
     (nextIndex: number) => {
       if (project.cases.length === 0) return
       const normalized = ((nextIndex % project.cases.length) + project.cases.length) % project.cases.length
+      const targetCase = project.cases[normalized]
+      if (!targetCase) return
       setActiveCaseIndex(normalized)
+      selectCase(targetCase.id)
     },
-    [project.cases.length],
+    [project.cases, selectCase],
   )
 
   const goPrev = useCallback(() => {
@@ -123,7 +170,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
             slug={project.slug}
             c={c}
             index={idx}
-            onOpen={({ index }) => setActiveCaseIndex(index)}
+            onOpen={({ caseId, index }) => selectCase(caseId, index)}
           />
         ))}
       </div>
@@ -133,6 +180,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
         onOpenChange={(next) => {
           if (!next) {
             setActiveCaseIndex(null)
+            clearCaseParam()
             setActiveMediaIndex(0)
             setEditing(false)
             setShowEditToggle(false)
