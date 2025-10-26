@@ -129,16 +129,150 @@ export const projects: Project[] = [
       {
         id: 'hud',
         title: '战斗 HUD 优化',
-        highlights: ['信息层级梳理', '端内热力图观察点位', '色彩与对比度无障碍优化'],
+        highlights: ['瀑布流设计', '算法推荐', '场景化设计'],
         media: [
           {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif',
+          },
+          {
             type: 'image',
-            src: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1600&auto=format&fit=crop',
-            caption: 'HUD 信息层级',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png',
           },
         ],
         articleMDX: md`
-我们聚焦四个信息层级：核心状态 > 关键技能 > 资源 & 目标 > 次要信息。通过统一的栅格与色彩语义减少搜索时间，战斗胜率稳定性提升 3%。
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif"
+/>
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif"
+/>
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png"
+/>
+        `,
+      },
+      {
+        id: 'cangbao',
+        title: '藏宝阁 优化',
+        highlights: [
+          '提升筛选、搜索、浏览效率',
+          '算法推荐UI迭代',
+          '提升交易费收入',
+        ],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png',
+          },
+          {
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png',
+          },
+          {
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png"
+/>
+
+<div class="tiptap-video-wrapper">
+  <video
+    class="tiptap-video"
+    controls="true"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4"
+  ></video>
+</div>
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png"
+/>
+
+<div class="tiptap-video-wrapper">
+  <video
+    class="tiptap-video"
+    controls="true"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4"
+  ></video>
+</div>
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif"
+/>
+
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif"
+/>
+        `,
+      },
+      {
+        id: 'liutong',
+        title: 'MMO资源流通 优化',
+        highlights: [
+          '资源从何而来',
+          '获得资源的瞬间',
+          '更加便捷地消耗',
+        ],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png',
+          },
+        ],
+        articleMDX: md`
+ <img
+   class="rounded-xl border border-border/40"
+   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png"
+ />
+        `,
+      },
+      {
+        id: 'gaojiazhi',
+        title: '高价值奖励分享优化',
+        highlights: [
+          '优化视觉呈现',
+          '提升易用性',
+          '移动端社交平台分享',
+        ],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png',
+          },
+        ],
+        articleMDX: md`
+ <img
+   class="rounded-xl border border-border/40"
+   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png"
+ />
         `,
       },
     ],
