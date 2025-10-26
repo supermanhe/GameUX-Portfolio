@@ -34,12 +34,12 @@ export const projects: Project[] = [
     role: 'UI交互负责人',
     period: '2017-2022',
     team: '3交互、5视觉',
-    //platform: ['端游', '移动端'],
+    platform: ['端游', '移动端'],
     kpis: [
       { label: '营收创近十年新高', value: ' ' },
     ],
     cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761445555/2e3d2637-d53e-40f2-b514-5cf3c3f70181.png',
-    tags: ['MMO', '端游', '移动端'],
+    tags: ['MMO'],
     summary:
       '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
     cases: [
