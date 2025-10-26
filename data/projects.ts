@@ -44,101 +44,227 @@ export const projects: Project[] = [
       '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
     cases: [
       {
-        id: 'onboarding',
-        title: '新手引导体系重做',
+        id: 'manage',
+        title: '团队协作管理',
+        highlights: ['规范整理', '重复工作模版化', '沙龙经验分享'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491629/23c2f799-7dc3-4368-aa25-173251f0f296.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491871/8b951c5f-5a0a-42c6-8451-cab9ce89a7e7.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491473/ffacd032-d67d-47cd-be65-e5af2886eb52.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491484/175612ed-136e-43eb-8d76-89cd93a4dc56.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491547/845be891-c94c-4afd-a1c7-50e443ab707c.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761491580/248f0ec2-8a6c-4f98-983d-ca7ccbe5136a.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491629/23c2f799-7dc3-4368-aa25-173251f0f296.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491871/8b951c5f-5a0a-42c6-8451-cab9ce89a7e7.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491473/ffacd032-d67d-47cd-be65-e5af2886eb52.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491484/175612ed-136e-43eb-8d76-89cd93a4dc56.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491547/845be891-c94c-4afd-a1c7-50e443ab707c.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761491580/248f0ec2-8a6c-4f98-983d-ca7ccbe5136a.png"
+/>
+        `,
+      },
+      {
+        id: 'cangbao',
+        title: '藏宝阁 优化',
         highlights: [
-          '任务流拆解，降低早期认知负荷',
-          '关键节点动效加持，提升完成率',
-          '引导完成率 +12.3%'
+          '提升筛选、搜索、浏览效率',
+          '算法推荐UI迭代',
+          '提升交易费收入',
         ],
         media: [
           {
             type: 'image',
-            src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop',
-            caption: '分步引导的结构图',
-          },
-          {
-            type: 'gif',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
-            caption: '箭头与放大动效',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png',
           },
           {
             type: 'video',
-            src: 'https://www.w3schools.com/html/mov_bbb.mp4',
-            caption: '关键动效演示',
-            poster: 'https://placehold.co/800x450/000000/FFFFFF?text=Motion+Demo',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4',
           },
-        ],
-        articleMDX: md`
-### 目标
-在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
-### 方法
-- 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
-- 在关键交互处加入轻量动效（放大/高亮/抖动）。
-- 使用 12 名真实玩家进行走查与回放分析。
-### 结果
-- 引导完成率 +12.3%，Day2 留存 +7.8%。
-- 玩家反馈“更清楚下一步该做什么”。
-        `,
-      },
-      {
-        id: 'test',
-        title: 'test',
-        highlights: [
-          'highlight1',
-          'highlight2',
-          'highlight3',
-        ],
-        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png',
+          },
           {
             type: 'video',
-            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4',
           },
           {
             type: 'gif',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif',
           },
         ],
         articleMDX: md`
-### 目标
-在不牺牲节奏与乐趣的前提下，降低首次启动时的认知负荷，提升关键机制理解与留存。
-
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png"
+/>
 <div class="tiptap-video-wrapper">
   <video
     class="tiptap-video"
     controls="true"
-    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761213999/%E7%89%B9%E6%95%88bug_h9eiu2.mp4"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4"
   ></video>
 </div>
-
-### 方法
-- 将教学任务切分为 5 个阶段，每阶段 1-2 个明确目标。
-- 在关键交互处加入轻量动效（放大/高亮/抖动）。
-- 使用 12 名真实玩家进行走查与回放分析。
-
 <img
   class="rounded-xl border border-border/40"
-  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png"
 />
-
-### 结果
-- 引导完成率 +12.3%，Day2 留存 +7.8%。
-- 玩家反馈“更清楚下一步该做什么”。
+<div class="tiptap-video-wrapper">
+  <video
+    class="tiptap-video"
+    controls="true"
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4"
+  ></video>
+</div>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467782/20251026-162835_vsqeak.gif"
+/>
         `,
       },
       {
-        id: 'hud',
-        title: '战斗 HUD 优化',
-        highlights: ['信息层级梳理', '端内热力图观察点位', '色彩与对比度无障碍优化'],
+        id: 'duobao',
+        title: '多宝阁 优化',
+        highlights: ['瀑布流设计', '算法推荐', '场景化设计'],
         media: [
           {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif',
+          },
+          {
             type: 'image',
-            src: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1600&auto=format&fit=crop',
-            caption: 'HUD 信息层级',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png',
           },
         ],
         articleMDX: md`
-我们聚焦四个信息层级：核心状态 > 关键技能 > 资源 & 目标 > 次要信息。通过统一的栅格与色彩语义减少搜索时间，战斗胜率稳定性提升 3%。
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468295/59c9be58-2ea4-41f3-acca-156e81a99b2f.png"
+/>
+        `,
+      },
+      {
+        id: 'liutong',
+        title: 'MMO资源流通 优化',
+        highlights: ['资源从何而来', '获得资源的瞬间', '更加便捷地消耗'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png"
+/>
+        `,
+      },
+      {
+        id: 'gaojiazhi',
+        title: '高价值奖励分享优化',
+        highlights: ['优化视觉呈现', '提升易用性', '移动端社交平台分享'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png"
+/>
+        `,
+      },
+      {
+        id: 'social',
+        title: '社交优化',
+        highlights: ['回流玩法迭代', '社会临场感交互理论', '社交细节迭代'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761489967/a524ec4f-2ddd-45f5-ba36-09862769cf80.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480652/fe4d09db-fe8a-418b-895b-aeaf70b6b4d4.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761480685/541e44d0-b95b-4e92-ab58-f6ae8cc1be2b.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761489967/a524ec4f-2ddd-45f5-ba36-09862769cf80.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480652/fe4d09db-fe8a-418b-895b-aeaf70b6b4d4.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480685/541e44d0-b95b-4e92-ab58-f6ae8cc1be2b.png"
+/>
         `,
       },
     ],
