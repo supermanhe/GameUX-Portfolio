@@ -665,6 +665,62 @@ export const projects: Project[] = [
         `,
       },
       {
+        id: 'sealcard',
+        title: '核心养成系统-命卡优化',
+        highlights: ['提升玩家数值培养目标感', '信息架构调整', '规整单页面结构'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761546179/431c3053-95b2-4d5a-b765-6221c1e472c9.png',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761546898/%E5%8F%AF%E4%BA%A4%E4%BA%92%E5%8E%9F%E5%9E%8B_iuu1gr.gif',
+          },
+          {
+            type: 'gif',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761547147/%E5%91%BD%E5%8D%A1%E5%8A%A8%E6%95%88%E8%BD%AC%E5%9C%BA%E7%A4%BA%E6%84%8F%E5%9B%BE_rwvoxi.gif',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761546179/431c3053-95b2-4d5a-b765-6221c1e472c9.png"
+/>
+<blockquote>
+  <h2>可交互原型演示</h2>
+</blockquote>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761546898/%E5%8F%AF%E4%BA%A4%E4%BA%92%E5%8E%9F%E5%9E%8B_iuu1gr.gif"
+/>
+<blockquote>
+  <h2>正式UI、动效效果</h2>
+</blockquote>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761547147/%E5%91%BD%E5%8D%A1%E5%8A%A8%E6%95%88%E8%BD%AC%E5%9C%BA%E7%A4%BA%E6%84%8F%E5%9B%BE_rwvoxi.gif"
+/>
+        `,
+      },
+      {
+        id: 'trade',
+        title: '交易所迭代',
+        highlights: ['优化信息架构', '新增筛选、对比便捷功能', '优化购买、售卖流程'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png',
+          },
+        ],
+        articleMDX: md`
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png"
+/>
+        `,
+      },
+      {
         id: 'skillcircle',
         title: '技能轮盘迭代',
         highlights: ['费茨定律应用', '横屏操作热区', '易用性量化规则'],
