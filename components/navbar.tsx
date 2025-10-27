@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 const links = [
   { href: '#projects', label: '参与项目' },
-  { href: '#sites', label: '已做项目' },
+  { href: '#sites', label: '独立开发' },
 ]
 
 export function Navbar() {
@@ -16,7 +16,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-30 border-b border-border/60 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="container flex h-14 items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight">Game UI/UX</Link>
+        <Link href="/" className="font-semibold tracking-tight">GameUX Portfolio</Link>
         <nav className="flex items-center gap-1">
           {links.map((l) => (
             <Link

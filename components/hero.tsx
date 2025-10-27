@@ -17,7 +17,7 @@ export function Hero() {
         className="mx-auto h-28 w-28 overflow-hidden rounded-2xl ring-1 ring-border md:h-32 md:w-32"
       >
         <Image
-          src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400&auto=format&fit=crop"
+          src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761574783/%E6%88%91%E7%9A%84%E8%82%96%E5%83%8F_2_cohql6.png"
           alt="avatar"
           width={128}
           height={128}
@@ -26,9 +26,10 @@ export function Hero() {
         />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">某某 · 游戏 UI/UX 设计师</h1>
+        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">何梓超 · 游戏UX设计师 · 独立开发者</h1>
         <p className="mt-2 max-w-[60ch] text-muted-foreground">
-          专注移动与跨平台游戏体验，擅长以数据驱动与可用性测试指导设计决策，用简洁的界面与恰到好处的动效提升留存与转化。
+          网易游戏《大话西游2》主交互、昆仑万维《圣境之塔》UX负责人； 
+          热爱游戏，专注游戏UX 8年，在昆仑万维从0到1构建UX流程
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Button asChild onClick={() => track({ name: 'cta_download_cv' })}>
@@ -47,7 +48,7 @@ export function Hero() {
       <motion.div className="md:col-span-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
         <h2 className="mt-8 text-base font-semibold text-muted-foreground">技能 / 工具</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Figma、Unity、Unreal、Three.js、Tailwind、shadcn、Framer Motion、Jira、Notion、UserTesting、Mixpanel
+          Figma、Unity、Axure、AI Coding、Photoshop
         </p>
       </motion.div>
     </section>
