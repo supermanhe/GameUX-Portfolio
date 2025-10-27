@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 
 export type Media = {
@@ -91,7 +92,14 @@ export function Gallery({ items }: { items: Media[] }) {
                   您的浏览器不支持视频播放。
                 </video>
               ) : (
-                <iframe src={current?.src} className="h-[80vh] w-full" />
+                <iframe
+                  src={current?.src}
+                  className="h-[80vh] w-full"
+                  allow={EMBED_IFRAME_ALLOW}
+                  sandbox={EMBED_IFRAME_SANDBOX}
+                  allowFullScreen
+                  loading="lazy"
+                />
               )}
             </div>
             <div className="flex items-center justify-between p-3">

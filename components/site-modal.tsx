@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import type { SiteItem } from '@/data/sites'
-import { ChevronLeft, ChevronRight, ExternalLink, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ExternalLink, Loader2, X } from 'lucide-react'
+import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
 
 export function SiteModal({
   list,
@@ -21,14 +22,21 @@ export function SiteModal({
 }) {
   const item = list[index]
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
+  const [loading, setLoading] = useState(false)
   const loadTimer = useRef<NodeJS.Timeout | null>(null)
   const loadedRef = useRef(false)
+  const [hostOrigin, setHostOrigin] = useState('当前站点')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHostOrigin(window.location.origin)
+    }
+  }, [])
 
   useEffect(() => {
     if (!open) return
-    setLoaded(false)
+    setLoading(true)
     loadedRef.current = false
     setFailed(false)
     if (loadTimer.current) {
@@ -37,8 +45,9 @@ export function SiteModal({
     loadTimer.current = setTimeout(() => {
       if (!loadedRef.current) {
         setFailed(true)
+        setLoading(false)
       }
-    }, 2000)
+    }, 8000)
     return () => {
       if (loadTimer.current) {
         clearTimeout(loadTimer.current)
@@ -75,23 +84,41 @@ export function SiteModal({
               className="h-[60vh] w-full"
               onLoad={() => {
                 loadedRef.current = true
-                setLoaded(true)
                 setFailed(false)
+                setLoading(false)
                 if (loadTimer.current) {
                   clearTimeout(loadTimer.current)
                   loadTimer.current = null
                 }
               }}
-              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              onError={() => {
+                setFailed(true)
+                setLoading(false)
+              }}
+              allow={EMBED_IFRAME_ALLOW}
+              sandbox={EMBED_IFRAME_SANDBOX}
+              allowFullScreen
+              loading="lazy"
             />
           ) : (
             <div className="flex h-[60vh] flex-col items-center justify-center gap-3 text-center text-sm text-muted-foreground">
-              <p>目标站点可能禁止内嵌预览（X-Frame-Options）</p>
+              <p>
+                目标站点可能禁止内嵌预览（X-Frame-Options 或 Content-Security-Policy frame-ancestors）。
+                如果你维护该站点，请在其部署配置中允许来自本站点的 iframe。
+              </p>
+              <div className="rounded-md bg-muted/60 p-3 text-xs text-muted-foreground">
+                Content-Security-Policy: frame-ancestors &#39;self&#39; {hostOrigin}
+              </div>
               <Button asChild>
                 <a href={item.url} target="_blank" rel="noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" /> 新窗口打开
                 </a>
               </Button>
+            </div>
+          )}
+          {!failed && loading && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/60">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
           )}
         </div>
