@@ -12,6 +12,7 @@ import { CaseCard } from '@/components/projects/case-card'
 import { RichEditor } from '@/components/editor/rich-editor'
 import { cn } from '@/lib/utils'
 import { transformMediaLinks } from '@/lib/media'
+import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
 import { X } from 'lucide-react'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
@@ -249,7 +250,10 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                             src={activeMedia.src}
                             title={activeMedia.caption || activeCaseTitle}
                             className="h-full w-full rounded-2xl border-0"
+                            allow={EMBED_IFRAME_ALLOW}
+                            sandbox={EMBED_IFRAME_SANDBOX}
                             allowFullScreen
+                            loading="lazy"
                           />
                         ) : (
                           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
