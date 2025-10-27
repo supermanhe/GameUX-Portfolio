@@ -14,7 +14,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mx-auto h-28 w-28 overflow-hidden rounded-2xl ring-1 ring-border md:h-32 md:w-32"
+        className="mx-auto h-40 w-40 overflow-hidden rounded-full ring-1 ring-border md:h-40 md:w-40"
       >
         <Image
           src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761574783/%E6%88%91%E7%9A%84%E8%82%96%E5%83%8F_2_cohql6.png"
@@ -26,10 +26,10 @@ export function Hero() {
         />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">何梓超 · 游戏UX设计师 · 独立开发者</h1>
-        <p className="mt-2 max-w-[60ch] text-muted-foreground">
-          网易游戏《大话西游2》主交互、昆仑万维《圣境之塔》UX负责人； 
-          热爱游戏，专注游戏UX 8年，在昆仑万维从0到1构建UX流程
+        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">何梓超 · 游戏UX设计 · 独立开发者</h1>
+        <p className="mt-2 max-w-[120ch] text-muted-foreground">
+          网易游戏《大话西游2》、昆仑万维《圣境之塔》UX负责人； 
+          热爱游戏，专注游戏UX 8年
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Button asChild onClick={() => track({ name: 'cta_download_cv' })}>
