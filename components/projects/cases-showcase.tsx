@@ -6,12 +6,13 @@ import type { Editor } from '@tiptap/core'
 import type { JSONContent } from '@tiptap/react'
 import { marked } from 'marked'
 import type { Project } from '@/data/projects'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { CaseCard } from '@/components/projects/case-card'
 import { RichEditor } from '@/components/editor/rich-editor'
 import { cn } from '@/lib/utils'
 import { transformMediaLinks } from '@/lib/media'
+import { X } from 'lucide-react'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
 
@@ -140,9 +141,9 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
           }
         }}
       >
-        <DialogContent className="max-w-[min(1200px,95vw)] w-full border border-border/60 bg-background/95 p-0 text-foreground">
+        <DialogContent className="relative w-full max-w-[min(1200px,95vw)] border border-border/60 bg-background/95 p-0 text-foreground">
           {activeCase && activeCaseId && (
-            <div className="flex h-[92vh]">
+            <div className="flex h-[92vh] flex-col lg:flex-row">
               <div className="flex flex-1 flex-col overflow-hidden">
                 <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/60 p-6">
                   <div className="space-y-2">
@@ -275,7 +276,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                   </div>
                 </div>
               </div>
-              <aside className="flex w-56 flex-col border-l border-border/60 bg-background/80">
+              <aside className="hidden w-56 flex-col border-l border-border/60 bg-background/80 lg:flex">
                 <div className="border-b border-border/60 p-4">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {'\u6848\u4F8B\u5BFC\u822A'}
@@ -339,6 +340,13 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
               </aside>
             </div>
           )}
+          <DialogClose
+            type="button"
+            className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-label="关闭"
+          >
+            <X className="h-4 w-4" />
+          </DialogClose>
         </DialogContent>
       </Dialog>
     </>
