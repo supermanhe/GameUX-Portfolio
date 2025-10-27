@@ -38,7 +38,7 @@ export function SiteModal({
       if (!loadedRef.current) {
         setFailed(true)
       }
-    }, 2000)
+    }, 5000)
     return () => {
       if (loadTimer.current) {
         clearTimeout(loadTimer.current)
@@ -71,7 +71,7 @@ export function SiteModal({
           {!failed ? (
             <iframe
               ref={iframeRef}
-              src={item.url}
+              src={`/api/embed?url=${encodeURIComponent(item.url)}`}
               className="h-[60vh] w-full"
               onLoad={() => {
                 loadedRef.current = true
@@ -86,7 +86,7 @@ export function SiteModal({
             />
           ) : (
             <div className="flex h-[60vh] flex-col items-center justify-center gap-3 text-center text-sm text-muted-foreground">
-              <p>目标站点可能禁止内嵌预览（X-Frame-Options）</p>
+              <p>目标站点禁止内嵌或加载失败</p>
               <Button asChild>
                 <a href={item.url} target="_blank" rel="noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" /> 新窗口打开
