@@ -1,13 +1,67 @@
 "use client"
 
-import { motion } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Download, Mail } from 'lucide-react'
+import { Download, Github, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
+
+const RESUME_URL =
+  'https://res.cloudinary.com/dnhjgceru/image/upload/v1761579250/Portfolio_avdl1u.jpg'
+const EMAIL = 'chinagdmz@gmail.com'
+
+function copyToClipboard(text: string) {
+  if (typeof navigator === 'undefined') {
+    return Promise.reject(new Error('Clipboard unavailable'))
+  }
+
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text)
+  }
+
+  return new Promise<void>((resolve, reject) => {
+    try {
+      const textarea = document.createElement('textarea')
+      textarea.value = text
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.focus()
+      textarea.select()
+      const successful = document.execCommand('copy')
+      document.body.removeChild(textarea)
+      if (!successful) {
+        reject(new Error('Copy command was unsuccessful'))
+        return
+      }
+      resolve()
+    } catch (error) {
+      reject(error as Error)
+    }
+  })
+}
 
 export function Hero() {
   const track = useTrackEvent()
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!toastMessage) return
+    const timer = window.setTimeout(() => setToastMessage(null), 2500)
+    return () => window.clearTimeout(timer)
+  }, [toastMessage])
+
+  const handleCopyEmail = useCallback(async () => {
+    track({ name: 'cta_copy_email' })
+    try {
+      await copyToClipboard(EMAIL)
+      setToastMessage(`已复制邮箱地址：${EMAIL}`)
+    } catch (error) {
+      setToastMessage(`复制失败，请手动复制：${EMAIL}`)
+    }
+  }, [track])
+
   return (
     <section className="grid gap-6 md:grid-cols-[auto_1fr] md:items-center">
       <motion.div
@@ -31,15 +85,30 @@ export function Hero() {
           网易游戏《大话西游2》、昆仑万维《圣境之塔》UX负责人； 
           热爱游戏，专注游戏UX 8年
         </p>
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <Button asChild onClick={() => track({ name: 'cta_download_cv' })}>
-            <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" target="_blank" rel="noreferrer">
+            <a href={RESUME_URL} target="_blank" rel="noreferrer">
               <Download className="mr-2 h-4 w-4" /> 下载简历 PDF
             </a>
           </Button>
-          <Button asChild variant="secondary" onClick={() => track({ name: 'cta_contact' })}>
-            <a href="mailto:me@example.com">
-              <Mail className="mr-2 h-4 w-4" /> 联系我
+          <Button
+            type="button"
+            variant="secondary"
+            size="icon"
+            onClick={handleCopyEmail}
+            aria-label="复制邮箱地址"
+          >
+            <Mail className="h-5 w-5" />
+          </Button>
+          <Button
+            asChild
+            variant="secondary"
+            size="icon"
+            onClick={() => track({ name: 'cta_open_github' })}
+            aria-label="访问 GitHub"
+          >
+            <a href="https://github.com/supermanhe" target="_blank" rel="noreferrer">
+              <Github className="h-5 w-5" />
             </a>
           </Button>
         </div>
@@ -51,6 +120,20 @@ export function Hero() {
           Figma、Unity、Axure、AI Coding、Photoshop
         </p>
       </motion.div>
+
+      <AnimatePresence>
+        {toastMessage ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-lg"
+          >
+            {toastMessage}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   )
 }
