@@ -6,12 +6,13 @@ import type { Editor } from '@tiptap/core'
 import type { JSONContent } from '@tiptap/react'
 import { marked } from 'marked'
 import type { Project } from '@/data/projects'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { CaseCard } from '@/components/projects/case-card'
 import { RichEditor } from '@/components/editor/rich-editor'
 import { cn } from '@/lib/utils'
 import { transformMediaLinks } from '@/lib/media'
+import { X } from 'lucide-react'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
 
@@ -140,7 +141,15 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
           }
         }}
       >
-        <DialogContent className="max-w-[min(1200px,95vw)] w-full border border-border/60 bg-background/95 p-0 text-foreground">
+        <DialogContent className="w-full max-w-[min(1200px,95vw)] border border-border/60 bg-background/95 p-0 text-foreground">
+          <div className="absolute right-4 top-4 z-10 flex items-center gap-2 md:hidden">
+            <DialogClose asChild>
+              <Button variant="secondary" size="icon" className="rounded-full shadow-sm" type="button">
+                <X className="h-5 w-5" />
+                <span className="sr-only">{'\u5173\u95ED\u6848\u8BE6\u60C5'}</span>
+              </Button>
+            </DialogClose>
+          </div>
           {activeCase && activeCaseId && (
             <div className="flex h-[92vh]">
               <div className="flex flex-1 flex-col overflow-hidden">
@@ -155,7 +164,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                       </ul>
                     )}
                   </div>
-                  <div className="flex flex-wrap justify-end gap-2">
+                  <div className="flex flex-wrap justify-end gap-2 pr-14 md:pr-0">
                     {showEditToggle && (
                       <Button
                         variant={editing ? 'default' : 'secondary'}
@@ -275,7 +284,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                   </div>
                 </div>
               </div>
-              <aside className="flex w-56 flex-col border-l border-border/60 bg-background/80">
+              <aside className="hidden flex-col border-l border-border/60 bg-background/80 md:flex md:w-56">
                 <div className="border-b border-border/60 p-4">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {'\u6848\u4F8B\u5BFC\u822A'}
