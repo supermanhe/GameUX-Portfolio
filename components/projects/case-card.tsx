@@ -58,7 +58,6 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
         </div>
       </div>
       <div className="space-y-2 p-5 text-sm text-muted-foreground">
-        <p>{'\u70B9\u51FB\u6253\u5F00\u53EF\u7F16\u8F91\u5F39\u7A97\uFF0C\u67E5\u770B\u7EC6\u8282\u4E0E\u5A92\u4F53\u3002'}</p>
         <ul className="list-disc space-y-1 pl-4">
           {c.highlights.map((h, i) => (
             <li key={i}>{h}</li>

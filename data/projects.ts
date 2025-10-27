@@ -271,54 +271,428 @@ export const projects: Project[] = [
   },
   {
     slug: 'myth-quest',
-    title: 'Myth Quest',
-    subtitle: '神话题材 · 放置养成',
-    role: '高级交互设计师',
-    period: '2021.08 - 2022.12',
-    team: '30人',
+    title: '圣境之塔',
+    subtitle: '二次元 · MMO',
+    role: '交互设计专家',
+    period: '2022至今',
+    team: '1交互、3视觉',
     platform: ['iOS', 'Android'],
     kpis: [
-      { label: '付费转化', value: '+5.1%' },
-      { label: '功能点击率', value: '+9.6%' },
+      { label: '全球上线流水', value: '1亿美元+' },
     ],
-    cover: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?q=80&w=1200&auto=format&fit=crop',
-    tags: ['放置', '养成', '移动端'],
+    cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761541786/c9b5dc67-ac8d-42c0-9863-4383b110fae3.png',
+    tags: ['二次元', 'MMO', '手游'],
     summary:
-      '主导背包与强化、活动页面的交互与 UI 落地，同时推动设计规范建立与组件化，使交付效率提升 20%。',
+      '负责从0到1将交互流程融入到原开发流程之中,整理UI交互规范,梳理开发新流程,现已平稳运行3年并推广至新项目;\n先后跟进项目上线欧美、日、韩、国服，保障全球各区运营活动需求以及养成线拓展，全球累计流水已达上亿美元;\n持续总结经验,在公司进行演讲分享,进行UX知识的传播与布道',
     cases: [
       {
-        id: 'inventory-upgrade',
-        title: '背包与强化体验优化',
-        highlights: ['减少操作步数', '强化材料智能推荐', '成功率反馈优化'],
+        id: 'Consistency',
+        title: 'UI规范整理/Figma控件库搭建',
+        highlights: ['UI资源整理', '构建Figma控件库', '弹窗一致性优化'],
         media: [
           {
             type: 'image',
-            src: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=1600&auto=format&fit=crop',
-            caption: '背包信息架构',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542177/8826a0ab-5121-48d9-93ef-d0c1d1b04a5d.png',
           },
           {
-            type: 'gif',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761213900/%E8%BE%93%E5%85%A5_kt67yf.gif',
-            caption: '强化反馈动效草稿',
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542188/d08670e4-d5a3-4991-a409-d5a09cc7464c.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542203/6131d2b5-07f0-46c1-a311-ed6ecddf0bd0.png',
           },
         ],
         articleMDX: md`
-通过减少 2 步关键操作，加入“智能填充材料”与“失败保护机制”的提示，强化路径点击率 +9.6%，整体付费转化 +5.1%。
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542177/8826a0ab-5121-48d9-93ef-d0c1d1b04a5d.png"
+/>
+<h2>通用一级/二级/弹窗规范：</h2>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542188/d08670e4-d5a3-4991-a409-d5a09cc7464c.png"
+/>
+        <img
+          class="rounded-xl border border-border/40"
+          src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542203/6131d2b5-07f0-46c1-a311-ed6ecddf0bd0.png"
+        />
         `,
       },
       {
-        id: 'event-page',
-        title: '活动页面组件化',
-        highlights: ['组件拼搭', '模板复用', 'A/B 测试验证'],
+        id: 'UEprocess',
+        title: '从0-1构建游戏交互流程',
+        highlights: ['岗位作用', '流程介绍', '寻求支持'],
         media: [
           {
             type: 'image',
-            src: 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1600&auto=format&fit=crop',
-            caption: '活动页面模板示意',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553748/8f24bd84-ac7a-4e42-aa48-f9f88d8d5ffd.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553766/0c64f9f0-a485-476a-8f61-5c70da64b042.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553781/9ea8e7c0-c72e-4889-b26c-88b99a7dbac2.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553793/f54c22d0-8644-44c9-9468-d1e8ff0ad3b4.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553834/b1d7e18d-28cb-4df7-82aa-734ae22cc479.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553871/3276cf1a-0259-4c0e-9f5f-c81325b9f169.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553904/8920c66b-75e1-4d40-8035-15dd59c43976.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553921/efd53b13-abca-4832-a28a-cd2d101ec736.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553998/c2a10351-a2b1-43ac-87c8-313852c1d8ef.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761553988/1efde7df-6d92-4d56-90be-8beb117296d2.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554032/cdf90913-1f1c-4f15-9cb8-36ddcd909c5f.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554008/d5adc6b7-d988-495d-8bad-a81420bd4ea3.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554045/1e1bd8d4-ebe8-4fa1-aaab-fb6933be0f44.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554039/36c9faa0-526e-44e5-9f8d-917dc7f1ed94.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554397/fd1d0f64-3683-47a0-8b47-1050344278b0.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554416/601f643e-1885-4c4f-9aea-0cb6c89b5443.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554428/31c42521-3adf-4a1c-9e8e-5b15beb4906a.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554441/2a8dcb2b-c69e-4874-9bb9-a15b648c1ff8.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554474/7494c125-8360-43b6-b891-56c1e4c59778.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554457/e020eb11-488c-4857-9f7d-d6145b0c9f59.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554495/e803e706-a495-4e78-adae-3dce7b482c85.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554535/7f5a31b7-0a11-470a-818e-b5b7693e69af.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554541/bd7ebb0d-d8b9-46be-b873-05de2e34c668.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554527/5ed32c00-9c0f-466e-bdd4-ada0c5a725ea.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554973/98f93ad2-05c4-4d17-8188-e86eeeebd62f.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554978/51329413-e0f1-4dc6-a16f-01e5a055a77c.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761555006/a4c00767-ed8e-4b22-acf5-9618fef80b9b.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761554556/b672bd15-f612-4562-a1a7-831d61536c90.png',
           },
         ],
         articleMDX: md`
-抽象出 Banner、任务列表、奖励条、进度条四类组件，沉淀规范后平均配置时间从 2 天降至 1 天。
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553748/8f24bd84-ac7a-4e42-aa48-f9f88d8d5ffd.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553766/0c64f9f0-a485-476a-8f61-5c70da64b042.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553781/9ea8e7c0-c72e-4889-b26c-88b99a7dbac2.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553793/f54c22d0-8644-44c9-9468-d1e8ff0ad3b4.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553834/b1d7e18d-28cb-4df7-82aa-734ae22cc479.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553871/3276cf1a-0259-4c0e-9f5f-c81325b9f169.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553904/8920c66b-75e1-4d40-8035-15dd59c43976.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553921/efd53b13-abca-4832-a28a-cd2d101ec736.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553998/c2a10351-a2b1-43ac-87c8-313852c1d8ef.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761553988/1efde7df-6d92-4d56-90be-8beb117296d2.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554032/cdf90913-1f1c-4f15-9cb8-36ddcd909c5f.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554008/d5adc6b7-d988-495d-8bad-a81420bd4ea3.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554045/1e1bd8d4-ebe8-4fa1-aaab-fb6933be0f44.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554039/36c9faa0-526e-44e5-9f8d-917dc7f1ed94.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554397/fd1d0f64-3683-47a0-8b47-1050344278b0.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554416/601f643e-1885-4c4f-9aea-0cb6c89b5443.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554428/31c42521-3adf-4a1c-9e8e-5b15beb4906a.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554441/2a8dcb2b-c69e-4874-9bb9-a15b648c1ff8.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554474/7494c125-8360-43b6-b891-56c1e4c59778.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554457/e020eb11-488c-4857-9f7d-d6145b0c9f59.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554495/e803e706-a495-4e78-adae-3dce7b482c85.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554535/7f5a31b7-0a11-470a-818e-b5b7693e69af.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554541/bd7ebb0d-d8b9-46be-b873-05de2e34c668.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554527/5ed32c00-9c0f-466e-bdd4-ada0c5a725ea.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554973/98f93ad2-05c4-4d17-8188-e86eeeebd62f.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554978/51329413-e0f1-4dc6-a16f-01e5a055a77c.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761555006/a4c00767-ed8e-4b22-acf5-9618fef80b9b.png"
+/>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761554556/b672bd15-f612-4562-a1a7-831d61536c90.png"
+/>
+        `,
+      },
+      {
+        id: 'pay process',
+        title: '付费货币不足流程优化',
+        highlights: ['充值档位差值推荐', '缩短付费流程', '提升付费体验'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542293/0ee2b05c-64d9-4a04-a371-f4c6955035b1.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png',
+          },
+        ],
+        articleMDX: md`
+<blockquote>
+  <h3>迭代前</h3>
+</blockquote>
+<p>
+  1、①→②跳转时，玩家不知道或者需要自己计算<u>充哪个档位</u>是最小能够满足彩晶的消耗(对于中小R比较精打细算)
+</p>
+<p>
+  2、②→③，玩家充值完成后，需要重新进入商店找到想买的商品，中间又经过几个步骤，<u>操作繁琐</u>
+</p>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542293/0ee2b05c-64d9-4a04-a371-f4c6955035b1.png"
+/>
+<blockquote>
+  <h3>迭代后</h3>
+</blockquote>
+<ul>
+  <li>
+    <p>推荐充值档位</p>
+  </li>
+  <li>
+    <p>缩短操作路径</p>
+  </li>
+</ul>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png"
+/>
+        `,
+      },
+      {
+        id: 'battlepass',
+        title: 'BP优化',
+        highlights: ['突出大奖', '价值换算', '付费率提升10%+'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542433/73ba6351-5925-46ba-8b23-2015754ee567.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542440/eaa86296-32a9-46e0-acc2-8aa45b583ab9.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542474/e61ee591-10e5-44a0-8421-381b947a1e2f.png',
+          },
+        ],
+        articleMDX: md`
+<blockquote>
+  <h3>迭代前</h3>
+</blockquote>
+<ul>
+  <li>
+    <p>噱头大奖奖励不突出</p>
+  </li>
+  <li>
+    <p>阶段性奖励不突出</p>
+  </li>
+  <li>
+    <p>付费档奖励视觉上较弱</p>
+  </li>
+</ul>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542433/73ba6351-5925-46ba-8b23-2015754ee567.png"
+/>
+<blockquote>
+  <h3>迭代后</h3>
+</blockquote>
+<ul>
+  <li>
+    <p>左边显示大奖轮播，新增花灵立绘展示</p>
+  </li>
+  <li>
+    <p>阶段性奖励始终置于列表右边</p>
+  </li>
+  <li>
+    <p>付费档奖励视觉上用暖色底突出</p>
+  </li>
+</ul>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542440/eaa86296-32a9-46e0-acc2-8aa45b583ab9.png"
+/>
+<blockquote>
+  <h3>解锁弹窗迭代</h3>
+</blockquote>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542474/e61ee591-10e5-44a0-8421-381b947a1e2f.png"
+/>
+<h2>
+  迭代数据提升：外放前后月份，<u>单项付费率提升10%+</u>
+</h2>
+        `,
+      },
+      {
+        id: 'skillcircle',
+        title: '技能轮盘迭代',
+        highlights: ['费茨定律应用', '横屏操作热区', '易用性量化规则'],
+        media: [
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542847/68acf950-7254-43b1-a56b-c62a960bd885.png',
+          },
+          {
+            type: 'image',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png',
+          },
+        ],
+        articleMDX: md`
+<blockquote>
+  <h2>迭代前</h2>
+</blockquote>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542847/68acf950-7254-43b1-a56b-c62a960bd885.png"
+/>
+<blockquote>
+  <h2>迭代分析、方案</h2>
+</blockquote>
+<img
+  class="rounded-xl border border-border/40"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png"
+/>
         `,
       },
     ],
