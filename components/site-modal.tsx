@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import type { SiteItem } from '@/data/sites'
-import { ChevronLeft, ChevronRight, ExternalLink, Loader2, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ExternalLink, X } from 'lucide-react'
 import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
+import { DelayedRender } from '@/components/skeletons/delayed-render'
 
 export function SiteModal({
   list,
@@ -117,9 +118,12 @@ export function SiteModal({
             </div>
           )}
           {!failed && loading && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/60">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-            </div>
+            <DelayedRender>
+              <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute inset-0 bg-muted/30" />
+                <div className="absolute inset-0 animate-pulse bg-muted/50" />
+              </div>
+            </DelayedRender>
           )}
         </div>
 

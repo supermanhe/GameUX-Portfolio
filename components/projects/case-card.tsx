@@ -1,8 +1,8 @@
 "use client"
 
-import Image from 'next/image'
 import type { Project } from '@/data/projects'
 import { cn } from '@/lib/utils'
+import { SkeletonImage } from '@/components/ui/media-skeleton'
 
 const gradients = [
   'from-purple-500/40 via-purple-400/20 to-transparent',
@@ -30,24 +30,34 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
     >
       <div className="relative overflow-hidden rounded-t-2xl">
         {cover?.type === 'gif' ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={cover.src} alt={cover.caption || c.title} className="h-72 w-full object-cover object-top" />
-        ) : cover ? (
-          <Image
+          <SkeletonImage
             src={cover.src}
             alt={cover.caption || c.title}
             width={640}
             height={360}
-            className="h-72 w-full object-cover object-top"
+            className="object-cover object-top"
+            containerClassName="relative h-72 w-full"
+            sizes="(max-width:768px) 100vw, 50vw"
+            unoptimized
+          />
+        ) : cover ? (
+          <SkeletonImage
+            src={cover.src}
+            alt={cover.caption || c.title}
+            width={640}
+            height={360}
+            className="object-cover object-top"
+            containerClassName="relative h-72 w-full"
             sizes="(max-width:768px) 100vw, 50vw"
           />
         ) : video?.poster ? (
-          <Image
+          <SkeletonImage
             src={video.poster}
             alt={video.caption || c.title}
             width={640}
             height={360}
-            className="h-72 w-full object-cover object-top"
+            className="object-cover object-top"
+            containerClassName="relative h-72 w-full"
             sizes="(max-width:768px) 100vw, 50vw"
           />
         ) : (

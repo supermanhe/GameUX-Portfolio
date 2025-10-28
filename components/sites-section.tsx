@@ -1,10 +1,10 @@
 "use client"
 
-import Image from 'next/image'
 import { useState } from 'react'
 import type { SiteItem } from '@/data/sites'
 import { SiteModal } from '@/components/site-modal'
 import { Badge } from '@/components/ui/badge'
+import { SkeletonImage } from '@/components/ui/media-skeleton'
 
 export function SitesSection({ items }: { items: SiteItem[] }) {
   const [open, setOpen] = useState(false)
@@ -23,9 +23,14 @@ export function SitesSection({ items }: { items: SiteItem[] }) {
             }}
           >
             <div className="card-base">
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
-                <Image src={site.cover} alt={site.name} fill className="object-cover" sizes="(max-width:768px) 100vw, 33vw" />
-              </div>
+              <SkeletonImage
+                src={site.cover}
+                alt={site.name}
+                fill
+                className="object-cover"
+                containerClassName="relative aspect-[16/9] overflow-hidden rounded-2xl"
+                sizes="(max-width:768px) 100vw, 33vw"
+              />
               <div className="p-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-semibold">{site.name}</h3>

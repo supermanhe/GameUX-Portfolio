@@ -1,3 +1,5 @@
+import { withMinimumDelay } from '@/lib/sleep'
+
 export type SiteItem = {
   id: string
   name: string
@@ -41,3 +43,7 @@ export const sites: SiteItem[] = [
     tech: ['Next.js', 'D3.js'],
   },
 ]
+
+export async function getSites() {
+  return withMinimumDelay(Promise.resolve(sites))
+}
