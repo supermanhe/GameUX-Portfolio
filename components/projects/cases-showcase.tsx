@@ -1,7 +1,6 @@
 ﻿"use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Image from 'next/image'
 import type { Editor } from '@tiptap/core'
 import type { JSONContent } from '@tiptap/react'
 import { marked } from 'marked'
@@ -14,6 +13,7 @@ import { cn } from '@/lib/utils'
 import { transformMediaLinks } from '@/lib/media'
 import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
 import { X } from 'lucide-react'
+import { SkeletonImage, SkeletonVideo } from '@/components/ui/media-skeleton'
 
 type DraftRecord = Record<string, { json?: JSONContent; html: string }>
 
@@ -28,6 +28,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
   const [editing, setEditing] = useState(false)
   const [showEditToggle, setShowEditToggle] = useState(false)
   const editorRef = useRef<Editor | null>(null)
+  const articleRef = useRef<HTMLDivElement | null>(null)
 
   const open = activeCaseIndex !== null
   const activeCase = open ? project.cases[activeCaseIndex!] : null
@@ -85,6 +86,59 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
   }, [activeCaseId, draft, baseHtml])
 
   const displayHtml = draft?.html ?? baseHtml
+
+  useEffect(() => {
+    if (editing) return
+    const container = articleRef.current
+    if (!container) return
+
+    const disposers: Array<() => void> = []
+    const markLoaded = (element: HTMLImageElement | HTMLVideoElement) => {
+      element.classList.remove('animate-pulse')
+      element.classList.remove('bg-muted/40')
+    }
+
+    const setupImage = (img: HTMLImageElement) => {
+      if (img.complete) {
+        markLoaded(img)
+        return
+      }
+      img.classList.add('bg-muted/40', 'animate-pulse')
+      const handleLoad = () => {
+        markLoaded(img)
+        img.removeEventListener('load', handleLoad)
+      }
+      img.addEventListener('load', handleLoad)
+      disposers.push(() => img.removeEventListener('load', handleLoad))
+    }
+
+    const setupVideo = (video: HTMLVideoElement) => {
+      if (video.readyState >= 2) {
+        markLoaded(video)
+        return
+      }
+      video.classList.add('bg-muted/40', 'animate-pulse')
+      const handleLoadedData = () => {
+        markLoaded(video)
+        video.removeEventListener('loadeddata', handleLoadedData)
+      }
+      video.addEventListener('loadeddata', handleLoadedData)
+      disposers.push(() => video.removeEventListener('loadeddata', handleLoadedData))
+    }
+
+    const elements = container.querySelectorAll<HTMLImageElement | HTMLVideoElement>('img, video')
+    elements.forEach((element) => {
+      if (element instanceof HTMLImageElement) {
+        setupImage(element)
+      } else {
+        setupVideo(element)
+      }
+    })
+
+    return () => {
+      disposers.forEach((dispose) => dispose())
+    }
+  }, [displayHtml, editing])
 
   const handleEditorChange = useCallback(
     (payload: { json: JSONContent; html: string }) => {
@@ -223,28 +277,35 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                 <div className="flex-1 overflow-hidden p-6 pt-4">
                   <div className="flex h-full flex-col gap-4">
                     {editing && (
-                      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40">
+                      <div>
                         {activeMedia?.type === 'image' ? (
-                          <Image
+                          <SkeletonImage
                             src={activeMedia.src}
                             alt={activeMedia.caption || activeCaseTitle}
                             fill
                             sizes="(max-width: 1024px) 100vw, 65vw"
                             className="object-cover"
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
                           />
                         ) : activeMedia?.type === 'gif' ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <SkeletonImage
                             src={activeMedia.src}
                             alt={activeMedia.caption || activeCaseTitle}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 65vw"
+                            className="object-cover"
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
+                            unoptimized
                           />
                         ) : activeMedia?.type === 'video' ? (
-                          <video controls poster={activeMedia.poster} className="h-full w-full rounded-2xl object-cover">
+                          <SkeletonVideo
+                            controls
+                            poster={activeMedia.poster}
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
+                            className="h-full w-full rounded-2xl object-cover"
+                          >
                             <source src={activeMedia.src} />
-                          </video>
+                          </SkeletonVideo>
                         ) : activeMedia?.type === 'embed' ? (
                           <iframe
                             src={activeMedia.src}
@@ -282,7 +343,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                       />
                     ) : (
                       <div className="flex-1 overflow-y-auto rounded-2xl border border-border/60 bg-card/70 p-5">
-                        <div className="tiptap" dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                        <div ref={articleRef} className="tiptap" dangerouslySetInnerHTML={{ __html: displayHtml }} />
                       </div>
                     )}
                   </div>
@@ -315,24 +376,15 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                         >
                           <div className="absolute inset-0">
                             {cover ? (
-                              cover.type === 'gif' ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img
-                                  src={cover.src}
-                                  alt={cover.caption || c.title}
-                                  className="h-full w-full object-cover"
-                                  loading="lazy"
-                                  decoding="async"
-                                />
-                              ) : (
-                                <Image
-                                  src={cover.src}
-                                  alt={cover.caption || c.title}
-                                  fill
-                                  sizes="(max-width: 768px) 160px, 200px"
-                                  className="object-cover"
-                                />
-                              )
+                              <SkeletonImage
+                                src={cover.src}
+                                alt={cover.caption || c.title}
+                                fill
+                                sizes="(max-width: 768px) 160px, 200px"
+                                className="object-cover"
+                                containerClassName="relative h-full w-full"
+                                unoptimized={cover.type === 'gif'}
+                              />
                             ) : (
                               <div className="h-full w-full bg-muted" />
                             )}

@@ -1,7 +1,7 @@
-"use client"
-
-import { ProjectCard } from '@/components/projects/project-card'
-import { projects } from '@/data/projects'
+import { Suspense } from 'react'
+import { ProjectsGrid } from '@/components/sections/projects-grid'
+import { ProjectsGridSkeleton } from '@/components/skeletons/projects-grid-skeleton'
+import { DelayedRender } from '@/components/skeletons/delayed-render'
 
 export default function ProjectsPage() {
   return (
@@ -13,11 +13,9 @@ export default function ProjectsPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {projects.map((p) => (
-          <ProjectCard key={p.slug} p={p} />
-        ))}
-      </div>
+      <Suspense fallback={<DelayedRender><ProjectsGridSkeleton items={4} /></DelayedRender>}>
+        <ProjectsGrid className="sm:grid-cols-2" />
+      </Suspense>
     </div>
   )
 }

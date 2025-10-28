@@ -1,23 +1,28 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { projects } from '@/data/projects'
+import { projects, getProjectBySlug } from '@/data/projects'
 import { Badge } from '@/components/ui/badge'
 import { CasesShowcase } from '@/components/projects/cases-showcase'
+import { SkeletonImage } from '@/components/ui/media-skeleton'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
 }
 
-export default function ProjectDetail({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.slug === params.slug)
+export default async function ProjectDetail({ params }: { params: { slug: string } }) {
+  const project = await getProjectBySlug(params.slug)
   if (!project) return notFound()
 
   return (
     <div className="space-y-8">
       <header className="space-y-4">
-        <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl">
-          <Image src={project.cover} alt={project.title} fill className="object-cover" />
-        </div>
+        <SkeletonImage
+          src={project.cover}
+          alt={project.title}
+          fill
+          className="object-cover"
+          containerClassName="relative aspect-[16/7] w-full overflow-hidden rounded-2xl"
+          sizes="100vw"
+        />
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{project.title}</h1>

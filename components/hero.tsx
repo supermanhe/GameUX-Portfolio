@@ -2,14 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Download, Github, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
-
-const RESUME_URL =
-  'https://res.cloudinary.com/dnhjgceru/image/upload/v1761579250/Portfolio_avdl1u.jpg'
-const EMAIL = 'chinagdmz@gmail.com'
+import type { HeroContent } from '@/data/hero'
+import { SkeletonImage } from '@/components/ui/media-skeleton'
 
 function copyToClipboard(text: string) {
   if (typeof navigator === 'undefined') {
@@ -42,7 +39,11 @@ function copyToClipboard(text: string) {
   })
 }
 
-export function Hero() {
+type HeroProps = {
+  data: HeroContent
+}
+
+export function Hero({ data }: HeroProps) {
   const track = useTrackEvent()
   const [toastMessage, setToastMessage] = useState<string | null>(null)
 
@@ -55,12 +56,12 @@ export function Hero() {
   const handleCopyEmail = useCallback(async () => {
     track({ name: 'cta_copy_email' })
     try {
-      await copyToClipboard(EMAIL)
-      setToastMessage(`已复制邮箱地址：${EMAIL}`)
+      await copyToClipboard(data.email)
+      setToastMessage(`已复制邮箱地址：${data.email}`)
     } catch (error) {
-      setToastMessage(`复制失败，请手动复制：${EMAIL}`)
+      setToastMessage(`复制失败，请手动复制：${data.email}`)
     }
-  }, [track])
+  }, [data.email, track])
 
   return (
     <section className="grid gap-6 md:grid-cols-[auto_1fr] md:items-center">
@@ -70,24 +71,22 @@ export function Hero() {
         transition={{ duration: 0.5 }}
         className="mx-auto h-40 w-40 overflow-hidden rounded-full ring-1 ring-border md:h-40 md:w-40"
       >
-        <Image
-          src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761574783/%E6%88%91%E7%9A%84%E8%82%96%E5%83%8F_2_cohql6.png"
+        <SkeletonImage
+          src={data.avatar}
           alt="avatar"
           width={128}
           height={128}
           className="h-full w-full object-cover"
+          containerClassName="h-full w-full"
           priority
         />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">何梓超 · 游戏UX设计 · 独立开发者</h1>
-        <p className="mt-2 max-w-[120ch] text-muted-foreground">
-          网易游戏《大话西游2》、昆仑万维《圣境之塔》UX负责人； 
-          热爱游戏，专注游戏UX 8年
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{data.headline}</h1>
+        <p className="mt-2 max-w-[120ch] text-muted-foreground">{data.description}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <Button asChild onClick={() => track({ name: 'cta_download_cv' })}>
-            <a href={RESUME_URL} target="_blank" rel="noreferrer">
+            <a href={data.resumeUrl} target="_blank" rel="noreferrer">
               <Download className="mr-2 h-4 w-4" /> 下载简历 PDF
             </a>
           </Button>
@@ -107,7 +106,7 @@ export function Hero() {
             onClick={() => track({ name: 'cta_open_github' })}
             aria-label="访问 GitHub"
           >
-            <a href="https://github.com/supermanhe" target="_blank" rel="noreferrer">
+            <a href={data.githubUrl} target="_blank" rel="noreferrer">
               <Github className="h-5 w-5" />
             </a>
           </Button>
@@ -115,10 +114,8 @@ export function Hero() {
       </motion.div>
 
       <motion.div className="md:col-span-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
-        <h2 className="mt-8 text-base font-semibold text-muted-foreground">技能 / 工具</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Figma、Unity、Axure、AI Coding、Photoshop
-        </p>
+        <h2 className="mt-8 text-base font-semibold text-muted-foreground">{data.skillsTitle}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{data.skills.join('、')}</p>
       </motion.div>
 
       <AnimatePresence>

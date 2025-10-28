@@ -1,4 +1,6 @@
-﻿export type Project = {
+import { withMinimumDelay } from '@/lib/sleep'
+
+export type Project = {
   slug: string
   title: string
   subtitle?: string
@@ -755,4 +757,16 @@ export const projects: Project[] = [
   },
 ]
 
+export async function getProjects() {
+  return withMinimumDelay(Promise.resolve(projects))
+}
 
+export async function getProjectBySlug(slug: string) {
+  const list = await getProjects()
+  return list.find((project) => project.slug === slug) ?? null
+}
+
+export async function getProjectCases(slug: string) {
+  const project = await getProjectBySlug(slug)
+  return project?.cases ?? []
+}
