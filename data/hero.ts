@@ -12,8 +12,8 @@ export type HeroContent = {
 }
 
 const heroContent: HeroContent = {
-  headline: '何梓超 · 游戏UX设计 · 独立开发者',
-  description: '网易游戏《大话西游2》、昆仑万维《圣境之塔》UX负责人；热爱游戏，专注游戏UX 8年',
+  headline: '何梓超 · 游戏 UX 设计师',
+  description: '把交互方案推进到可验证原型',
   resumeUrl:
     'https://res.cloudinary.com/dnhjgceru/image/upload/v1761579250/Portfolio_avdl1u.jpg',
   email: 'chinagdmz@gmail.com',
