@@ -1,12 +1,15 @@
 "use client"
 
-import { useCallback, useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { Button } from '@/components/ui/button'
-import { Download, Github, Mail } from 'lucide-react'
+import { ArrowDown, Download, Github, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
 import type { HeroContent } from '@/data/hero'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
+
+gsap.registerPlugin(useGSAP)
 
 function copyToClipboard(text: string) {
   if (typeof navigator === 'undefined') {
@@ -46,6 +49,27 @@ type HeroProps = {
 export function Hero({ data }: HeroProps) {
   const track = useTrackEvent()
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const rootRef = useRef<HTMLElement | null>(null)
+
+  useGSAP(
+    () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reduceMotion) {
+        gsap.set('.hero-reveal', { autoAlpha: 1, y: 0, scale: 1 })
+        return
+      }
+
+      gsap
+        .timeline({ defaults: { duration: 0.9, ease: 'power3.out' } })
+        .fromTo('.hero-kicker', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0 })
+        .fromTo('.hero-title', { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0 }, '-=0.55')
+        .fromTo('.hero-copy', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0 }, '-=0.5')
+        .fromTo('.hero-actions', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0 }, '-=0.45')
+        .fromTo('.hero-media', { autoAlpha: 0, y: 32, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1 }, '-=0.62')
+        .fromTo('.hero-skill', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, stagger: 0.05 }, '-=0.48')
+    },
+    { scope: rootRef },
+  )
 
   useEffect(() => {
     if (!toastMessage) return
@@ -64,28 +88,22 @@ export function Hero({ data }: HeroProps) {
   }, [data.email, track])
 
   return (
-    <section className="grid gap-6 md:grid-cols-[auto_1fr] md:items-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mx-auto h-40 w-40 overflow-hidden rounded-full ring-1 ring-border md:h-40 md:w-40"
-      >
-        <SkeletonImage
-          src={data.avatar}
-          alt="avatar"
-          width={128}
-          height={128}
-          className="h-full w-full object-cover"
-          containerClassName="h-full w-full"
-          priority
-        />
-      </motion.div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{data.headline}</h1>
-        <p className="mt-2 max-w-[120ch] text-muted-foreground">{data.description}</p>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <Button asChild onClick={() => track({ name: 'cta_download_cv' })}>
+    <section ref={rootRef} className="relative min-h-[calc(100dvh-4.5rem)] overflow-hidden pt-12 md:pt-16">
+      <div className="container relative z-10">
+        <div className="mx-auto max-w-6xl text-center">
+          <p className="hero-reveal hero-kicker text-sm font-black uppercase tracking-[0.22em] text-primary">
+            Game UX designer / indie developer
+          </p>
+          <h1 className="hero-reveal hero-title font-editorial mt-5 text-balance text-5xl font-black leading-[0.96] md:text-6xl lg:text-7xl">
+            {data.headline}
+          </h1>
+          <p className="hero-reveal hero-copy mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
+            {data.description}
+          </p>
+        </div>
+
+        <div className="hero-reveal hero-actions mx-auto mt-10 flex flex-wrap items-center justify-center gap-3">
+          <Button asChild size="lg" onClick={() => track({ name: 'cta_download_cv' })}>
             <a href={data.resumeUrl} target="_blank" rel="noreferrer">
               <Download className="mr-2 h-4 w-4" /> 下载简历 PDF
             </a>
@@ -111,26 +129,57 @@ export function Hero({ data }: HeroProps) {
             </a>
           </Button>
         </div>
-      </motion.div>
 
-      <motion.div className="md:col-span-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
-        <h2 className="mt-8 text-base font-semibold text-muted-foreground">{data.skillsTitle}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{data.skills.join('、')}</p>
-      </motion.div>
+        <div className="mt-10 grid gap-6 border-y border-border/60 py-5 md:grid-cols-[0.9fr_1.2fr_0.9fr] md:items-center">
+          <div className="hero-reveal hero-skill text-center md:text-left">
+            <p className="font-editorial text-5xl font-black tabular-nums">8</p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              years in game UX
+            </p>
+          </div>
+          <div className="hero-reveal hero-skill flex flex-wrap justify-center gap-2">
+            {data.skills.map((skill) => (
+              <span
+                key={skill}
+                className="rounded-sm border border-primary/22 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+          <div className="hero-reveal hero-skill text-center md:text-right">
+            <p className="font-editorial text-5xl font-black tabular-nums">2</p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              shipped games
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <AnimatePresence>
-        {toastMessage ? (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-lg"
-          >
-            {toastMessage}
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <div className="hero-reveal hero-media pointer-events-none relative z-0 mx-auto mt-6 max-w-[1500px] px-4">
+        <div className="relative mx-auto aspect-[16/6] max-h-[42vh] min-h-[210px] overflow-hidden rounded-t-lg border border-white/10 bg-card shadow-soft">
+          <SkeletonImage
+            src={data.avatar}
+            alt="何梓超头像"
+            fill
+            sizes="100vw"
+            className="object-cover object-[50%_20%]"
+            containerClassName="relative h-full w-full"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-background/78 px-4 py-2 text-xs font-semibold text-foreground backdrop-blur">
+            <ArrowDown className="h-4 w-4" />
+            向下滚动查看项目
+          </div>
+        </div>
+      </div>
+
+      {toastMessage ? (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg">
+          {toastMessage}
+        </div>
+      ) : null}
     </section>
   )
 }

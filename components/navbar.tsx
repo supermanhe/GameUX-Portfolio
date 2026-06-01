@@ -14,22 +14,28 @@ export function Navbar() {
   const pathname = usePathname()
   const isHome = pathname === '/'
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container flex h-14 items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight">GameUX Portfolio</Link>
-        <nav className="flex items-center gap-1">
+    <header className="sticky top-4 z-30">
+      <div className="container">
+        <div className="flex h-14 items-center justify-between rounded-full border border-white/10 bg-background/[0.72] px-3 shadow-soft backdrop-blur-xl">
+          <Link href="/" className="px-2 text-sm font-bold tracking-tight">
+            GameUX Portfolio
+          </Link>
+          <nav className="flex items-center gap-1">
           {links.map((l) => (
             <Link
               key={l.href}
               href={isHome ? l.href : `/${l.href}`}
-              className={cn('rounded-xl px-3 py-2 text-sm text-muted-foreground hover:text-foreground')}
+              className={cn(
+                'rounded-full px-3 py-2 text-sm text-muted-foreground transition hover:bg-secondary/70 hover:text-foreground',
+              )}
             >
               {l.label}
             </Link>
           ))}
           <div className="ml-2" />
           <ThemeToggle />
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   )

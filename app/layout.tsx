@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/navbar'
+import { DelightLayer } from '@/components/motion/delight-layer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://example.com'),
@@ -26,10 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="min-h-screen antialiased">
         <ThemeProvider>
+          <DelightLayer />
           <Navbar />
-          <main className="container py-6">{children}</main>
-          <footer className="container py-10 text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} Game UI/UX Portfolio</p>
+          <main>{children}</main>
+          <footer className="container py-12 text-sm text-muted-foreground">
+            <p>© {new Date().getFullYear()} GameUX Portfolio</p>
           </footer>
         </ThemeProvider>
       </body>

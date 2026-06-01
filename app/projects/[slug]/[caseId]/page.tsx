@@ -22,7 +22,7 @@ export default function CasePage() {
   if (!project || !kase) return notFound()
 
   return (
-    <div className="space-y-6">
+    <div className="container space-y-8 pb-12 pt-10">
       <Breadcrumbs
         items={[
           { href: '/', label: '首页' },
@@ -33,7 +33,7 @@ export default function CasePage() {
       />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{kase.title}</h1>
+          <h1 className="font-editorial text-5xl font-black leading-tight">{kase.title}</h1>
           <p className="text-sm text-muted-foreground">{'目标/方法/指标详见正文与媒体画廊。'}</p>
         </div>
         <Button variant="secondary" onClick={() => router.push(`/projects/${project.slug}`)}>

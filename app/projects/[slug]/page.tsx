@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { projects, getProjectBySlug } from '@/data/projects'
 import { Badge } from '@/components/ui/badge'
-import { CasesShowcase } from '@/components/projects/cases-showcase'
+import { ProjectWorkWall } from '@/components/projects/project-work-wall'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
+import { GsapReveal } from '@/components/motion/gsap-reveal'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -13,62 +15,90 @@ export default async function ProjectDetail({ params }: { params: { slug: string
   if (!project) return notFound()
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-4">
-        <SkeletonImage
-          src={project.cover}
-          alt={project.title}
-          fill
-          className="object-cover"
-          containerClassName="relative aspect-[16/7] w-full overflow-hidden rounded-2xl"
-          sizes="100vw"
-        />
-        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">{project.title}</h1>
-            <p className="text-sm text-muted-foreground">{project.subtitle}</p>
+    <div className="container space-y-16 pb-16 pt-10">
+      <header className="space-y-10">
+        <GsapReveal>
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+            <div>
+              <Link href="/#projects" className="text-sm font-semibold text-primary hover:underline">
+                返回项目列表
+              </Link>
+              <h1 className="font-editorial mt-6 text-5xl font-black leading-none md:text-7xl lg:text-8xl">
+                {project.title}
+              </h1>
+              <p className="mt-4 text-base leading-7 text-muted-foreground md:text-lg">{project.subtitle}</p>
+              <p className="mt-8 max-w-2xl text-sm leading-7 text-muted-foreground">{project.summary}</p>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] p-2 shadow-soft">
+              <SkeletonImage
+                src={project.cover}
+                alt={project.title}
+                fill
+                className="object-cover transition duration-700 hover:scale-[1.02]"
+                containerClassName="relative aspect-[16/11] w-full overflow-hidden rounded-md bg-muted"
+                sizes="(max-width:1024px) 100vw, 58vw"
+                priority
+              />
+            </div>
           </div>
+        </GsapReveal>
+
+        <GsapReveal delay={0.1}>
+          <div className="grid gap-4 border-y border-border/70 py-5 text-sm text-muted-foreground md:grid-cols-4">
+            <div>
+              <p className="text-xs text-primary">Role</p>
+              <p className="mt-1 text-foreground">{project.role}</p>
+            </div>
+            <div>
+              <p className="text-xs text-primary">Period</p>
+              <p className="mt-1 text-foreground">{project.period}</p>
+            </div>
+            {project.team && (
+              <div>
+                <p className="text-xs text-primary">Team</p>
+                <p className="mt-1 text-foreground">{project.team}</p>
+              </div>
+            )}
+            {project.kpis && (
+              <div>
+                <p className="text-xs text-primary">Impact</p>
+                <p className="mt-1 text-foreground">
+                  {project.kpis.map((k) => `${k.label}${k.value.trim() ? ` ${k.value}` : ''}`).join(' / ')}
+                </p>
+              </div>
+            )}
+          </div>
+        </GsapReveal>
+
+        <GsapReveal delay={0.16}>
           <div className="flex flex-wrap gap-2">
             {project.platform.map((p) => (
               <Badge key={p}>{p}</Badge>
             ))}
             {project.tags.map((t) => (
-              <Badge key={t}>{t}</Badge>
+              <Badge key={t} className="border-border/70 bg-secondary text-secondary-foreground">
+                {t}
+              </Badge>
             ))}
           </div>
-        </div>
-        <div className="grid gap-2 text-sm text-muted-foreground md:grid-cols-2">
-          <p>
-            {'\u804C\u8D23\uFF1A'}
-            {project.role}
-          </p>
-          <p>
-            {'\u5468\u671F\uFF1A'}
-            {project.period}
-          </p>
-          {project.team && (
-            <p>
-              {'\u56E2\u961F\uFF1A'}
-              {project.team}
-            </p>
-          )}
-          {project.kpis && (
-            <p>
-              {'KPI\uFF1A'}
-              {project.kpis.map((k) => `${k.label} ${k.value}`).join(' / ')}
-            </p>
-          )}
-        </div>
+        </GsapReveal>
       </header>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{'\u6982\u8FF0'}</h2>
-        <p className="text-sm text-muted-foreground">{project.summary}</p>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">{'\u8BBE\u8BA1\u70B9 / \u5DE5\u4F5C\u5185\u5BB9'}</h2>
-        <CasesShowcase project={project} />
+      <section className="space-y-8">
+        <GsapReveal>
+          <div className="grid gap-5 border-y border-border/60 py-8 md:grid-cols-[0.72fr_0.28fr] md:items-end">
+            <div>
+            <p className="text-sm font-semibold text-primary">Case studies</p>
+            <h2 className="font-editorial mt-3 text-4xl font-black leading-tight md:text-6xl">
+              工作项平铺
+            </h2>
+            </div>
+            <p className="text-sm leading-7 text-muted-foreground">
+              每个模块直接展开关键截图、动效与说明，方便从项目级别快速扫完整体贡献。
+            </p>
+          </div>
+        </GsapReveal>
+        <ProjectWorkWall project={project} />
       </section>
     </div>
   )

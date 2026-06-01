@@ -4,7 +4,7 @@ import { SitesSectionSkeleton } from '@/components/skeletons/sites-section-skele
 
 export default function Loading() {
   return (
-    <div className="space-y-16">
+    <div className="container space-y-16 pb-10">
       <HeroSkeleton />
       <section id="projects" className="space-y-6">
         <div>
