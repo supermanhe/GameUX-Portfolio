@@ -142,6 +142,7 @@ export function SkillScroll({ src }: { src: string }) {
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           src={src}
+          poster={src.replace(/\.mp4$/, '-poster.webp')}
           muted
           playsInline
           preload="auto"
