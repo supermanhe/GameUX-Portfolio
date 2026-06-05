@@ -753,9 +753,10 @@ body::before {
 }
 
 /* 入场 / 离场：随滚动淡入淡出、轻微位移 */
+/* 配合 top-1/2 做垂直居中（用 -50% 位移），气泡尾因此能贴近画面里的角色 */
 .about-bubble-wrap {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-50%);
   transition:
     opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -764,7 +765,7 @@ body::before {
 
 .about-bubble-wrap[data-hidden='true'] {
   opacity: 0;
-  transform: translateY(-22px);
+  transform: translateY(calc(-50% - 22px));
   pointer-events: none;
 }
 

@@ -177,7 +177,7 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
         {/* 对话气泡 */}
         <div
           data-hidden={questShown ? 'true' : 'false'}
-          className="about-bubble-wrap absolute inset-x-0 top-[clamp(4.5rem,12vh,8rem)] z-10 flex justify-center px-5"
+          className="about-bubble-wrap absolute inset-x-0 top-1/2 z-10 flex justify-center px-5"
         >
           <div className="about-bubble w-full max-w-[680px] px-6 py-6 md:px-9 md:py-8">
             <p
