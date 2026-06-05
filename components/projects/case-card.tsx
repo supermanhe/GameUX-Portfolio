@@ -1,14 +1,8 @@
 "use client"
 
 import type { Project } from '@/data/projects'
-import { cn } from '@/lib/utils'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
-
-const gradients = [
-  'from-purple-500/40 via-purple-400/20 to-transparent',
-  'from-indigo-500/40 via-indigo-400/20 to-transparent',
-  'from-cyan-500/40 via-cyan-400/20 to-transparent',
-]
+import { GsapReveal } from '@/components/motion/gsap-reveal'
 
 type CaseCardProps = {
   slug: string
@@ -20,60 +14,65 @@ type CaseCardProps = {
 export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
   const cover = c.media.find((m) => m.type === 'image' || m.type === 'gif')
   const video = !cover ? c.media.find((m) => m.type === 'video') : undefined
-  const gradient = gradients[index % gradients.length]
 
   return (
-    <button
-      type="button"
-      onClick={() => onOpen?.({ slug, caseId: c.id, index })}
-      className="block w-full rounded-2xl border border-border/60 bg-card/70 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft focus-ring"
-    >
-      <div className="relative overflow-hidden rounded-t-2xl">
-        {cover?.type === 'gif' ? (
-          <SkeletonImage
-            src={cover.src}
-            alt={cover.caption || c.title}
-            width={640}
-            height={360}
-            className="object-cover object-top"
-            containerClassName="relative h-72 w-full"
-            sizes="(max-width:768px) 100vw, 50vw"
-            unoptimized
-          />
-        ) : cover ? (
-          <SkeletonImage
-            src={cover.src}
-            alt={cover.caption || c.title}
-            width={640}
-            height={360}
-            className="object-cover object-top"
-            containerClassName="relative h-72 w-full"
-            sizes="(max-width:768px) 100vw, 50vw"
-          />
-        ) : video?.poster ? (
-          <SkeletonImage
-            src={video.poster}
-            alt={video.caption || c.title}
-            width={640}
-            height={360}
-            className="object-cover object-top"
-            containerClassName="relative h-72 w-full"
-            sizes="(max-width:768px) 100vw, 50vw"
-          />
-        ) : (
-          <div className={cn('h-72 w-full bg-gradient-to-br', gradient)} />
-        )}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-sm font-medium">
-          {c.title}
+    <GsapReveal delay={index * 0.045}>
+      <button
+        type="button"
+        onClick={() => onOpen?.({ slug, caseId: c.id, index })}
+        className="group block w-full overflow-hidden rounded-lg border border-border/70 bg-card/80 text-left transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-primary/45 focus-ring"
+      >
+        <div className="relative overflow-hidden bg-muted">
+          {cover?.type === 'gif' ? (
+            <SkeletonImage
+              src={cover.src}
+              alt={cover.caption || c.title}
+              width={640}
+              height={360}
+              className="object-cover object-top transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+              containerClassName="relative h-80 w-full"
+              sizes="(max-width:768px) 100vw, 50vw"
+              unoptimized
+            />
+          ) : cover ? (
+            <SkeletonImage
+              src={cover.src}
+              alt={cover.caption || c.title}
+              width={640}
+              height={360}
+              className="object-cover object-top transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+              containerClassName="relative h-80 w-full"
+              sizes="(max-width:768px) 100vw, 50vw"
+            />
+          ) : video?.poster ? (
+            <SkeletonImage
+              src={video.poster}
+              alt={video.caption || c.title}
+              width={640}
+              height={360}
+              className="object-cover object-top transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+              containerClassName="relative h-80 w-full"
+              sizes="(max-width:768px) 100vw, 50vw"
+            />
+          ) : (
+            <div className="h-80 w-full bg-primary/[0.12]" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/18 to-transparent" />
+          <div className="font-pixel absolute left-4 top-4 rounded-full bg-background/75 px-3 py-1.5 text-[10px] text-primary">
+            {String(index + 1).padStart(2, '0')}
+          </div>
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <h3 className="text-xl font-bold leading-tight text-white">{c.title}</h3>
+          </div>
         </div>
-      </div>
-      <div className="space-y-2 p-5 text-sm text-muted-foreground">
-        <ul className="list-disc space-y-1 pl-4">
+        <div className="grid gap-2 p-5 text-sm text-muted-foreground">
           {c.highlights.map((h, i) => (
-            <li key={i}>{h}</li>
+            <div key={i} className="rounded-md bg-secondary/60 px-3 py-2">
+              {h}
+            </div>
           ))}
-        </ul>
-      </div>
-    </button>
+        </div>
+      </button>
+    </GsapReveal>
   )
 }

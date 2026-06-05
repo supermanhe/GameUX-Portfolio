@@ -2,10 +2,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export function CasesGridSkeleton({ items = 4 }: { items?: number }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-2">
       {Array.from({ length: items }).map((_, index) => (
-        <div key={index} className="rounded-2xl border border-border/60 bg-card/70 p-0 shadow-soft">
-          <div className="h-72 overflow-hidden rounded-t-2xl">
+        <div key={index} className="rounded-lg border border-border/60 bg-card/70 p-0 shadow-soft">
+          <div className="h-80 overflow-hidden rounded-t-lg">
             <Skeleton className="h-full w-full" />
           </div>
           <div className="space-y-2 p-5 text-sm">

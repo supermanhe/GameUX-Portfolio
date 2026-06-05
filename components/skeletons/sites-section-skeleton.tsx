@@ -5,7 +5,7 @@ export function SitesSectionSkeleton({ items = 3 }: { items?: number }) {
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: items }).map((_, index) => (
         <div key={index} className="card-base">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-t-lg">
             <Skeleton className="h-full w-full" />
           </div>
           <div className="space-y-2 p-4">

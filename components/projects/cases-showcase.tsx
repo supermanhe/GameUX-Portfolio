@@ -172,7 +172,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {project.cases.map((c, idx) => (
           <CaseCard
             key={c.id}
@@ -196,7 +196,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
           }
         }}
       >
-        <DialogContent className="w-full max-w-[min(1200px,95vw)] border border-border/60 bg-background/95 p-0 text-foreground">
+        <DialogContent className="w-full max-w-[min(1200px,95vw)] overflow-hidden rounded-lg border border-border/70 bg-background/[0.98] p-0 text-foreground">
           <div className="absolute right-4 top-4 z-10 flex items-center gap-2 md:hidden">
             <DialogClose asChild>
               <Button variant="secondary" size="icon" className="rounded-full shadow-sm" type="button">
@@ -208,9 +208,9 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
           {activeCase && activeCaseId && (
             <div className="flex h-[92vh]">
               <div className="flex flex-1 flex-col overflow-hidden">
-                <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/60 p-6">
+                <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/70 bg-card/[0.55] p-6">
                   <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">{activeCaseTitle}</h2>
+                    <h2 className="font-editorial text-3xl font-black leading-tight">{activeCaseTitle}</h2>
                     {editing && activeCaseHighlights.length > 0 && (
                       <ul className="list-inside list-disc text-sm text-muted-foreground">
                         {activeCaseHighlights.map((item, idx) => (
@@ -285,7 +285,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                             fill
                             sizes="(max-width: 1024px) 100vw, 65vw"
                             className="object-cover"
-                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-lg border border-border/60 bg-black/40"
                           />
                         ) : activeMedia?.type === 'gif' ? (
                           <SkeletonImage
@@ -294,15 +294,15 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                             fill
                             sizes="(max-width: 1024px) 100vw, 65vw"
                             className="object-cover"
-                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-lg border border-border/60 bg-black/40"
                             unoptimized
                           />
                         ) : activeMedia?.type === 'video' ? (
                           <SkeletonVideo
                             controls
                             poster={activeMedia.poster}
-                            containerClassName="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-black/40"
-                            className="h-full w-full rounded-2xl object-cover"
+                            containerClassName="relative aspect-video w-full overflow-hidden rounded-lg border border-border/60 bg-black/40"
+                            className="h-full w-full rounded-lg object-cover"
                           >
                             <source src={activeMedia.src} />
                           </SkeletonVideo>
@@ -310,7 +310,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                           <iframe
                             src={activeMedia.src}
                             title={activeMedia.caption || activeCaseTitle}
-                            className="h-full w-full rounded-2xl border-0"
+                            className="h-full w-full rounded-lg border-0"
                             allow={EMBED_IFRAME_ALLOW}
                             sandbox={EMBED_IFRAME_SANDBOX}
                             allowFullScreen
@@ -342,16 +342,16 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                         }}
                       />
                     ) : (
-                      <div className="flex-1 overflow-y-auto rounded-2xl border border-border/60 bg-card/70 p-5">
+                      <div className="flex-1 overflow-y-auto rounded-lg border border-border/60 bg-card/75 p-5">
                         <div ref={articleRef} className="tiptap" dangerouslySetInnerHTML={{ __html: displayHtml }} />
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-              <aside className="hidden flex-col border-l border-border/60 bg-background/80 md:flex md:w-56">
+              <aside className="hidden flex-col border-l border-border/60 bg-background/[0.88] md:flex md:w-60">
                 <div className="border-b border-border/60 p-4">
-                  <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  <h3 className="text-xs font-semibold text-muted-foreground">
                     {'\u6848\u4F8B\u5BFC\u822A'}
                   </h3>
                 </div>
@@ -370,7 +370,7 @@ export function CasesShowcase({ project }: CasesShowcaseProps) {
                             setActiveMediaIndex(0)
                           }}
                           className={cn(
-                            'group relative block h-24 w-full overflow-hidden rounded-xl border border-border/60 text-left transition focus-ring',
+                            'group relative block h-24 w-full overflow-hidden rounded-lg border border-border/60 text-left transition focus-ring',
                             isActive ? 'border-primary/80 ring-1 ring-primary/40' : 'hover:border-primary/60',
                           )}
                         >

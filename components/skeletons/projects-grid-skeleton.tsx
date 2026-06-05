@@ -2,10 +2,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export function ProjectsGridSkeleton({ items = 4 }: { items?: number }) {
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="grid gap-8 md:grid-cols-2">
       {Array.from({ length: items }).map((_, index) => (
         <div key={index} className="card-base">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-t-lg">
             <Skeleton className="h-full w-full" />
           </div>
           <div className="space-y-3 p-4">

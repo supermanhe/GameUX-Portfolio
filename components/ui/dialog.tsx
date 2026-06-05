@@ -24,7 +24,7 @@ export function DialogContent({ className, children, ...props }: React.Component
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          'fixed z-50 grid w-[95vw] max-w-2xl gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft data-[state=open]:animate-in',
+          'fixed z-50 grid w-[95vw] max-w-2xl gap-4 rounded-lg border border-border bg-card p-6 shadow-soft data-[state=open]:animate-in',
           'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
           className
         )}
@@ -41,7 +41,7 @@ export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLD
 }
 
 export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h2 className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />
+  return <h2 className={cn('text-lg font-semibold leading-none', className)} {...props} />
 }
 
 export function DialogDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {

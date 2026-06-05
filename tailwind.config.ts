@@ -67,7 +67,7 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       boxShadow: {
-        soft: '0 8px 30px rgba(0,0,0,0.12)',
+        soft: '0 18px 60px rgba(45, 20, 75, 0.28)',
       },
     },
   },
