@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-import { type PointerEvent, useMemo, useRef } from 'react'
+import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -9,7 +9,6 @@ import { ArrowUpRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
 import type { Project } from '@/data/projects'
-import { cn } from '@/lib/utils'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -19,16 +18,6 @@ type ProjectScrollShowcaseProps = {
 
 export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) {
   const rootRef = useRef<HTMLElement | null>(null)
-  const totalCases = useMemo(
-    () => projects.reduce((sum, project) => sum + project.cases.length, 0),
-    [projects],
-  )
-
-  const handlePanelPointerMove = (event: PointerEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    event.currentTarget.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
-    event.currentTarget.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
-  }
 
   useGSAP(
     () => {
@@ -40,22 +29,24 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
         return
       }
 
+      const cleanups: Array<() => void> = []
+
       panels.forEach((panel) => {
-        const media = panel.querySelector('.project-panel-media')
+        const media = panel.querySelector<HTMLElement>('.project-panel-media')
         const copy = panel.querySelectorAll('.project-panel-copy')
 
         gsap.fromTo(
           media,
-          { yPercent: -7, scale: 1.08 },
+          { yPercent: 10, scale: 1.16 },
           {
-            yPercent: 7,
-            scale: 1,
+            yPercent: -10,
+            scale: 1.16,
             ease: 'none',
             scrollTrigger: {
               trigger: panel,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: 0.8,
+              scrub: 1.1,
             },
           },
         )
@@ -76,49 +67,62 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
             },
           },
         )
+
+        // 指针跟随：鼠标在封面上移动时，封面图朝光标方向微微位移（叠加在滚动视差之上）
+        if (!media) return
+        const xTo = gsap.quickTo(media, 'x', { duration: 0.7, ease: 'power3' })
+        const yTo = gsap.quickTo(media, 'y', { duration: 0.7, ease: 'power3' })
+        const X_MAX = 20
+        const Y_MAX = 10
+
+        const handlePointerMove = (event: PointerEvent) => {
+          const rect = panel.getBoundingClientRect()
+          const relX = event.clientX - rect.left
+          const relY = event.clientY - rect.top
+          panel.style.setProperty('--spot-x', `${relX}px`)
+          panel.style.setProperty('--spot-y', `${relY}px`)
+          xTo((relX / rect.width - 0.5) * 2 * X_MAX)
+          yTo((relY / rect.height - 0.5) * 2 * Y_MAX)
+        }
+        const handlePointerLeave = () => {
+          xTo(0)
+          yTo(0)
+        }
+
+        panel.addEventListener('pointermove', handlePointerMove)
+        panel.addEventListener('pointerleave', handlePointerLeave)
+        cleanups.push(() => {
+          panel.removeEventListener('pointermove', handlePointerMove)
+          panel.removeEventListener('pointerleave', handlePointerLeave)
+        })
       })
 
       ScrollTrigger.refresh()
+
+      return () => {
+        cleanups.forEach((fn) => fn())
+      }
     },
     { scope: rootRef, dependencies: [projects.length] },
   )
 
   return (
     <section ref={rootRef} id="projects" className="relative">
-      <div className="container py-14 md:py-20">
-        <div className="grid gap-8 border-y border-border/60 py-8 md:grid-cols-[1fr_auto] md:items-end">
-          <div>
-            <p className="text-sm font-semibold text-primary">Selected work</p>
-            <h2 className="font-editorial mt-3 max-w-4xl text-4xl font-black leading-[1.02] md:text-7xl">
-              参与项目
-            </h2>
-          </div>
-          <div className="grid grid-cols-3 gap-6 text-sm md:min-w-[360px]">
-            <div>
-              <p className="font-editorial text-4xl font-black tabular-nums">{projects.length}</p>
-              <p className="mt-1 text-xs text-muted-foreground">上线项目</p>
-            </div>
-            <div>
-              <p className="font-editorial text-4xl font-black tabular-nums">{totalCases}</p>
-              <p className="mt-1 text-xs text-muted-foreground">工作项</p>
-            </div>
-            <div>
-              <p className="font-editorial text-4xl font-black tabular-nums">8</p>
-              <p className="mt-1 text-xs text-muted-foreground">年游戏UX</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-6 md:space-y-10">
+      <div className="overflow-x-clip">
         {projects.map((project, index) => (
-          <article
+          <Link
             key={project.slug}
-            onPointerMove={handlePanelPointerMove}
-            className={cn(
-              'project-panel group relative mx-auto flex min-h-[92dvh] w-full max-w-[1600px] items-end overflow-hidden bg-card',
-              index % 2 === 0 ? 'md:rounded-r-lg' : 'md:rounded-l-lg',
-            )}
+            id={`project-${project.slug}`}
+            href={`/projects/${project.slug}`}
+            aria-label={`查看「${project.title}」项目详情`}
+            onClick={() => {
+              try {
+                sessionStorage.setItem('returnToProject', project.slug)
+              } catch {
+                /* ignore */
+              }
+            }}
+            className="project-panel group relative left-1/2 flex min-h-[100dvh] w-screen -translate-x-1/2 items-end overflow-hidden bg-card focus-ring"
           >
             <div className="absolute inset-0 overflow-hidden">
               <SkeletonImage
@@ -127,7 +131,7 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
                 fill
                 sizes="100vw"
                 priority={index === 0}
-                className="project-panel-media object-cover transition duration-700 group-hover:scale-[1.03]"
+                className="project-panel-media object-cover will-change-transform"
                 containerClassName="relative h-full w-full"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-background/92 via-background/52 to-background/12" />
@@ -137,7 +141,7 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
             <div className="container relative z-10 pb-14 pt-32 md:pb-20">
               <div className="max-w-4xl">
                 <div className="project-panel-copy flex flex-wrap items-center gap-2">
-                  <span className="rounded-sm bg-primary px-2.5 py-1 text-xs font-black text-primary-foreground">
+                  <span className="font-pixel rounded-sm bg-primary px-2.5 py-1.5 text-[10px] text-primary-foreground">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   {project.platform.map((platform) => (
@@ -157,7 +161,7 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
                   {project.summary}
                 </p>
 
-                <div className="project-panel-copy mt-8 grid max-w-3xl gap-3 text-sm text-white/82 sm:grid-cols-3">
+                <div className="project-panel-copy mt-8 grid max-w-3xl gap-3 text-sm text-white/82 sm:grid-cols-2">
                   <div className="border-l border-white/22 pl-4">
                     <p className="text-xs text-white/48">职责</p>
                     <p className="mt-1 font-semibold">{project.role}</p>
@@ -166,22 +170,18 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
                     <p className="text-xs text-white/48">周期</p>
                     <p className="mt-1 font-semibold">{project.period}</p>
                   </div>
-                  <div className="border-l border-white/22 pl-4">
-                    <p className="text-xs text-white/48">工作项</p>
-                    <p className="mt-1 font-semibold">{project.cases.length} 个模块</p>
-                  </div>
                 </div>
 
-                <Link
-                  href={`/projects/${project.slug}`}
-                  className="project-panel-copy delight-cta mt-9 inline-flex h-12 items-center gap-3 rounded-full bg-white px-6 text-sm font-black text-black shadow-[0_18px_44px_rgba(0,0,0,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground focus-ring"
+                <span
+                  aria-hidden="true"
+                  className="project-panel-copy delight-cta mt-9 inline-flex h-12 items-center gap-3 rounded-full bg-white px-6 text-sm font-black text-black shadow-[0_18px_44px_rgba(0,0,0,0.28)] transition duration-300 group-hover:-translate-y-0.5 group-hover:bg-primary group-hover:text-primary-foreground"
                 >
                   查看工作项
                   <ArrowUpRight className="h-4 w-4" />
-                </Link>
+                </span>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

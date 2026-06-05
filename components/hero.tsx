@@ -4,10 +4,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { Button } from '@/components/ui/button'
-import { ArrowDown, Download, Github, Mail } from 'lucide-react'
+import { Download, Github, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
 import type { HeroContent } from '@/data/hero'
-import { SkeletonImage } from '@/components/ui/media-skeleton'
+import { Typewriter } from '@/components/ui/typewriter'
 
 gsap.registerPlugin(useGSAP)
 
@@ -65,7 +65,6 @@ export function Hero({ data }: HeroProps) {
         .fromTo('.hero-title', { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0 }, '-=0.55')
         .fromTo('.hero-copy', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0 }, '-=0.5')
         .fromTo('.hero-actions', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0 }, '-=0.45')
-        .fromTo('.hero-media', { autoAlpha: 0, y: 32, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1 }, '-=0.62')
         .fromTo('.hero-skill', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, stagger: 0.05 }, '-=0.48')
     },
     { scope: rootRef },
@@ -88,14 +87,24 @@ export function Hero({ data }: HeroProps) {
   }, [data.email, track])
 
   return (
-    <section ref={rootRef} className="relative min-h-[calc(100dvh-4.5rem)] overflow-hidden pt-12 md:pt-16">
-      <div className="container relative z-10">
-        <div className="mx-auto max-w-6xl text-center">
-          <p className="hero-reveal hero-kicker text-sm font-black uppercase tracking-[0.22em] text-primary">
+    <section id="hero" ref={rootRef} className="relative flex min-h-dvh items-center overflow-hidden py-16">
+      <div className="container relative z-10 w-full">
+        <div className="mx-auto max-w-[1500px] text-center">
+          <p className="hero-reveal hero-kicker font-pixel text-[10px] uppercase leading-relaxed tracking-[0.18em] text-primary md:text-xs">
             Game UX designer / indie developer
           </p>
-          <h1 className="hero-reveal hero-title font-editorial mt-5 text-balance text-5xl font-black leading-[0.96] md:text-6xl lg:text-7xl">
-            {data.headline}
+          <h1
+            className="hero-reveal hero-title font-editorial mt-5 min-h-[2.88em] text-5xl font-black leading-[0.96] md:min-h-[1.92em] md:text-6xl lg:text-7xl"
+            aria-label={data.headline.join('；')}
+          >
+            <Typewriter
+              text={data.headline}
+              speed={72}
+              waitTime={1500}
+              deleteSpeed={36}
+              deleteToPrefix="你好，我"
+              cursorChar="_"
+            />
           </h1>
           <p className="hero-reveal hero-copy mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             {data.description}
@@ -132,8 +141,8 @@ export function Hero({ data }: HeroProps) {
 
         <div className="mt-10 grid gap-6 border-y border-border/60 py-5 md:grid-cols-[0.9fr_1.2fr_0.9fr] md:items-center">
           <div className="hero-reveal hero-skill text-center md:text-left">
-            <p className="font-editorial text-5xl font-black tabular-nums">8</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="font-pixel text-4xl tabular-nums">9</p>
+            <p className="mt-2 font-pixel text-[9px] uppercase leading-relaxed tracking-[0.14em] text-muted-foreground">
               years in game UX
             </p>
           </div>
@@ -148,29 +157,10 @@ export function Hero({ data }: HeroProps) {
             ))}
           </div>
           <div className="hero-reveal hero-skill text-center md:text-right">
-            <p className="font-editorial text-5xl font-black tabular-nums">2</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="font-pixel text-4xl tabular-nums">2</p>
+            <p className="mt-2 font-pixel text-[9px] uppercase leading-relaxed tracking-[0.14em] text-muted-foreground">
               shipped games
             </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="hero-reveal hero-media pointer-events-none relative z-0 mx-auto mt-6 max-w-[1500px] px-4">
-        <div className="relative mx-auto aspect-[16/6] max-h-[42vh] min-h-[210px] overflow-hidden rounded-t-lg border border-white/10 bg-card shadow-soft">
-          <SkeletonImage
-            src={data.avatar}
-            alt="何梓超头像"
-            fill
-            sizes="100vw"
-            className="object-cover object-[50%_20%]"
-            containerClassName="relative h-full w-full"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-background/78 px-4 py-2 text-xs font-semibold text-foreground backdrop-blur">
-            <ArrowDown className="h-4 w-4" />
-            向下滚动查看项目
           </div>
         </div>
       </div>

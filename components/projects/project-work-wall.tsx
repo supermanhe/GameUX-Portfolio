@@ -96,7 +96,7 @@ export function ProjectWorkWall({ project }: ProjectWorkWallProps) {
             href={`#${item.id}`}
             className={cn('work-jump-link', activeId === item.id && 'is-active')}
           >
-            <span>{String(index + 1).padStart(2, '0')}</span>
+            <span className="font-pixel">{String(index + 1).padStart(2, '0')}</span>
             <span>{item.title}</span>
           </Link>
         ))}
@@ -110,10 +110,10 @@ export function ProjectWorkWall({ project }: ProjectWorkWallProps) {
         >
           <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
-              <span className="font-editorial text-4xl font-black text-primary tabular-nums">
+              <span className="font-pixel text-3xl text-primary tabular-nums">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <span>{item.media.length} media</span>
+              <span className="font-pixel text-[10px] uppercase tracking-wider">{item.media.length} media</span>
             </div>
             <h2 className="mt-5 text-3xl font-black leading-tight md:text-5xl">{item.title}</h2>
             <div className="mt-6 grid gap-2">

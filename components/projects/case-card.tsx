@@ -58,7 +58,7 @@ export function CaseCard({ slug, c, index = 0, onOpen }: CaseCardProps) {
             <div className="h-80 w-full bg-primary/[0.12]" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/18 to-transparent" />
-          <div className="absolute left-4 top-4 rounded-full bg-background/75 px-3 py-1 text-xs font-semibold text-primary">
+          <div className="font-pixel absolute left-4 top-4 rounded-full bg-background/75 px-3 py-1.5 text-[10px] text-primary">
             {String(index + 1).padStart(2, '0')}
           </div>
           <div className="absolute inset-x-0 bottom-0 p-5">
