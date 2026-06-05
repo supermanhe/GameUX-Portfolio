@@ -9,6 +9,10 @@ export type SiteItem = {
   url: string
   description: string
   tech?: string[]
+  /** 竖屏游戏：详情页内嵌按 748x1098 渲染（默认横屏） */
+  portrait?: boolean
+  /** 紧凑模态：隐藏描述行、收紧高度预留，给游戏区腾出更多纵向空间 */
+  compact?: boolean
 }
 
 export const sites: SiteItem[] = [
@@ -21,6 +25,7 @@ export const sites: SiteItem[] = [
     url: 'https://halloween-survivors-3d.netlify.app/',
     description: '利用业余时间开发了一款万圣节主题的吸血鬼生存like游戏。使用了Youware平台的移动端模版，可以快速集成手机陀螺仪和马达震动。',
     tech: ['React + TypeScript', 'Tailwind', 'Three.js'],
+    portrait: true,
   },
   {
     id: 'merge',
@@ -31,6 +36,8 @@ export const sites: SiteItem[] = [
     url: 'https://merge-into-miyabi.netlify.app/',
     description: '利用Matter.js提供的物理引擎，快速开发合成大西瓜换皮demo，资源来自米哈游官网',
     tech: ['HTML5+CSS3', 'JavaScript', 'Matter.js'],
+    portrait: true,
+    compact: true,
   },
   {
     id: '3DGallery',

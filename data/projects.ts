@@ -40,7 +40,7 @@ export const projects: Project[] = [
     kpis: [
       { label: '营收创近十年新高', value: ' ' },
     ],
-    cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761445555/2e3d2637-d53e-40f2-b514-5cf3c3f70181.png',
+    cover: '/dahua2-cover.jpg',
     tags: ['MMO'],
     summary:
       '任《大话西游2》主交互，配合策划需求完成四年的核心运营活动及核心消费系统迭代，包括龙族资料片、藏宝阁、多宝阁，提升项目玩家活跃度及营收。',
@@ -282,7 +282,7 @@ export const projects: Project[] = [
     kpis: [
       { label: '全球上线流水', value: '1亿美元+' },
     ],
-    cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761541786/c9b5dc67-ac8d-42c0-9863-4383b110fae3.png',
+    cover: '/shengjing-cover.jpg',
     tags: ['二次元', 'MMO', '手游'],
     summary:
       '负责从0到1将交互流程融入到原开发流程之中,整理UI交互规范,梳理开发新流程,现已平稳运行3年并推广至新项目;\n先后跟进项目上线欧美、日、韩、国服，保障全球各区运营活动需求以及养成线拓展，全球累计流水已达上亿美元;\n持续总结经验,在公司进行演讲分享,进行UX知识的传播与布道',

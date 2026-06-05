@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import { BackToProjectsButton } from '@/components/projects/back-to-projects-button'
 import { projects, getProjectBySlug } from '@/data/projects'
 import { Badge } from '@/components/ui/badge'
 import { ProjectWorkWall } from '@/components/projects/project-work-wall'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
 import { GsapReveal } from '@/components/motion/gsap-reveal'
+import { MarkReturnProject } from '@/components/projects/mark-return-project'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -16,13 +17,14 @@ export default async function ProjectDetail({ params }: { params: { slug: string
 
   return (
     <div className="container space-y-16 pb-16 pt-10">
+      <MarkReturnProject slug={project.slug} />
       <header className="space-y-10">
         <GsapReveal>
           <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
             <div>
-              <Link href="/#projects" className="text-sm font-semibold text-primary hover:underline">
+              <BackToProjectsButton className="text-sm font-semibold text-primary hover:underline">
                 返回项目列表
-              </Link>
+              </BackToProjectsButton>
               <h1 className="font-editorial mt-6 text-5xl font-black leading-none md:text-7xl lg:text-8xl">
                 {project.title}
               </h1>
@@ -46,23 +48,23 @@ export default async function ProjectDetail({ params }: { params: { slug: string
         <GsapReveal delay={0.1}>
           <div className="grid gap-4 border-y border-border/70 py-5 text-sm text-muted-foreground md:grid-cols-4">
             <div>
-              <p className="text-xs text-primary">Role</p>
-              <p className="mt-1 text-foreground">{project.role}</p>
+              <p className="font-pixel text-[9px] uppercase tracking-wider text-primary">Role</p>
+              <p className="mt-2 text-foreground">{project.role}</p>
             </div>
             <div>
-              <p className="text-xs text-primary">Period</p>
-              <p className="mt-1 text-foreground">{project.period}</p>
+              <p className="font-pixel text-[9px] uppercase tracking-wider text-primary">Period</p>
+              <p className="mt-2 text-foreground">{project.period}</p>
             </div>
             {project.team && (
               <div>
-                <p className="text-xs text-primary">Team</p>
-                <p className="mt-1 text-foreground">{project.team}</p>
+                <p className="font-pixel text-[9px] uppercase tracking-wider text-primary">Team</p>
+                <p className="mt-2 text-foreground">{project.team}</p>
               </div>
             )}
             {project.kpis && (
               <div>
-                <p className="text-xs text-primary">Impact</p>
-                <p className="mt-1 text-foreground">
+                <p className="font-pixel text-[9px] uppercase tracking-wider text-primary">Impact</p>
+                <p className="mt-2 text-foreground">
                   {project.kpis.map((k) => `${k.label}${k.value.trim() ? ` ${k.value}` : ''}`).join(' / ')}
                 </p>
               </div>
@@ -88,7 +90,7 @@ export default async function ProjectDetail({ params }: { params: { slug: string
         <GsapReveal>
           <div className="grid gap-5 border-y border-border/60 py-8 md:grid-cols-[0.72fr_0.28fr] md:items-end">
             <div>
-            <p className="text-sm font-semibold text-primary">Case studies</p>
+            <p className="font-pixel text-[10px] uppercase tracking-[0.2em] text-primary">Case studies</p>
             <h2 className="font-editorial mt-3 text-4xl font-black leading-tight md:text-6xl">
               工作项平铺
             </h2>

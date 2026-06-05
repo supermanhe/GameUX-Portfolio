@@ -1,18 +1,28 @@
 import type { Metadata } from 'next'
+import { Press_Start_2P } from 'next/font/google'
 import './globals.css'
+
+// 8-bit 像素字体（仅拉丁/数字），通过 CSS 变量供“我的工具”面板使用
+const pixelFont = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-pixel',
+  display: 'swap',
+})
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/navbar'
 import { DelightLayer } from '@/components/motion/delight-layer'
+import { BgmProvider } from '@/components/audio/bgm-provider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://example.com'),
   title: {
-    default: 'Game UI/UX Portfolio',
-    template: '%s | Game UI/UX Portfolio',
+    default: 'He Zichao — Senior Game UX Designer',
+    template: '%s | He Zichao',
   },
   description: '移动优先、简洁有趣的游戏UI/UX设计师作品集',
   openGraph: {
-    title: 'Game UI/UX Portfolio',
+    title: 'He Zichao — Senior Game UX Designer',
     description: '移动优先、简洁有趣的游戏UI/UX设计师作品集',
     type: 'website',
     url: 'https://example.com',
@@ -25,14 +35,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body className="min-h-screen antialiased">
+      <body className={`${pixelFont.variable} min-h-screen antialiased`}>
         <ThemeProvider>
-          <DelightLayer />
-          <Navbar />
-          <main>{children}</main>
-          <footer className="container py-12 text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} GameUX Portfolio</p>
-          </footer>
+          <BgmProvider>
+            <DelightLayer />
+            <Navbar />
+            <main>{children}</main>
+            <footer className="container py-12 text-sm text-muted-foreground">
+              <p>© {new Date().getFullYear()} GameUX Portfolio</p>
+            </footer>
+          </BgmProvider>
         </ThemeProvider>
       </body>
     </html>
