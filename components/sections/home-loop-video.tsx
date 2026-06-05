@@ -51,6 +51,15 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
   // 触发一次闪白（key 自增 -> 元素重挂载 -> 动画从头播放）
   const triggerFlash = useCallback(() => setFlashKey((k) => k + 1), [])
 
+  // 把缩放视频压到约 ZOOM_TARGET_SECONDS 秒：按时长设倍速。
+  // 关键：元数据就绪（onLoadedMetadata）即预设倍速——否则“首次点击时 zoom.duration 还是
+  // NaN -> 倍速维持 1 倍 -> 整段原速慢放、等很久”，要等第二次（元数据已缓存）才正常。
+  const applyZoomRate = useCallback(() => {
+    const zoom = zoomVideoRef.current
+    if (!zoom || !Number.isFinite(zoom.duration) || zoom.duration <= 0) return
+    zoom.playbackRate = Math.min(zoom.duration / ZOOM_TARGET_SECONDS, 16)
+  }, [])
+
   // 深链接 / 从项目详情返回 / 减少动效 -> 绘制前隐藏开场（不闪一帧循环视频）。
   // 只读取标记不清除，交给 RestoreProjectScroll 去消费定位。
   useIsoLayoutEffect(() => {
@@ -112,14 +121,12 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
     }
     zoom.muted = true
     zoom.currentTime = 0
-    if (Number.isFinite(zoom.duration) && zoom.duration > 0) {
-      zoom.playbackRate = Math.min(zoom.duration / ZOOM_TARGET_SECONDS, 16)
-    }
+    applyZoomRate()
     zoom.play().catch(() => {
       triggerFlash()
       window.setTimeout(() => setIntroVisible(false), FLASH_PEAK_MS)
     })
-  }, [setPhaseBoth, triggerFlash])
+  }, [applyZoomRate, setPhaseBoth, triggerFlash])
 
   // zoom 播完 -> 闪白盖住瞬切到第二页
   const handleZoomEnded = useCallback(() => {
@@ -215,6 +222,7 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
             ref={loopVideoRef}
             className="h-full w-full object-cover"
             src={src}
+            poster="/home-loop-poster.webp"
             autoPlay
             loop
             muted
@@ -233,6 +241,7 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
             playsInline
             preload="auto"
             aria-hidden="true"
+            onLoadedMetadata={applyZoomRate}
             onEnded={handleZoomEnded}
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex justify-center">
