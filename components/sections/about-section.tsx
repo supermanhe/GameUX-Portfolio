@@ -163,6 +163,7 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
         <video
           className="absolute inset-0 h-full w-full object-cover"
           src={src}
+          poster={src.replace(/\.mp4$/, '-poster.webp')}
           autoPlay
           loop
           muted

@@ -236,6 +236,7 @@ export function HistoryScroll({ data, src }: { data: HeroContent; src: string })
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           src={src}
+          poster={src.replace(/\.mp4$/, '-poster.webp')}
           muted
           playsInline
           preload="auto"
