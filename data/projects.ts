@@ -1,5 +1,142 @@
 import { withMinimumDelay } from '@/lib/sleep'
 
+/**
+ * 结构化案例叙事（数据驱动模板）。
+ * 存在 `story` 时，详情页用模块化版式渲染（框架锚定 + 决策聚焦 + Metric Card + 证据画廊），
+ * 不存在时回退到旧的 articleMDX 图片墙。两套可共存，逐个案例迁移。
+ */
+export type CaseStory = {
+  /**
+   * 版式：
+   * - 'rail'（默认）：BP 数据驱动型——左侧 sticky 框架锚点 + 决策聚焦 + Metric 卡。
+   * - 'linear'：系统设计型——单列叙事，以信息架构扁平化为魂（命卡用此版）。
+   */
+  layout?: 'rail' | 'linear'
+  /** 案例原型标签，如「转化优化 · 数据驱动」 */
+  archetype: string
+  /** 一句话核心论点：面向谁 / 什么场景 / 改善了什么 */
+  oneLiner: string
+  /** 开场最强数字（可选，rail 版用） */
+  headlineMetric?: { value: string; label: string }
+  /** hero 去数字立论行（linear 版用，替代 headlineMetric 大数字） */
+  heroKicker?: string
+  /** 案例标题区背景封面（可选） */
+  heroImage?: { src: string; alt: string; objectPosition?: string }
+  /**
+   * 信息架构层级扁平化（linear 灵魂区）：可交互的前/后树对照。
+   * 节点标签内置于组件（命卡专属），此处只配文案。
+   */
+  iaTree?: {
+    kicker?: string
+    title?: string
+    /** 迭代前结构说明（深埋两层） */
+    beforeNote: string
+    /** 迭代后结构说明（四大平级） */
+    afterNote: string
+    caption?: string
+  }
+  /** 深层入口实证（point 1）：带网页层标注的截图，字不画进图 */
+  deepEntry?: {
+    kicker?: string
+    title?: string
+    body: string
+    media: { src: string; caption?: string }
+    /** 网页层标注（百分比定位 0-100） */
+    annotations?: Array<{ label: string; xPct: number; yPct: number }>
+  }
+  /** 一键镶嵌（point 3）：系统级便捷特写 */
+  oneTap?: {
+    kicker?: string
+    title?: string
+    body?: string
+    media: { type: 'image' | 'gif' | 'video'; src: string; caption?: string }
+  }
+  /** 原创框架：作为左侧 sticky 锚点，随滚动高亮当前阶段（rail 版） */
+  framework?: {
+    title: string
+    steps: { key: string; label: string; desc: string }[]
+  }
+  /** 问题 / 摩擦（rail 版） */
+  problem?: {
+    title: string
+    points: string[]
+    media?: { src: string; caption?: string }
+    /**
+     * 迭代前/后对比（存在时取代上面的静态 title/points/media）。
+     * 顶部 tab 统一切换整块：标题 + 重点 + 图随之切换，并每隔 interval 自动轮播。
+     */
+    compare?: {
+      /** 自动切换间隔，毫秒，默认 5000 */
+      interval?: number
+      slides: Array<{
+        /** tab 文字，如「迭代前」「迭代后」 */
+        label: string
+        /** 重点的语气：problem=红色编号，solution=金色对勾 */
+        tone?: 'problem' | 'solution'
+        /** 该状态的标题 */
+        title: string
+        /** 该状态的重点说明 */
+        points: string[]
+        src: string
+        caption?: string
+      }>
+    }
+  }
+  /** 关键决策（建议 2-3 个），每个对应框架的一个阶段（rail 版） */
+  decisions?: Array<{
+    stepKey: string
+    no: string
+    title: string
+    rationale: string
+    actions: string[]
+    media: {
+      type: 'image' | 'gif' | 'video'
+      src: string
+      caption?: string
+      objectPosition?: string
+    }
+  }>
+  /** 结果指标（必须带口径 / 周期 / 范围 / 说明）。linear 版渲染为横向「事实条」 */
+  metrics?: Array<{
+    value: string
+    label: string
+    meta: { k: string; v: string }[]
+  }>
+  /**
+   * 系统级「逐功能前后对比」模块（可选，适合系统设计型案例）。
+   * 顶部一排功能 tab（如 镶嵌/强化/铸命/分解），点选后在统一画框内
+   * 通过「迭代前 / 迭代后」开关切换该功能的前后截图，并显示这次改了什么。
+   * 用一个模块的结构本身复刻「四功能合一」的信息架构。
+   */
+  functionTour?: {
+    kicker?: string
+    title?: string
+    intro?: string
+    /** 统一版式分区（恒定骨架示意条，如 一级导航 / 主要信息交互区 / 命卡选择区） */
+    zones?: string[]
+    tabs: Array<{
+      key: string
+      /** tab 文字，如「镶嵌」 */
+      label: string
+      /** 一句话：这个功能改了什么 */
+      summary: string
+      /** 「本次规整」像素小标 */
+      change?: string
+      before: { src: string; caption?: string }
+      after: { src: string; caption?: string }
+    }>
+  }
+  /** 正式落地效果（point 5）：上线实装的单图 / GIF 聚焦 */
+  liveResult?: {
+    kicker?: string
+    title?: string
+    body?: string
+    media: { type: 'image' | 'gif' | 'video'; src: string; caption?: string }
+  }
+  /** 反思 / 取舍 / 下一步（可选） */
+  reflection?: { title: string; body: string }
+}
+
 export type Project = {
   slug: string
   title: string
@@ -23,6 +160,7 @@ export type Project = {
       poster?: string
     }>
     articleMDX: string
+    story?: CaseStory
   }>
 }
 
@@ -274,7 +412,7 @@ export const projects: Project[] = [
   {
     slug: 'myth-quest',
     title: '圣境之塔',
-    subtitle: '二次元 · MMO',
+    subtitle: '二次元 MMORPG',
     role: '交互设计专家',
     period: '2022至今',
     team: '1交互、3视觉',
@@ -283,7 +421,7 @@ export const projects: Project[] = [
       { label: '全球上线流水', value: '1亿美元+' },
     ],
     cover: '/shengjing-cover.jpg',
-    tags: ['二次元', 'MMO', '手游'],
+    tags: ['二次元 MMORPG', '手游'],
     summary:
       '负责从0到1将交互流程融入到原开发流程之中,整理UI交互规范,梳理开发新流程,现已平稳运行3年并推广至新项目;\n先后跟进项目上线欧美、日、韩、国服，保障全球各区运营活动需求以及养成线拓展，全球累计流水已达上亿美元;\n持续总结经验,在公司进行演讲分享,进行UX知识的传播与布道',
     cases: [
@@ -598,6 +736,110 @@ export const projects: Project[] = [
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png"
 />
         `,
+        story: {
+          archetype: '付费流程 · 转化提效',
+          oneLiner:
+            '面向货币不足时的临门一脚——把「自己算哪档刚好够 + 充完再绕回找商品」的繁琐链路，压成「推荐档位、一步直达」的顺滑付费。',
+          headlineMetric: { value: '一步直达', label: '充值完成即回到购买，不再绕回商店' },
+          heroImage: {
+            src: '/illustrations/shengjing/payflow-recharge.png',
+            alt: '像素角色面对分档充值祭坛，从满脸问号到一眼选中刚好够用的档位',
+            objectPosition: 'center',
+          },
+          framework: {
+            title: '顺滑付费三步',
+            steps: [
+              { key: 'calc', label: '算清', desc: '系统直接推荐刚好够用的档位' },
+              { key: 'direct', label: '直达', desc: '充值完成即回到购买，不再绕回商店' },
+              { key: 'smooth', label: '提效', desc: '减少跳转与心算，付费体验更顺' },
+            ],
+          },
+          problem: {
+            title: '旧版：算不清档位，绕不回商品',
+            points: [
+              '货币不足跳到充值时，玩家得自己算「充哪档刚好够」——中小 R 尤其精打细算',
+              '充值完成后要重新进商店、再找回想买的商品，中间多步跳转，操作繁琐',
+              '整条付费链路断成两截，付费意愿在反复跳转里被消耗',
+            ],
+            compare: {
+              interval: 5000,
+              slides: [
+                {
+                  label: '迭代前',
+                  tone: 'problem',
+                  title: '旧版：算不清档位，绕不回商品',
+                  points: [
+                    '货币不足时只跳到充值页，充哪档刚好够要玩家自己算',
+                    '充值完成后需重新进店、再次查找想买的商品',
+                    '多步跳转、操作繁琐，临门一脚容易流失',
+                  ],
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542293/0ee2b05c-64d9-4a04-a371-f4c6955035b1.png',
+                  caption: '迭代前 · 付费流程',
+                },
+                {
+                  label: '迭代后',
+                  tone: 'solution',
+                  title: '新版：推荐档位，一步直达',
+                  points: [
+                    '按缺口直接推荐刚好满足消耗的最小档位',
+                    '充值完成即回到原购买位，省去重新进店查找',
+                    '路径压到最短，心算与跳转都被去掉',
+                  ],
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png',
+                  caption: '迭代后 · 付费流程',
+                },
+              ],
+            },
+          },
+          decisions: [
+            {
+              stepKey: 'calc',
+              no: '01',
+              title: '替玩家算出「刚好够用」的档位',
+              rationale:
+                '货币不足跳到充值时，系统按当前缺口直接推荐刚好满足消耗的最小档位——中小 R 不必再逐档精打细算，把决策成本压到最低。',
+              actions: ['档位差值推荐', '按需最小档位'],
+              media: {
+                type: 'image',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png',
+                caption: '迭代后 · 充值档位差值推荐',
+              },
+            },
+            {
+              stepKey: 'direct',
+              no: '02',
+              title: '充完直接回到要买的商品',
+              rationale:
+                '迭代前充值完成后要重新进商店、再次找回商品，中间又经过几个步骤；迭代后充值即回到原购买位，把「充值 → 购买」的路径压到最短。',
+              actions: ['充值后直达商品', '缩短操作路径'],
+              media: {
+                type: 'image',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542293/0ee2b05c-64d9-4a04-a371-f4c6955035b1.png',
+                caption: '迭代前 · 充值后需重新进店找回商品（已优化）',
+              },
+            },
+          ],
+          metrics: [
+            {
+              value: '推荐档位',
+              label: '货币不足时直接给出刚好够用的档位',
+              meta: [
+                { k: '口径', v: '充值档位差值推荐' },
+                { k: '性质', v: '付费流程改版（体验优化，非线上指标）' },
+                { k: '范围', v: '个人负责的 UI / 交互改版' },
+              ],
+            },
+            {
+              value: '路径缩短',
+              label: '充值完成后一步回到购买',
+              meta: [
+                { k: '口径', v: '充值 → 购买的操作路径' },
+                { k: '收益', v: '去掉重新进店、二次查找的跳转步骤' },
+                { k: '说明', v: '定性判断，基于流程走查与评审，暂无 A/B 数据' },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 'battlepass',
@@ -665,6 +907,115 @@ export const projects: Project[] = [
   迭代数据提升：外放前后月份，<u>单项付费率提升10%+</u>
 </h2>
         `,
+        story: {
+          archetype: '转化优化 · 数据驱动',
+          oneLiner:
+            '面向精打细算的中小 R，重构 BP 的价值感知路径——让大奖被看见、价值算得清、付费档更心动。',
+          headlineMetric: { value: '+10%', label: '单项付费率 · 外放前后月对比' },
+          heroImage: {
+            src: '/illustrations/shengjing/battlepass-value-reveal.webp',
+            alt: '像素角色激活战令奖励轨道，让隐藏奖励价值逐步显现',
+            objectPosition: 'center',
+          },
+          framework: {
+            title: '付费转化三阶',
+            steps: [
+              { key: 'see', label: '看见', desc: '噱头大奖第一眼就抓住注意力' },
+              { key: 'calc', label: '算清', desc: '阶段与付费价值一眼可换算' },
+              { key: 'want', label: '心动', desc: '付费档在视觉上被明确推荐' },
+            ],
+          },
+          problem: {
+            title: '旧版：价值都在，却都没被看见',
+            points: [
+              '噱头大奖不突出，玩家划过却记不住',
+              '阶段性奖励位置漂移，「拿了什么、还差多少」不清晰',
+              '付费档奖励视觉偏弱，和免费档难以区分',
+            ],
+            compare: {
+              interval: 5000,
+              slides: [
+                {
+                  label: '迭代前',
+                  tone: 'problem',
+                  title: '旧版：价值都在，却都没被看见',
+                  points: [
+                    '噱头大奖不突出，玩家划过却记不住',
+                    '阶段性奖励位置漂移，「拿了什么、还差多少」不清晰',
+                    '付费档奖励视觉偏弱，和免费档难以区分',
+                  ],
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542433/73ba6351-5925-46ba-8b23-2015754ee567.png',
+                  caption: '迭代前 · BP 主界面',
+                },
+                {
+                  label: '迭代后',
+                  tone: 'solution',
+                  title: '新版：让价值被看见、算得清、更心动',
+                  points: [
+                    '左侧大奖轮播 + 新增花灵立绘展示',
+                    '阶段性奖励固定列表右侧，进度即时可见',
+                    '付费档暖色底，与免费档拉开层级',
+                  ],
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780823565/%E7%BE%81%E7%BB%8A%E4%B9%8B%E7%A4%BC%E8%BF%AD%E4%BB%A3%E5%90%8E_nqhdol.png',
+                  caption: '迭代后 · BP 主界面',
+                },
+              ],
+            },
+          },
+          decisions: [
+            {
+              stepKey: 'see',
+              no: '01',
+              title: '把大奖搬到第一视线',
+              rationale:
+                '左侧改为大奖轮播并新增花灵立绘展示，让稀有奖励在进入界面的第一眼就被识别，建立「值得肝、值得买」的预期。',
+              actions: ['大奖轮播', '花灵立绘展示'],
+              media: {
+                type: 'gif',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780823722/%E7%BE%81%E7%BB%8A%E4%B9%8B%E7%A4%BC%E8%BF%AD%E4%BB%A3%E5%90%8E-%E8%BD%AE%E6%92%AD%E5%A5%96%E5%8A%B1_jyuzhv.gif',
+                caption: '迭代后 · 大奖轮播',
+              },
+            },
+            {
+              stepKey: 'calc',
+              no: '02',
+              title: '让进度与价值固定可读',
+              rationale:
+                '阶段性奖励始终固定在列表右侧，玩家在任意滚动位置都能回答「我拿了什么、还差多少」，降低价值换算的心算成本。',
+              actions: ['阶段奖励固定右侧', '进度即时可见'],
+              media: {
+                type: 'image',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780824120/%E7%BE%81%E7%BB%8A%E4%B9%8B%E7%A4%BC%E8%BF%AD%E4%BB%A3%E5%90%8E2_gljl8n.png',
+                caption: '迭代后 · 阶段奖励固定区',
+              },
+            },
+            {
+              stepKey: 'want',
+              no: '03',
+              title: '给付费档一个明确的视觉承诺',
+              rationale:
+                '付费档用暖色底与免费档拉开层级，并重做解锁弹窗，在转化瞬间把「已解锁的增量价值」讲清楚。',
+              actions: ['付费档暖色底', '解锁弹窗重构'],
+              media: {
+                type: 'image',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780826156/%E7%BE%81%E7%BB%8A%E4%B9%8B%E7%A4%BC%E5%BC%B9%E7%AA%97%E8%BF%AD%E4%BB%A3_hlcckd.png',
+                caption: '解锁弹窗迭代',
+              },
+            },
+          ],
+          metrics: [
+            {
+              value: '+10%',
+              label: '单项付费率提升',
+              meta: [
+                { k: '口径', v: '该 BP 单项付费率' },
+                { k: '周期', v: '外放前后相邻月份对比' },
+                { k: '范围', v: '个人负责的 UI / 交互改版' },
+                { k: '说明', v: '同期含版本内容更新等混杂因素，非单一归因' },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 'sealcard',
@@ -704,24 +1055,132 @@ export const projects: Project[] = [
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761547147/%E5%91%BD%E5%8D%A1%E5%8A%A8%E6%95%88%E8%BD%AC%E5%9C%BA%E7%A4%BA%E6%84%8F%E5%9B%BE_rwvoxi.gif"
 />
         `,
-      },
-      {
-        id: 'trade',
-        title: '交易所迭代',
-        highlights: ['优化信息架构', '新增筛选、对比便捷功能', '优化购买、售卖流程'],
-        media: [
-          {
-            type: 'image',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png',
+        story: {
+          layout: 'linear',
+          archetype: '系统设计 · 信息架构',
+          oneLiner:
+            '把埋在二级菜单、入口又藏在小按钮里的命卡养成功能，扁平成一眼看全的一级导航——四个功能从此并列、同框、共用一套版式语言。',
+          heroKicker: '四散且深埋的养成功能  →  一目了然的一体化系统',
+          heroImage: {
+            src: '/illustrations/shengjing/growth-card-constellation.webp',
+            alt: '像素角色在星空观测台梳理命卡养成路径，让分散卡牌形成清晰成长星图',
+            objectPosition: 'center',
           },
-        ],
-        articleMDX: md`
-<img
-  class="rounded-xl border border-border/40"
-  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png"
-/>
-        `,
+          iaTree: {
+            kicker: '信息架构调整',
+            title: '强化与铸命，从「培养」二级里解放出来',
+            beforeNote:
+              '强化 / 铸命 被收在「培养」页里，而「培养」入口又藏在命卡详情页的小按钮——足足埋了两层；镶嵌、分解又各自独立。新玩家进来往往只看到镶嵌，其余全靠自己探索。',
+            afterNote:
+              '镶嵌 · 强化 · 铸命 · 分解 全部提为一级导航、彼此平级——进门一眼看全，无需探索。',
+            caption: '信息架构对照（数字化自设计师手绘脑图）',
+          },
+          deepEntry: {
+            kicker: '旧方案问题',
+            title: '最重要的养成操作，藏在一个小按钮里',
+            body:
+              'UX 介入迭代前，培养（强化 / 铸命）只能从命卡详情页右侧的小按钮进入，玩家感知度低——不知道自己还能继续培养，且培养页没有提供命卡切换，只能返回上两级页面操作。\n 把培养提到一级导航，是整体扁平化的第一步。',
+            media: {
+              src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780905000/20260608-153657_ccs5p1.gif',
+              caption: '迭代前养成操作路径',
+            },
+          },
+          functionTour: {
+            kicker: '交互方案 · 四功能同框',
+            title: '优化交互方案',
+            intro:
+              '扁平到一级只解决「在哪」；要让玩家学一次就会全部，还得让四个功能共用一套版式语言——相同的一级导航、相同的主要信息交互区、相同的命卡选择区。',
+            zones: ['一级导航', '主要信息交互区', '命卡选择区'],
+            tabs: [
+              {
+                key: 'xiangqian',
+                label: '镶嵌',
+                summary: '从独立的部位转盘页，并入统一画框；新增右侧卡库速取与一键镶嵌。',
+                change: '并入统一画框 · 右侧卡库速取 · 一键镶嵌',
+                before: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843463/%E8%BF%AD%E4%BB%A3%E5%89%8D-%E9%95%B6%E5%B5%8C_vxz86d.png',
+                  caption: '镶嵌 · 迭代前（独立全屏 · 转盘版式）',
+                },
+                after: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843487/%E9%95%B6%E5%B5%8C_gkkldj.png',
+                  caption: '镶嵌 · 迭代后（统一画框 + 右侧卡库 + 一键镶嵌）',
+                },
+              },
+              {
+                key: 'qianghua',
+                label: '强化',
+                summary: '从单卡大立绘页，规整为属性前后对比清单，纳入统一左导航。',
+                change: '大立绘页 → 属性前后对比清单 · 纳入一级导航',
+                before: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843468/%E8%BF%AD%E4%BB%A3%E5%89%8D-%E5%BC%BA%E5%8C%96_mmgw4z.png',
+                  caption: '强化 · 迭代前（独立全屏 · 大立绘版式）',
+                },
+                after: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843474/%E5%BC%BA%E5%8C%96_vy7kis.png',
+                  caption: '强化 · 迭代后（属性前后差值高亮 · 统一左导航）',
+                },
+              },
+              {
+                key: 'zhuming',
+                label: '铸命',
+                summary: '保留原属性 / 新属性双栏与铸命评分，接入统一卡库，与其他功能同框。',
+                change: '保留双栏属性与评分 · 接入统一卡库',
+                before: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843461/%E8%BF%AD%E4%BB%A3%E5%89%8D-%E4%BD%8F%E5%91%BD_ycasop.png',
+                  caption: '铸命 · 迭代前（独立全屏 · 双栏属性）',
+                },
+                after: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843481/%E9%93%B8%E5%91%BD_dyofla.png',
+                  caption: '铸命 · 迭代后（原 / 新属性双栏 + 评分 + 统一卡库）',
+                },
+              },
+              {
+                key: 'fenjie',
+                label: '分解',
+                summary: '从独立网格页并入统一画框，筛选与产出一致呈现。',
+                change: '独立网格页 → 统一画框 · 筛选与产出一致',
+                before: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843460/%E8%BF%AD%E4%BB%A3%E5%89%8D-%E5%88%86%E8%A7%A3_istdeo.png',
+                  caption: '分解 · 迭代前（独立全屏 · 网格版式）',
+                },
+                after: {
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780921309/%E5%88%86%E8%A7%A3_1_n938fa.png',
+                  caption: '分解 · 迭代后（统一画框 · 筛选与产出一致）',
+                },
+              },
+            ],
+          },
+          liveResult: {
+            kicker: '正式落地 · 线上实装',
+            title: '正式落地效果',
+            body:
+              '改版已正式上线。镶嵌 / 强化 / 铸命 / 分解 四大养成功能并入一体化单页，玩家在同一套版式内一站式完成全部养成，无需再在多级页面间往返——下方为线上实装效果。',
+            media: {
+              type: 'gif',
+              src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780912444/%E5%91%BD%E5%8D%A1%E6%9C%80%E6%96%B0%E6%95%88%E6%9E%9C_zzxyxg.gif',
+              caption: '正式落地 · 命卡养成一体化单页（线上实装）',
+            },
+          },
+        },
       },
+      // 暂时隐藏「交易所迭代」案例，后续可能恢复，取消注释即可还原
+      // {
+      //   id: 'trade',
+      //   title: '交易所迭代',
+      //   highlights: ['优化信息架构', '新增筛选、对比便捷功能', '优化购买、售卖流程'],
+      //   media: [
+      //     {
+      //       type: 'image',
+      //       src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png',
+      //     },
+      //   ],
+      //   articleMDX: md`
+      // <img
+      //   class="rounded-xl border border-border/40"
+      //   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761543907/a1f1d279-a732-4b9d-bd8a-4e48aa741191.png"
+      // />
+      //         `,
+      // },
       {
         id: 'skillcircle',
         title: '技能轮盘迭代',

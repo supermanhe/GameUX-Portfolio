@@ -82,8 +82,8 @@ export function RestoreProjectScroll() {
       if (el) {
         clearFlag()
         jump(el)
-        // 再校正几帧，抵消图片/字体加载带来的上方布局微移
-        if (Date.now() - start < 1200) {
+        // 持续校正一段时间，抵消首页开场状态切换、图片和字体加载带来的布局变化。
+        if (Date.now() - start < 3000) {
           timer = window.setTimeout(tick, 120)
         } else {
           settle()

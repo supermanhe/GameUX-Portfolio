@@ -3,6 +3,7 @@
 import Image, { type ImageProps } from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { PulsatingDots } from '@/components/ui/pulsating-loader'
 
 type SkeletonContainerProps = {
   children: React.ReactNode
@@ -16,11 +17,13 @@ function SkeletonContainer({ children, className, skeletonClassName, loaded }: S
     <div className={cn('relative overflow-hidden', className)}>
       <div
         className={cn(
-          'pointer-events-none absolute inset-0 bg-muted/60 transition-opacity duration-300',
-          loaded ? 'opacity-0' : 'opacity-100 animate-pulse',
+          'pointer-events-none absolute inset-0 bg-muted/30 transition-opacity duration-300',
+          loaded ? 'opacity-0' : 'opacity-100',
           skeletonClassName,
         )}
-      />
+      >
+        <PulsatingDots className="absolute inset-0" />
+      </div>
       {children}
     </div>
   )

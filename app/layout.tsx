@@ -13,6 +13,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/navbar'
 import { DelightLayer } from '@/components/motion/delight-layer'
 import { BgmProvider } from '@/components/audio/bgm-provider'
+import { SiteFooter } from '@/components/site-footer'
+import { ImageLoadingEnhancer } from '@/components/ui/image-loading-enhancer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://example.com'),
@@ -39,11 +41,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <BgmProvider>
             <DelightLayer />
+            <ImageLoadingEnhancer />
             <Navbar />
             <main>{children}</main>
-            <footer className="container py-12 text-sm text-muted-foreground">
-              <p>© {new Date().getFullYear()} GameUX Portfolio</p>
-            </footer>
+            <SiteFooter />
           </BgmProvider>
         </ThemeProvider>
       </body>

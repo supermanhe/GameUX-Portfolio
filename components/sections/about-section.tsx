@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Download, Github, Mail } from 'lucide-react'
+import { Download, Github, Home, Mail } from 'lucide-react'
 import { useTrackEvent } from '@/lib/analytics'
 import { aboutContent } from '@/data/about'
 
@@ -112,7 +112,15 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
     }
   }, [fullText])
 
-  // 滚动驱动：区块进度越过阈值 -> 气泡淡出、通关大字浮现
+  // 打字是否完成（用 ref 给滚动监听读取最新值，避免重订阅）
+  const typingCompleteRef = useRef(false)
+  useEffect(() => {
+    typingCompleteRef.current = typingComplete
+  }, [typingComplete])
+
+  // 滚动驱动：区块进度越过阈值 -> 气泡淡出、通关大字浮现。
+  // 但对话未播放完时锁定滚动——不允许越过区块顶部继续下滑，
+  // 让用户把气泡读完（打完字）后才能下滑进入 “QUEST COMPLETE”。
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
@@ -120,8 +128,19 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
     let ticking = false
     const update = () => {
       ticking = false
+      const rectTop = root.getBoundingClientRect().top
+
+      if (!typingCompleteRef.current) {
+        // 气泡已钉住（区块顶部越过视口顶部）时，把滚动夹回顶部，阻止继续下滑
+        if (rectTop < 0) {
+          window.scrollTo({ top: window.scrollY + rectTop, behavior: 'instant' as ScrollBehavior })
+        }
+        setQuestShown((prev) => (prev ? false : prev))
+        return
+      }
+
       const range = Math.max(root.offsetHeight - window.innerHeight, 1)
-      const progress = Math.min(Math.max(-root.getBoundingClientRect().top / range, 0), 1)
+      const progress = Math.min(Math.max(-rectTop / range, 0), 1)
       const past = progress >= 0.45
       setQuestShown((prev) => (prev === past ? prev : past))
     }
@@ -155,6 +174,16 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
       setToast(`复制失败，请手动复制：${aboutContent.email}`)
     }
   }, [track])
+
+  const handleReturnHome = useCallback(() => {
+    window.history.replaceState(null, '', window.location.pathname)
+    try {
+      sessionStorage.removeItem('returnToProject')
+    } catch {
+      /* ignore */
+    }
+    window.dispatchEvent(new Event('home:intro:open'))
+  }, [])
 
   return (
     <section ref={rootRef} id="about" className="relative h-[200dvh] bg-black" aria-label="关于我">
@@ -247,6 +276,17 @@ export function AboutSection({ src = '/ending.mp4' }: { src?: string }) {
             THANK YOU!
           </p>
         </div>
+
+        <button
+          type="button"
+          data-show={questShown ? 'true' : 'false'}
+          className="about-home-button absolute bottom-6 right-6 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/60 text-white shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black md:bottom-8 md:right-8"
+          aria-label="返回首页"
+          title="返回首页"
+          onClick={handleReturnHome}
+        >
+          <Home className="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
 
       {toast ? (
