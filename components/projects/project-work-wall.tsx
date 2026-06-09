@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -20,7 +20,36 @@ type ProjectWorkWallProps = {
 
 function CaseArticle({ markdown }: { markdown: string }) {
   const html = useMemo(() => transformMediaLinks(marked.parse(markdown) as string), [markdown])
-  return <div className="work-article" dangerouslySetInnerHTML={{ __html: html }} />
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+    const videos = ref.current.querySelectorAll('video')
+    if (!videos.length) return
+
+    videos.forEach((v) => {
+      v.loop = true
+    })
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement
+          if (entry.isIntersecting) {
+            video.play().catch(() => {})
+          } else {
+            video.pause()
+          }
+        })
+      },
+      { threshold: 0.5 },
+    )
+
+    videos.forEach((v) => observer.observe(v))
+    return () => observer.disconnect()
+  }, [html])
+
+  return <div ref={ref} className="work-article" dangerouslySetInnerHTML={{ __html: html }} />
 }
 
 export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWallProps) {

@@ -252,6 +252,13 @@ export const projects: Project[] = [
           '算法推荐UI迭代',
           '提升交易费收入',
         ],
+        archetype: '交易体验 · 效率提升',
+        blurb:
+          '大话玩家高频使用的虚拟道具交易平台——通过筛选优化、搜索提效和算法推荐UI迭代，让玩家更快找到心仪道具，提升交易转化与平台收入。',
+        cover: {
+          src: '/illustrations/dahua2/cangbao-cover.png',
+          alt: '藏宝阁优化',
+        },
         media: [
           {
             type: 'image',
@@ -279,6 +286,9 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
+<blockquote>
+  <h2>筛选与搜索优化</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466133/b01badd9-c89c-4bd6-ba9b-c167d5b4da0f.png"
@@ -290,6 +300,9 @@ export const projects: Project[] = [
     src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761466878/20251026-161913_ah3i5v.mp4"
   ></video>
 </div>
+<blockquote>
+  <h2>算法推荐UI迭代</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761466890/2183e3ef-b3e4-4faf-b71f-27ac1742350c.png"
@@ -301,6 +314,9 @@ export const projects: Project[] = [
     src="https://res.cloudinary.com/dnhjgceru/video/upload/v1761467742/20251026-163343_ntooi2.mp4"
   ></video>
 </div>
+<blockquote>
+  <h2>交易流程优化</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761467779/20251026-162625_f8ehl0.gif"
@@ -315,6 +331,13 @@ export const projects: Project[] = [
         id: 'duobao',
         title: '多宝阁 优化',
         highlights: ['瀑布流设计', '算法推荐', '场景化设计'],
+        archetype: '消费体验 · 场景化设计',
+        blurb:
+          '游戏内核心消费商城——从传统列表式改为瀑布流布局，结合算法推荐与场景化设计，让玩家在浏览中发现更多心仪商品，提升商城转化效率。',
+        cover: {
+          src: '/illustrations/dahua2/duobao-cover.png',
+          alt: '多宝阁优化',
+        },
         media: [
           {
             type: 'gif',
@@ -330,10 +353,16 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
+<blockquote>
+  <h2>瀑布流布局设计</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468013/20251026-163907_swab87.gif"
 />
+<blockquote>
+  <h2>算法推荐与场景化</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761468282/20251026-164135_avxsrl.gif"
@@ -348,6 +377,13 @@ export const projects: Project[] = [
         id: 'liutong',
         title: 'MMO资源流通 优化',
         highlights: ['资源从何而来', '获得资源的瞬间', '更加便捷地消耗'],
+        archetype: '经济系统 · 资源流通',
+        blurb:
+          'MMO核心经济系统的资源流通体验优化——梳理资源来源、获得反馈与消耗路径，让玩家对资源流转有清晰认知，提升经济系统的活跃度与健康度。',
+        cover: {
+          src: '/illustrations/dahua2/liutong-cover.png',
+          alt: 'MMO资源流通优化',
+        },
         media: [
           {
             type: 'image',
@@ -355,6 +391,9 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
+<blockquote>
+  <h2>资源流通全景</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761479819/Frame_1_2_ryapjb.png"
@@ -365,6 +404,13 @@ export const projects: Project[] = [
         id: 'gaojiazhi',
         title: '高价值奖励分享优化',
         highlights: ['优化视觉呈现', '提升易用性', '移动端社交平台分享'],
+        archetype: '社交传播 · 奖励展示',
+        blurb:
+          '高价值道具获得后的炫耀与分享场景——优化奖励展示视觉、简化分享流程，让玩家的成就感更容易传播到社交平台，提升游戏社交裂变效果。',
+        cover: {
+          src: '/illustrations/dahua2/gaojiazhi-cover.png',
+          alt: '高价值奖励分享优化',
+        },
         media: [
           {
             type: 'image',
@@ -372,6 +418,9 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
+<blockquote>
+  <h2>奖励展示与分享流程</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480721/0fd1d9aa-5c15-4b67-9b36-c9b1737990ba.png"
@@ -382,6 +431,13 @@ export const projects: Project[] = [
         id: 'social',
         title: '社交优化',
         highlights: ['回流玩法迭代', '社会临场感交互理论', '社交细节迭代'],
+        archetype: '社交体验 · 留存提升',
+        blurb:
+          'MMO核心社交系统体验优化——基于社会临场感理论重构回流玩法与社交细节，让玩家在游戏中感受到更真实的陪伴感，提升社交留存与活跃。',
+        cover: {
+          src: '/illustrations/dahua2/social-cover.png',
+          alt: '社交优化',
+        },
         media: [
           {
             type: 'image',
@@ -397,14 +453,23 @@ export const projects: Project[] = [
           },
         ],
         articleMDX: md`
+<blockquote>
+  <h2>回流玩法迭代</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761489967/a524ec4f-2ddd-45f5-ba36-09862769cf80.png"
 />
+<blockquote>
+  <h2>社会临场感交互设计</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480652/fe4d09db-fe8a-418b-895b-aeaf70b6b4d4.png"
 />
+<blockquote>
+  <h2>社交细节优化</h2>
+</blockquote>
 <img
   class="rounded-xl border border-border/40"
   src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761480685/541e44d0-b95b-4e92-ab58-f6ae8cc1be2b.png"
