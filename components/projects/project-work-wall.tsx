@@ -132,17 +132,19 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
               </div>
             )}
 
-            <div className="mt-16 grid gap-8 md:mt-24 lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)] lg:gap-14">
-              <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
-                <p className="font-pixel text-[0.72rem] uppercase tracking-wider text-primary">重点</p>
-                <div className="mt-5 grid gap-2">
-                  {item.highlights.map((highlight) => (
-                    <p key={highlight} className="rounded-md bg-secondary/70 px-3 py-2 text-sm text-secondary-foreground">
-                      {highlight}
-                    </p>
-                  ))}
-                </div>
-              </aside>
+            <div className={`mt-16 grid gap-8 md:mt-24 lg:gap-14${project.slug === 'dahua2' ? '' : ' lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)]'}`}>
+              {project.slug !== 'dahua2' && (
+                <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
+                  <p className="font-pixel text-[0.72rem] uppercase tracking-wider text-primary">重点</p>
+                  <div className="mt-5 grid gap-2">
+                    {item.highlights.map((highlight) => (
+                      <p key={highlight} className="rounded-md bg-secondary/70 px-3 py-2 text-sm text-secondary-foreground">
+                        {highlight}
+                      </p>
+                    ))}
+                  </div>
+                </aside>
+              )}
 
               <div className="work-media min-w-0">
                 <CaseArticle markdown={item.articleMDX} />
