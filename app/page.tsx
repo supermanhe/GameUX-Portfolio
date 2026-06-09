@@ -14,7 +14,7 @@ import { RestoreProjectScroll } from '@/components/motion/restore-project-scroll
 
 export default function Page() {
   return (
-    <div className="pb-10">
+    <div>
       <HomeLoopVideo src="/home-loop.mp4" transitionSrc="/zoom-transition.mp4" />
       <RestoreProjectScroll />
       <Suspense fallback={<DelayedRender><HeroSkeleton /></DelayedRender>}>

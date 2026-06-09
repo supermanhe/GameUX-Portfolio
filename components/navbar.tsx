@@ -18,6 +18,7 @@ const links = [
 export function Navbar() {
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const isProjectDetail = /^\/projects\/[^/]+\/?$/.test(pathname)
   const [activeId, setActiveId] = useState<string | null>(null)
 
   // 滚动监听：高亮当前所在区块对应的导航项（仅首页）
@@ -57,6 +58,8 @@ export function Navbar() {
     }
   }, [isHome])
 
+  if (isProjectDetail) return null
+
   return (
     <header className="sticky top-4 z-30">
       <div className="container">
@@ -71,6 +74,15 @@ export function Navbar() {
                 <Link
                   key={l.href}
                   href={isHome ? l.href : `/${l.href}`}
+                  onClick={() => {
+                    // 首页点击锚点时通知开场遮罩收起并滚动到目标区块
+                    // （Next.js Link 用 pushState 跳 hash，不触发原生 hashchange）
+                    if (isHome) {
+                      window.dispatchEvent(
+                        new CustomEvent('home:intro:navigate', { detail: l.href.slice(1) }),
+                      )
+                    }
+                  }}
                   aria-current={active ? 'true' : undefined}
                   className={cn(
                     'relative rounded-full px-3 py-2 text-sm transition hover:bg-secondary/70 hover:text-foreground',

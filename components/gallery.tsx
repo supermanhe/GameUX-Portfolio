@@ -1,11 +1,12 @@
 "use client"
 
 import { useCallback, useMemo, useState } from 'react'
-import Image from 'next/image'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { EMBED_IFRAME_ALLOW, EMBED_IFRAME_SANDBOX } from '@/lib/embed-config'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { SkeletonImage } from '@/components/ui/media-skeleton'
+import { LoadableImage } from '@/components/ui/loadable-image'
 
 export type Media = {
   type: 'image' | 'gif' | 'video' | 'embed'
@@ -40,19 +41,20 @@ export function Gallery({ items }: { items: Media[] }) {
             onClick={() => openAt(i)}
           >
             {m.type === 'image' ? (
-              <Image
+              <SkeletonImage
                 src={m.src}
                 alt={m.caption || 'media'}
                 width={600}
                 height={400}
                 loading="lazy"
+                containerClassName="h-full w-full"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               />
             ) : m.type === 'gif' ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <LoadableImage
                 src={m.src}
                 alt={m.caption || 'media'}
+                containerClassName="h-full w-full"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 loading="lazy"
                 decoding="async"
@@ -85,8 +87,12 @@ export function Gallery({ items }: { items: Media[] }) {
             </button>
             <div className="relative flex max-h-[80vh] min-h-[300px] items-center justify-center overflow-hidden rounded-2xl bg-black">
               {current?.type === 'image' || current?.type === 'gif' ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={current.src} alt={current.caption || ''} className="max-h-[80vh] w-auto" />
+                <LoadableImage
+                  src={current.src}
+                  alt={current.caption || ''}
+                  containerClassName="min-h-[300px] min-w-[min(80vw,48rem)]"
+                  className="max-h-[80vh] w-auto"
+                />
               ) : current?.type === 'video' ? (
                 <video src={current.src} poster={current.poster} controls className="max-h-[80vh]">
                   您的浏览器不支持视频播放。

@@ -93,8 +93,14 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
   // 进开场时把循环视频从头播放、隐藏 zoom
   useEffect(() => {
     if (!introVisible) return
+    let shouldResetScroll = true
+    try {
+      shouldResetScroll = !window.location.hash && !sessionStorage.getItem('returnToProject')
+    } catch {
+      shouldResetScroll = !window.location.hash
+    }
     setPhaseBoth('loop')
-    window.scrollTo(0, 0)
+    if (shouldResetScroll) window.scrollTo(0, 0)
     const loop = loopVideoRef.current
     if (loop) {
       loop.muted = true
@@ -149,6 +155,43 @@ export function HomeLoopVideo({ src, transitionSrc }: HomeLoopVideoProps) {
       switchingRef.current = false
     }, FLASH_PEAK_MS)
   }, [triggerFlash])
+
+  useEffect(() => {
+    window.addEventListener('home:intro:open', reopenIntro)
+    return () => window.removeEventListener('home:intro:open', reopenIntro)
+  }, [reopenIntro])
+
+  // 开场可见时点击顶部导航锚点（#projects/#sites/...）：
+  // 用闪白收起开场并滚动到目标区块，否则 hash 变了但开场遮罩仍盖在最上层、滚动被锁，
+  // 视觉上一直停在首页循环视频。
+  // 注意：Next.js <Link> 用 history.pushState 跳 hash，不触发原生 hashchange，
+  // 因此由 Navbar 在点击时派发 home:intro:navigate 事件（同时也兜底监听 hashchange）。
+  useEffect(() => {
+    if (!introVisible) return
+    const goToSection = (rawId: string) => {
+      const id = decodeURIComponent(rawId)
+      if (!id || switchingRef.current) return
+      switchingRef.current = true
+      triggerFlash()
+      window.setTimeout(() => {
+        setIntroVisible(false)
+        switchingRef.current = false
+        // 等开场卸载、滚动解锁后再定位到目标区块
+        requestAnimationFrame(() => {
+          const el = document.getElementById(id)
+          if (el) el.scrollIntoView({ behavior: 'auto', block: 'start' })
+        })
+      }, FLASH_PEAK_MS)
+    }
+    const onNavigate = (event: Event) => goToSection((event as CustomEvent<string>).detail ?? '')
+    const onHashChange = () => goToSection(window.location.hash.slice(1))
+    window.addEventListener('home:intro:navigate', onNavigate)
+    window.addEventListener('hashchange', onHashChange)
+    return () => {
+      window.removeEventListener('home:intro:navigate', onNavigate)
+      window.removeEventListener('hashchange', onHashChange)
+    }
+  }, [introVisible, triggerFlash])
 
   // 开场阶段：下滑 / 点击 / ↓ -> 开始缩放
   useEffect(() => {
