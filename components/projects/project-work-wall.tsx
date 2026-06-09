@@ -27,9 +27,13 @@ function CaseArticle({ markdown }: { markdown: string }) {
     const videos = ref.current.querySelectorAll('video')
     if (!videos.length) return
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     videos.forEach((v) => {
       v.loop = true
     })
+
+    if (reduceMotion) return
 
     const observer = new IntersectionObserver(
       (entries) => {
