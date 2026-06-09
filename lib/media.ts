@@ -97,6 +97,7 @@ export function transformMediaLinks(html: string) {
       const video = window.document.createElement('video')
       video.src = normalizedHref
       video.controls = true
+      video.loop = true
       video.className = 'tiptap-video'
       video.setAttribute('playsinline', 'true')
 

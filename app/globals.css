@@ -776,7 +776,7 @@ body::before {
 }
 
 .work-article blockquote {
-  margin-top: 1rem;
+  margin-top: 10px;
   border-left: 3px solid hsl(var(--primary));
   padding-left: 1rem;
   color: hsl(var(--foreground));
@@ -2433,6 +2433,12 @@ body::before {
   width: 100vw;
   height: 1px;
   background: hsl(var(--border) / 0.55);
+}
+
+/* 带全宽封面的案例（藏宝阁、多宝阁…）之间留出明显空白，
+   避免上一个案例的内容直接顶住下一个案例的封面 banner，看上去太挤 */
+.work-item-has-cover:not(:first-child) {
+  margin-top: clamp(4rem, 8vw, 7rem);
 }
 
 .featured-cases-heading .font-pixel {
