@@ -9,7 +9,12 @@ import type { Project } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
 export function ProjectDetailNav({ project }: { project: Project }) {
-  const hiddenCaseIds = project.slug === 'myth-quest' ? new Set(['Consistency', 'UEprocess']) : new Set<string>()
+  const hiddenCaseIds =
+    project.slug === 'myth-quest'
+      ? new Set(['Consistency', 'UEprocess'])
+      : project.slug === 'dahua2'
+        ? new Set(['manage'])
+        : new Set<string>()
   const navCases = project.cases
     .map((item, index) => ({ item, index }))
     .filter(({ item }) => !hiddenCaseIds.has(item.id))

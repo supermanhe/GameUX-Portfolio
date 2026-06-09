@@ -190,7 +190,7 @@ const FUNC_BADGES = ['镶嵌', '强化', '铸命', '分解']
 
 export function SystemCaseStory({ id, index, title, story }: SystemCaseStoryProps) {
   return (
-    <section id={id} className="work-item cs cs-linear scroll-mt-24 pt-10">
+    <section id={id} className="work-item cs cs-linear scroll-mt-24">
       {/* 开场立论（去数字） */}
       <header className={cn('cs-hero cs-hero-linear work-copy', story.heroImage && 'has-cover')}>
         {story.heroImage && (

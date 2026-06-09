@@ -16,7 +16,8 @@ export default async function ProjectDetail({ params }: { params: { slug: string
   const project = await getProjectBySlug(params.slug)
   if (!project) return notFound()
   const subtitleIsTag = project.tags.some((tag) => tag === project.subtitle)
-  const featuredCaseIds = project.slug === 'myth-quest' ? ['Consistency', 'UEprocess'] : []
+  const featuredCaseIds =
+    project.slug === 'myth-quest' ? ['Consistency', 'UEprocess'] : project.slug === 'dahua2' ? ['manage'] : []
 
   return (
     <div className="container space-y-16 pb-16 pt-4">
@@ -89,7 +90,7 @@ export default async function ProjectDetail({ params }: { params: { slug: string
 
       <ProjectFeaturedCases project={project} />
 
-      <section className="space-y-8">
+      <section className="key-design space-y-4">
         <div className="featured-cases-heading">
           <div>
             <p className="font-pixel">KEY DESIGN</p>

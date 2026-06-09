@@ -17,6 +17,8 @@ type Milestone = {
   year: string
   title: string
   subtitle: string
+  // 该节点对应的公司 / 项目图标，进度接近时浮出气泡
+  logos?: { company: string; companyAlt: string; game: string; gameAlt: string }
 }
 
 const MILESTONES: Milestone[] = [
@@ -31,12 +33,24 @@ const MILESTONES: Milestone[] = [
     year: '2017',
     title: '网易游戏',
     subtitle: '《大话西游2》 · UX 负责人',
+    logos: {
+      company: '/logos/netease.png',
+      companyAlt: '网易游戏',
+      game: '/logos/dahua.png',
+      gameAlt: '《大话西游2》',
+    },
   },
   {
     at: 0.67,
     year: '2022',
     title: '昆仑万维 · 方舟游戏',
     subtitle: '《圣境之塔》 · UX 负责人',
+    logos: {
+      company: '/logos/arkgame.png',
+      companyAlt: '昆仑万维 · 方舟游戏',
+      game: '/logos/shengjing.png',
+      gameAlt: '《圣境之塔》',
+    },
   },
   {
     at: 1,
@@ -45,6 +59,9 @@ const MILESTONES: Milestone[] = [
     subtitle: 'AI 提效 · 全栈 Demo',
   },
 ]
+
+// 进度落在节点 ±此窗口内时浮出该节点的图标气泡，离开后隐藏
+const BUBBLE_WINDOW = 0.13
 
 // 表示“用户主动滚动意图”的按键（用于打断自动播放 / 点击跳转的缓动）
 const SCROLL_KEYS = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' ', 'Spacebar']
@@ -55,6 +72,8 @@ export function HistoryScroll({ data, src }: { data: HeroContent; src: string })
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const lastTimeRef = useRef(-1)
   const [activeIndex, setActiveIndex] = useState(0)
+  // 当前进度最接近、且在窗口内的「带图标节点」索引（-1 = 无）
+  const [nearIndex, setNearIndex] = useState(-1)
   // 末尾滑动提醒计时器
   const hintTimerRef = useRef(0)
   const jumpTweenRef = useRef<gsap.core.Tween | null>(null)
@@ -188,6 +207,19 @@ export function HistoryScroll({ data, src }: { data: HeroContent; src: string })
       }
       setActiveIndex((current) => (current === next ? current : next))
 
+      // 图标气泡：进度接近某个带 logo 的节点时显示该节点气泡，离开附近后隐藏
+      let near = -1
+      let best = BUBBLE_WINDOW
+      for (let i = 0; i < MILESTONES.length; i += 1) {
+        if (!MILESTONES[i].logos) continue
+        const dist = Math.abs(progress - MILESTONES[i].at)
+        if (dist <= best) {
+          best = dist
+          near = i
+        }
+      }
+      setNearIndex((current) => (current === near ? current : near))
+
       // 起点（中山大学）或末尾（To Be Continued）静止停留超过 3 秒 -> 浮出滑动提醒。
       // 一旦页面真的滚动离开起点区域（滚轮滚动、点击下方时间轴跳转等任何使页面滚动的
       // 交互），就永久关闭“起点”引导——再滚回起点也不再出现；单纯移动鼠标 / 点击 / 按非
@@ -310,6 +342,27 @@ export function HistoryScroll({ data, src }: { data: HeroContent; src: string })
                     </button>
                   )
                 })}
+
+                {/* 节点图标气泡：进度接近第 2 / 3 个节点时浮出「公司 + 项目」图标，离开后隐藏 */}
+                {MILESTONES.map((m, i) =>
+                  m.logos ? (
+                    <div
+                      key={m.title + 'bubble'}
+                      className="hist-bubble"
+                      data-show={nearIndex === i}
+                      style={{ left: `${m.at * 100}%` }}
+                      aria-hidden="true"
+                    >
+                      <span className="hist-bubble-inner">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="hist-bubble-company" src={m.logos.company} alt={m.logos.companyAlt} />
+                        <span className="hist-bubble-div" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="hist-bubble-game" src={m.logos.game} alt={m.logos.gameAlt} />
+                      </span>
+                    </div>
+                  ) : null,
+                )}
               </div>
 
               {/* 节点文案 —— 与圆点同一 left 对齐 */}

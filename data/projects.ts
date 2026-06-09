@@ -153,6 +153,10 @@ export type Project = {
     id: string
     title: string
     highlights: string[]
+    cover?: { src: string; alt?: string; objectPosition?: string }
+    /** 旧版（无 story）案例封面用：原型标签 + 一句话描述（对齐 story 版 hero 的语气） */
+    archetype?: string
+    blurb?: string
     media: Array<{
       type: 'image' | 'gif' | 'video' | 'embed'
       src: string
@@ -801,7 +805,7 @@ export const projects: Project[] = [
               actions: ['档位差值推荐', '按需最小档位'],
               media: {
                 type: 'image',
-                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542302/3c53a59c-180f-4aca-bf6b-f3e9cd6aa6ab.png',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780995674/Group_22_1_z4u1jp.png',
                 caption: '迭代后 · 充值档位差值推荐',
               },
             },
@@ -814,7 +818,7 @@ export const projects: Project[] = [
               actions: ['充值后直达商品', '缩短操作路径'],
               media: {
                 type: 'image',
-                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542293/0ee2b05c-64d9-4a04-a371-f4c6955035b1.png',
+                src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780995684/Group_24_v0qcv7.png',
                 caption: '迭代前 · 充值后需重新进店找回商品（已优化）',
               },
             },
@@ -1185,6 +1189,13 @@ export const projects: Project[] = [
         id: 'skillcircle',
         title: '技能轮盘迭代',
         highlights: ['费茨定律应用', '横屏操作热区', '易用性量化规则'],
+        archetype: '操作体验 · 易用性量化',
+        blurb:
+          '横屏战斗里技能轮盘是最高频的操作区——以费茨定律重排技能键位、贴合拇指热区，并把易用性沉淀成可量化的规则，让出招更跟手、误触更少。',
+        cover: {
+          src: '/illustrations/shengjing/skillcircle-cover.jpg',
+          alt: '技能轮盘迭代',
+        },
         media: [
           {
             type: 'image',
@@ -1197,11 +1208,11 @@ export const projects: Project[] = [
         ],
         articleMDX: md`
 <blockquote>
-  <h2>迭代前</h2>
+  <h2>迭代前后</h2>
 </blockquote>
 <img
   class="rounded-xl border border-border/40"
-  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542847/68acf950-7254-43b1-a56b-c62a960bd885.png"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1780999700/20260609-180726_ox1a8t.gif"
 />
 <blockquote>
   <h2>迭代分析、方案</h2>

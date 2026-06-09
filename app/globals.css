@@ -51,6 +51,9 @@
 html {
   font-family: var(--font-sans), "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
   scroll-behavior: smooth;
+  /* 裁掉全宽出血带因 100vw 含滚动条宽度造成的横向溢出（clip 仅裁 x 轴，
+     纵向滚动不受影响，也不建立滚动容器，不干扰 sticky 与首页滚动锁） */
+  overflow-x: clip;
 }
 
 body {
@@ -138,6 +141,83 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .flash-cut--play {
     animation: none;
+  }
+}
+
+/* 履历时间轴：节点图标气泡（进度接近第 2 / 3 节点时浮出公司 + 项目图标，离开即隐藏） */
+.hist-bubble {
+  position: absolute;
+  bottom: calc(100% + clamp(0.9rem, 3.5vh, 2rem));
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px) scale(0.9);
+  transform-origin: 50% 130%;
+  transition:
+    opacity 0.42s ease,
+    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.hist-bubble[data-show='true'] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.hist-bubble-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.85rem;
+  background: hsl(0 0% 100% / 0.88);
+  border: 1px solid hsl(0 0% 100% / 0.6);
+  box-shadow:
+    0 16px 36px hsl(30 30% 3% / 0.52),
+    0 0 0 1px hsl(var(--primary) / 0.14);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+/* 气泡下方小三角，指向节点 */
+.hist-bubble-inner::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 11px;
+  height: 11px;
+  transform: translateX(-50%) rotate(45deg);
+  background: hsl(0 0% 100% / 0.88);
+  border-right: 1px solid hsl(0 0% 100% / 0.6);
+  border-bottom: 1px solid hsl(0 0% 100% / 0.6);
+}
+
+.hist-bubble-company {
+  display: block;
+  height: 1.55rem;
+  width: auto;
+}
+
+.hist-bubble-div {
+  width: 1px;
+  height: 1.7rem;
+  background: hsl(30 12% 12% / 0.16);
+}
+
+.hist-bubble-game {
+  display: block;
+  height: 2.05rem;
+  width: 2.05rem;
+  border-radius: 0.42rem;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px hsl(30 12% 12% / 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hist-bubble {
+    transition: none;
   }
 }
 
@@ -873,11 +953,35 @@ body::before {
   color: hsl(var(--muted-foreground));
 }
 
-/* 框架 + 主体 两栏 */
+/* 框架 + 主体 两栏 —— 拆解带：纯净深黑底 + 细网格
+   不加色相，仅以「沉到更黑」与上方暖金展示带拉开层级：上亮暖、下黑静。
+   全宽出血，内容回插对齐 1280 版心。 */
 .cs-grid {
-  margin-top: 3rem;
+  position: relative;
+  isolation: isolate;
+  margin-top: 0;
+  margin-inline: calc(50% - 50vw);
+  padding-block: clamp(2.8rem, 5vw, 4.4rem);
+  padding-inline: max(1rem, calc((100vw - 1280px) / 2 + 1rem));
+  border-top: 1px solid hsl(var(--border) / 0.5);
   display: grid;
   gap: 2.5rem;
+  background: linear-gradient(180deg, hsl(24 8% 3.5%) 0%, hsl(28 14% 5%) 100%);
+}
+
+/* 细网格：呼应框架的系统化语义，自上而下淡出；中性微暖白线，不引入色相 */
+.cs-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(hsl(38 24% 82% / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(38 24% 82% / 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(125% 92% at 50% 0%, #000 24%, transparent 72%);
+          mask-image: radial-gradient(125% 92% at 50% 0%, #000 24%, transparent 72%);
 }
 
 @media (min-width: 1024px) {
@@ -925,6 +1029,14 @@ body::before {
 }
 
 .cs-step {
+  /* 现为 <button>：去掉浏览器默认样式，铺满列宽、文字左对齐 */
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
   display: flex;
   gap: 0.85rem;
   padding: 0.7rem 0.75rem;
@@ -933,8 +1045,30 @@ body::before {
   transition:
     background 240ms ease,
     border-color 240ms ease,
-    opacity 240ms ease;
+    opacity 240ms ease,
+    transform 240ms ease;
   opacity: 0.5;
+}
+
+/* 可跳转步骤：指针 + hover/focus 微反馈 */
+.cs-step.is-clickable {
+  cursor: pointer;
+}
+
+.cs-step.is-clickable:hover {
+  opacity: 0.9;
+  background: hsl(var(--primary) / 0.05);
+  border-color: hsl(var(--primary) / 0.22);
+}
+
+.cs-step.is-clickable:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.7);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+.cs-step:disabled {
+  cursor: default;
 }
 
 .cs-step.is-active {
@@ -1123,11 +1257,61 @@ body::before {
   padding-left: 0.1rem;
 }
 
+/* 迭代对比：全宽呈现（不占用左侧框架列，先看清前后差异）
+   展示带：暖金「聚光舞台」底——一束暖光自右上打在迭代后截图上，
+   像把改版 UI 摆上展台；细颗粒提质感。与下方冷调拆解带形成温差对照。 */
+.cs-compare-full {
+  position: relative;
+  isolation: isolate;
+  margin-top: 0;
+  margin-inline: calc(50% - 50vw);
+  padding-block: clamp(2.4rem, 4.4vw, 3.8rem);
+  padding-inline: max(1rem, calc((100vw - 1280px) / 2 + 1rem));
+  background:
+    radial-gradient(120% 130% at 82% 42%, hsl(38 92% 36% / 0.34), transparent 58%),
+    radial-gradient(95% 120% at 0% 108%, hsl(24 60% 12% / 0.62), transparent 60%),
+    linear-gradient(180deg, hsl(33 32% 10.5%) 0%, hsl(31 26% 7%) 100%);
+}
+
+/* 暖带颗粒：柔化大渐变的色阶断层，增加胶片质感 */
+.cs-compare-full::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+
+.cs-compare-full > .cs-kicker {
+  margin-bottom: 0.3rem;
+}
+
 /* 迭代前后对比（顶部 tab 统一切换标题/重点/图） */
 .cs-compare {
   margin-top: 1.4rem;
   display: grid;
   gap: 1.2rem;
+}
+
+/* 叙述列：tab + 标题 + 重点 成组，便于全宽时整体居中 */
+.cs-compare-lede {
+  display: grid;
+  gap: 1.2rem;
+  align-content: start;
+}
+
+/* 全宽场景：左叙述 / 右对比图 两栏，铺满内容宽度，长图也比单列收窄一半 */
+@media (min-width: 1024px) {
+  .cs-compare-full .cs-compare {
+    margin-top: 1rem;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    column-gap: 3.5rem;
+    align-items: center;
+  }
 }
 
 .cs-compare-tabs {
@@ -1204,23 +1388,35 @@ body::before {
   border: 1px solid hsl(var(--border) / 0.76);
   background: hsl(var(--card));
   box-shadow: 0 24px 60px hsl(250 20% 2% / 0.3);
+  /* 所有迭代图叠放在同一网格单元 → 容器高度恒为最高的那张，切换不跳动 */
+  display: grid;
 }
 
-/* 按列宽铺满、保留原始比例：短图正常、长图完整展开不再被压成一小条 */
+/* 按列宽铺满、保留原始比例：短图正常、长图完整展开不再被压成一小条。
+   多图叠放交叉淡化：非当前图 opacity:0 但仍占位，撑出最大高度。 */
 .cs-compare-img {
+  grid-area: 1 / 1;
+  align-self: start;
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
-  animation: cs-compare-fade 480ms ease;
+  opacity: 0;
+  transform: scale(1.02);
+  transition:
+    opacity 520ms ease,
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes cs-compare-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+.cs-compare-img.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-compare-img {
+    transition: none;
+    transform: none;
   }
 }
 
@@ -1250,18 +1446,32 @@ body::before {
   background: hsl(0 0% 0% / 0.4);
 }
 
-.cs-compare-timer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 2;
-  height: 2px;
+/* 自动轮播进度条：移到 tab 下方的留白处，比长图底部更显眼 */
+.cs-compare-progress {
+  justify-self: start;
+  width: 100%;
+  max-width: 240px;
+  height: 3px;
+  margin-top: -0.45rem;
+  border-radius: 999px;
+  background: hsl(var(--primary) / 0.16);
+  overflow: hidden;
+}
+
+.cs-compare-progress-fill {
+  display: block;
+  height: 100%;
   width: 0;
+  border-radius: 999px;
   background: hsl(var(--primary));
   box-shadow: 0 0 12px hsl(var(--primary) / 0.6);
   animation-name: cs-timer;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+}
+
+.cs-compare-progress-fill.is-paused {
+  animation-play-state: paused;
 }
 
 @keyframes cs-timer {
@@ -2202,6 +2412,29 @@ body::before {
   margin-bottom: 1.5rem;
 }
 
+/* 「关键设计点」标题与首个案例之间收紧：去掉首个案例顶部留白（pt-10） */
+.key-design .work-item:first-child {
+  padding-top: 0.5rem;
+}
+
+/* 案例之间不留大空隙：故事版案例（.cs）与带全宽封面的旧版案例（.work-item-has-cover）
+   都靠全屏 banner / 封面带自然分隔，间距为 0；只有「无封面的纯图文墙案例」才补一条
+   等宽发丝分隔线 + 少量内边距，避免贴死或留空。 */
+.work-item:not(.cs):not(.work-item-has-cover):not(:first-child) {
+  position: relative;
+  padding-top: 3rem;
+}
+
+.work-item:not(.cs):not(.work-item-has-cover):not(:first-child)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: 1px;
+  background: hsl(var(--border) / 0.55);
+}
+
 .featured-cases-heading .font-pixel {
   color: hsl(var(--primary));
   font-size: 0.66rem;
@@ -2502,10 +2735,6 @@ body::before {
   border: 1px solid hsl(0 0% 100% / 0.12);
   border-radius: 0.5rem;
   box-shadow: 0 30px 100px hsl(0 0% 0% / 0.5);
-  opacity: 0;
-  transform: translate(-48%, -50%) scale(0.98);
-  pointer-events: none;
-  transition: opacity 360ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 img.is-image-loading {
@@ -2536,6 +2765,19 @@ img.is-image-loading {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
+  /* 换页时整块轻微淡入＋上浮缩放，避免硬切的突兀感（每次切片 key 变化即重放） */
+  animation: featured-slide-in 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes featured-slide-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 10px)) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .featured-slide-image {
@@ -2788,9 +3030,70 @@ img.is-image-loading {
   .featured-case-trigger,
   .featured-case-cover,
   .featured-slide-image,
+  .featured-slide-image-frame,
   .featured-slide-track span,
   .featured-viewer {
     animation: none;
     transition: none;
   }
+}
+
+/* 旧版（articleMDX）案例封面：与结构化案例的 .cs-hero.has-cover 对齐——
+   全宽出血的影院式封面带、发丝描边（非圆角卡片）、编号 + 标题底部对齐。 */
+.legacy-case-cover {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(29rem, 46vw, 38rem);
+  overflow: hidden;
+  margin-inline: calc(50% - 50vw);
+  padding: clamp(2rem, 5vw, 4.5rem) max(1rem, calc((100vw - 1280px) / 2 + 1rem));
+  /* 仅保留底部发丝线作为「封面→正文」分隔；去掉顶部线（紧跟上方非全宽内容时会显成一条横贯线） */
+  border-bottom: 1px solid hsl(var(--border) / 0.55);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: #100c08;
+}
+
+/* 封面图铺底（LoadableImage 容器为 .absolute.inset-0），压到最底层 */
+.legacy-case-cover > .absolute.inset-0 {
+  z-index: 0;
+}
+
+.legacy-case-cover-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, hsl(30 24% 5% / 0.92) 0%, hsl(30 24% 5% / 0.7) 42%, hsl(30 24% 5% / 0.42) 100%),
+    linear-gradient(0deg, hsl(30 24% 5% / 0.88) 0%, transparent 52%, hsl(30 24% 5% / 0.48) 100%);
+}
+
+.legacy-case-cover-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.legacy-case-cover-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.legacy-case-cover-copy h2 {
+  margin-top: 1.1rem;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.legacy-case-cover-blurb {
+  margin-top: 1.4rem;
+  max-width: 40rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: hsl(var(--foreground) / 0.9);
+  text-shadow: 0 2px 12px hsl(30 24% 3% / 0.95);
 }

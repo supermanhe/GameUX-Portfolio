@@ -7,9 +7,9 @@ import { useGSAP } from '@gsap/react'
 import { marked } from 'marked'
 import type { Project } from '@/data/projects'
 import { transformMediaLinks } from '@/lib/media'
-import { cn } from '@/lib/utils'
 import { CaseStorySection } from '@/components/projects/case-story'
 import { SystemCaseStory } from '@/components/projects/system-case-story'
+import { LoadableImage } from '@/components/ui/loadable-image'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -62,7 +62,7 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
   )
 
   return (
-    <div ref={rootRef} className="space-y-20 md:space-y-28">
+    <div ref={rootRef}>
       {project.cases.map((item) => {
         if (hiddenCaseIds.includes(item.id)) return null
         visibleIndex += 1
@@ -78,26 +78,46 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
           <section
             key={item.id}
             id={item.id}
-            className="work-item scroll-mt-24 grid gap-8 pt-10 lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)]"
+            className={`work-item scroll-mt-24${item.cover ? ' work-item-has-cover' : ''}`}
           >
-            <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span className="font-pixel text-3xl text-primary tabular-nums">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+            {item.cover && (
+              <div className="legacy-case-cover work-copy">
+                <LoadableImage
+                  src={item.cover.src}
+                  alt={item.cover.alt ?? item.title}
+                  containerClassName="absolute inset-0"
+                  className="h-full w-full object-cover"
+                  style={item.cover.objectPosition ? { objectPosition: item.cover.objectPosition } : undefined}
+                />
+                <span className="legacy-case-cover-shade" />
+                <div className="legacy-case-cover-copy">
+                  <div className="legacy-case-cover-head">
+                    <span className="font-pixel text-3xl text-primary tabular-nums">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    {item.archetype && <span className="cs-archetype">{item.archetype}</span>}
+                  </div>
+                  <h2>{item.title}</h2>
+                  {item.blurb && <p className="legacy-case-cover-blurb">{item.blurb}</p>}
+                </div>
               </div>
-              <h2 className="mt-5 text-3xl font-black leading-tight md:text-5xl">{item.title}</h2>
-              <div className="mt-6 grid gap-2">
-                {item.highlights.map((highlight) => (
-                  <p key={highlight} className="rounded-md bg-secondary/70 px-3 py-2 text-sm text-secondary-foreground">
-                    {highlight}
-                  </p>
-                ))}
-              </div>
-            </aside>
+            )}
 
-            <div className={cn('work-media min-w-0', index % 2 === 1 && 'lg:-mt-16')}>
-              <CaseArticle markdown={item.articleMDX} />
+            <div className="mt-16 grid gap-8 md:mt-24 lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)] lg:gap-14">
+              <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
+                <p className="font-pixel text-[0.72rem] uppercase tracking-wider text-primary">重点</p>
+                <div className="mt-5 grid gap-2">
+                  {item.highlights.map((highlight) => (
+                    <p key={highlight} className="rounded-md bg-secondary/70 px-3 py-2 text-sm text-secondary-foreground">
+                      {highlight}
+                    </p>
+                  ))}
+                </div>
+              </aside>
+
+              <div className="work-media min-w-0">
+                <CaseArticle markdown={item.articleMDX} />
+              </div>
             </div>
           </section>
         ))

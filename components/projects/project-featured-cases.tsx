@@ -23,6 +23,12 @@ type FeaturedConfig = {
 }
 
 const FEATURED_CASES: Record<string, FeaturedConfig> = {
+  manage: {
+    cover: '/covers/team-collaboration-cover.jpg',
+    eyebrow: 'TEAMWORK · OPERATIONS',
+    description: '将规范、模板与经验分享沉淀为团队可复用的协作资产，持续提升设计交付效率。',
+    mode: 'gallery',
+  },
   Consistency: {
     cover: '/covers/figma-rule-cover.jpg',
     eyebrow: 'DESIGN SYSTEM · FIGMA',
@@ -241,8 +247,7 @@ export function ProjectFeaturedCases({ project }: { project: Project }) {
     return config ? [{ ...item, config, projectIndex }] : []
   })
   const openItem = items.find((item) => item.id === openId)
-
-  if (project.slug !== 'myth-quest' || items.length === 0) return null
+  if (items.length === 0) return null
 
   return (
     <>
