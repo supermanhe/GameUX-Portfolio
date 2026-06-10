@@ -20,30 +20,49 @@ export function ProjectDetailNav({ project }: { project: Project }) {
     .filter(({ item }) => !hiddenCaseIds.has(item.id))
   const [activeId, setActiveId] = useState(navCases[0]?.item.id ?? '')
 
+  const sectionKey = navCases.map(({ item }) => item.id).join('|')
+
   useEffect(() => {
-    const sections = navCases
-      .map(({ item }) => document.getElementById(item.id))
-      .filter((item): item is HTMLElement => Boolean(item))
+    const ids = sectionKey.split('|').filter(Boolean)
+    if (!ids.length) return undefined
 
-    if (!sections.length) return undefined
+    let raf = 0
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+    const update = () => {
+      raf = 0
+      const sections = ids
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => Boolean(el))
+      if (!sections.length) return
 
-        if (visible?.target.id) setActiveId(visible.target.id)
-      },
-      {
-        rootMargin: '-18% 0px -52% 0px',
-        threshold: [0.12, 0.24, 0.4, 0.62],
-      },
-    )
+      // 当前章节 = 顶部已越过视口上方 1/3 参考线的最后一个章节
+      const line = window.innerHeight * 0.34
+      let current = sections[0].id
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= line) current = section.id
+      }
 
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [navCases])
+      // 滚动到页面底部时,强制高亮最后一个章节
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        current = sections[sections.length - 1].id
+      }
+
+      setActiveId((prev) => (prev === current ? prev : current))
+    }
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [sectionKey])
 
   return (
     <header className="project-detail-nav">
