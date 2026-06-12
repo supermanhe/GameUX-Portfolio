@@ -18,7 +18,11 @@ export default async function ProjectDetail({ params }: { params: { slug: string
   if (!project) return notFound()
   const subtitleIsTag = project.tags.some((tag) => tag === project.subtitle)
   const featuredCaseIds =
-    project.slug === 'myth-quest' ? ['Consistency', 'UEprocess'] : project.slug === 'dahua2' ? ['manage'] : []
+    project.slug === 'myth-quest'
+      ? ['Consistency', 'UEprocess']
+      : project.slug === 'dahua2'
+        ? ['manage', 'ui-guidelines', 'desktop-to-mobile']
+        : []
 
   return (
     <div className="container space-y-16 pb-16 pt-4">

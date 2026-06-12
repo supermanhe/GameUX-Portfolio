@@ -26,6 +26,9 @@ const ITEM_SELECTOR = [
   '.cs-tour-img.is-active',
   '.cs-deepentry-frame > img',
   '.cs-spotlight-media',
+  '.pcs-scheme-img',
+  '.diy-mode-img.is-active',
+  '.diy-eco-img',
 ].join(', ')
 
 // 需要注入「全屏」悬浮按钮的视频（原生控制条会吃掉点击，整体点击不可行）
@@ -54,7 +57,12 @@ function toItem(el: Element): LightboxItem {
 export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
   const [state, setState] = useState<LightboxState | null>(null)
   const [zoomed, setZoomed] = useState(false)
+  const [grabbing, setGrabbing] = useState(false)
   const lastWheelAt = useRef(0)
+  const stageRef = useRef<HTMLElement>(null)
+  // 放大态下按住拖动平移：记录起点 + 起始滚动位移；moved 用于抑制拖动结束时误触的缩放切换
+  const drag = useRef<{ x: number; y: number; sl: number; st: number; moved: boolean } | null>(null)
+  const suppressClick = useRef(false)
 
   const openAt = useCallback(
     (el: Element) => {
@@ -176,12 +184,6 @@ export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
   const current = state.items[state.index]
   const counter = `${String(state.index + 1).padStart(2, '0')} / ${String(state.items.length).padStart(2, '0')}`
 
-  const onBackdropClick = (event: React.MouseEvent) => {
-    const target = event.target
-    if (target instanceof Element && target.closest('img, video, button, figcaption')) return
-    close()
-  }
-
   const onWheel = (event: React.WheelEvent) => {
     if (zoomed) return
     if (Math.abs(event.deltaY) < 16) return
@@ -191,13 +193,53 @@ export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
     step(event.deltaY > 0 ? 1 : -1)
   }
 
+  // 放大态：按住拖动以平移大图（直接改 stage 的 scrollLeft/scrollTop）
+  const onPointerDown = (event: React.PointerEvent) => {
+    if (!zoomed || event.button !== 0) return
+    const stage = stageRef.current
+    if (!stage) return
+    drag.current = { x: event.clientX, y: event.clientY, sl: stage.scrollLeft, st: stage.scrollTop, moved: false }
+    stage.setPointerCapture(event.pointerId)
+    setGrabbing(true)
+  }
+
+  const onPointerMove = (event: React.PointerEvent) => {
+    const d = drag.current
+    const stage = stageRef.current
+    if (!d || !stage) return
+    const dx = event.clientX - d.x
+    const dy = event.clientY - d.y
+    if (!d.moved && Math.hypot(dx, dy) > 4) d.moved = true
+    stage.scrollLeft = d.sl - dx
+    stage.scrollTop = d.st - dy
+  }
+
+  const onPointerUp = (event: React.PointerEvent) => {
+    const d = drag.current
+    if (!d) return
+    // 真正拖动过 → 抑制随后图片 onClick 的缩放切换，避免拖完就退出放大
+    if (d.moved) suppressClick.current = true
+    drag.current = null
+    stageRef.current?.releasePointerCapture(event.pointerId)
+    setGrabbing(false)
+  }
+
+  // 点击舞台：放大 ↔ 默认尺寸来回切换（视频不缩放）；真正拖动结束的那次点击不触发
+  const onStageClick = () => {
+    if (suppressClick.current) {
+      suppressClick.current = false
+      return
+    }
+    if (current?.type === 'video') return
+    setZoomed((z) => !z)
+  }
+
   return createPortal(
     <div
       className="media-lightbox"
       role="dialog"
       aria-modal="true"
       aria-label="案例媒体全屏查看"
-      onClick={onBackdropClick}
       onWheel={onWheel}
     >
       <header className="media-lightbox-head">
@@ -207,7 +249,15 @@ export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
         </button>
       </header>
 
-      <figure className={cn('media-lightbox-stage', zoomed && 'is-zoomed')}>
+      <figure
+        ref={stageRef}
+        className={cn('media-lightbox-stage', zoomed && 'is-zoomed', grabbing && 'is-grabbing')}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClick={onStageClick}
+      >
         {current.type === 'video' ? (
           <video
             key={current.src}
@@ -225,7 +275,7 @@ export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
             className="media-lightbox-media"
             src={current.src}
             alt={current.caption ?? ''}
-            onClick={() => setZoomed((z) => !z)}
+            draggable={false}
           />
         )}
         {current.caption && <figcaption className="media-lightbox-cap">{current.caption}</figcaption>}

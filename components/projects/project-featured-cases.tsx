@@ -19,6 +19,7 @@ type FeaturedConfig = {
   cover: string
   eyebrow: string
   description: string
+  detailDescription?: string
   mode: 'gallery' | 'slides'
 }
 
@@ -27,6 +28,20 @@ const FEATURED_CASES: Record<string, FeaturedConfig> = {
     cover: '/covers/team-collaboration-cover.jpg',
     eyebrow: 'TEAMWORK · OPERATIONS',
     description: '将规范、模板与经验分享沉淀为团队可复用的协作资产，持续提升设计交付效率。',
+    mode: 'gallery',
+  },
+  'ui-guidelines': {
+    cover: '/covers/dahua-ui-guidelines-cover.png',
+    eyebrow: 'DESIGN SYSTEM · UI GUIDELINES',
+    description: '系统梳理界面视觉语言与组件规则，沉淀为团队可复用、可持续维护的 UI 规范。',
+    mode: 'gallery',
+  },
+  'desktop-to-mobile': {
+    cover: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781254001/ChatGPT_Image_2026%E5%B9%B46%E6%9C%8812%E6%97%A5_15_46_03_ipo0cu.webp',
+    eyebrow: 'DESKTOP TO MOBILE · KNOWLEDGE',
+    description: '将端游页面转译为口袋版 UI，并沉淀新系统的移动端适配方法与规范。',
+    detailDescription:
+      '经典端游紧跟手游时代推出口袋版。加入项目后，我的重要任务之一，是将既有端游页面重构为手游 UI；此后新系统也默认需要支持口袋版，因此我将实践经验总结为设计方法与规范，用于团队知识积累与分享。',
     mode: 'gallery',
   },
   Consistency: {
@@ -218,7 +233,7 @@ function FullscreenViewer({ item, onClose }: { item: FeaturedCase; onClose: () =
         <div className="featured-gallery">
           <div className="featured-gallery-intro">
             <span className="font-pixel">SYSTEM ARCHIVE</span>
-            <p>{item.config.description}</p>
+            <p>{item.config.detailDescription ?? item.config.description}</p>
           </div>
           {images.map((media, index) => (
             <figure key={media.src} className="featured-gallery-board">
@@ -242,6 +257,7 @@ function FullscreenViewer({ item, onClose }: { item: FeaturedCase; onClose: () =
 
 export function ProjectFeaturedCases({ project }: { project: Project }) {
   const [openId, setOpenId] = useState<string | null>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
   const items = project.cases.flatMap((item, projectIndex) => {
     const config = FEATURED_CASES[item.id]
     return config ? [{ ...item, config, projectIndex }] : []
@@ -257,9 +273,29 @@ export function ProjectFeaturedCases({ project }: { project: Project }) {
             <p className="font-pixel">FOUNDATION WORK</p>
             <h2 id="featured-cases-title">规范与流程沉淀</h2>
           </div>
+          {items.length > 2 ? (
+            <div className="featured-cases-scroll-controls" aria-label="浏览规范与流程沉淀">
+              <button
+                type="button"
+                className="featured-cases-scroll-button focus-ring"
+                onClick={() => trackRef.current?.scrollBy({ left: -trackRef.current.clientWidth * 0.72, behavior: 'smooth' })}
+                aria-label="向左浏览"
+              >
+                <ArrowLeft aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="featured-cases-scroll-button focus-ring"
+                onClick={() => trackRef.current?.scrollBy({ left: trackRef.current.clientWidth * 0.72, behavior: 'smooth' })}
+                aria-label="向右浏览"
+              >
+                <ArrowRight aria-hidden="true" />
+              </button>
+            </div>
+          ) : null}
         </div>
 
-        <div className="featured-cases-grid">
+        <div ref={trackRef} className="featured-cases-grid">
           {items.map((item) => {
             const Icon = item.config.mode === 'slides' ? Presentation : Layers3
             return (

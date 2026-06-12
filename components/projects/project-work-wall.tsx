@@ -9,6 +9,10 @@ import type { Project } from '@/data/projects'
 import { transformMediaLinks } from '@/lib/media'
 import { CaseStorySection } from '@/components/projects/case-story'
 import { SystemCaseStory } from '@/components/projects/system-case-story'
+import { DragonCaseStory } from '@/components/projects/dragon-case-story'
+import { PetCaseStory } from '@/components/projects/pet-case-story'
+import { DiyCaseStory } from '@/components/projects/diy-case-story'
+import { AiuxCaseStory } from '@/components/projects/aiux-case-story'
 import { LoadableImage } from '@/components/ui/loadable-image'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -102,7 +106,15 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
         const index = visibleIndex
         return (
         item.story ? (
-          item.story.layout === 'linear' ? (
+          item.story.layout === 'dragon' ? (
+            <DragonCaseStory key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
+          ) : item.story.layout === 'pet' ? (
+            <PetCaseStory key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
+          ) : item.story.layout === 'diy' ? (
+            <DiyCaseStory key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
+          ) : item.story.layout === 'aiux' ? (
+            <AiuxCaseStory key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
+          ) : item.story.layout === 'linear' ? (
             <SystemCaseStory key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
           ) : (
             <CaseStorySection key={item.id} id={item.id} index={index} title={item.title} story={item.story} />
