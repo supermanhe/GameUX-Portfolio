@@ -93,6 +93,26 @@ gsap.registerPlugin(useGSAP, ScrollTrigger)
 ```
 Easing: `power2.out` / `power3.out` / `cubic-bezier(0.22, 1, 0.36, 1)`. All animations must respect `prefers-reduced-motion: reduce`.
 
+## Preview / Dev Server Protocol (post-incident, 2026-06-08)
+
+A Claude Preview dev server was left running ~11h after its task finished; its browser
+hit 13k+ "Timeout waiting for load" reload loops on /projects/myth-quest and re-fetched
+Cloudinary originals repeatedly — **62 GB of CDN bandwidth burned**. Project detail pages
+load full-size Cloudinary images; every full-page reload is expensive. Rules:
+
+1. **Stop the server when verification is done.** Never leave a dev/preview server
+   running at the end of a task (`preview_stop`, or `preview-session stop <name>`).
+2. **Fail fast on load timeouts.** If a page load times out twice in a row, STOP
+   retrying/reloading. Kill the server, report the failure. Never loop reload→screenshot.
+3. **Verify narrowly.** Prefer fetching rendered HTML (`curl`/`Invoke-WebRequest`) or a
+   single section anchor over repeated full-page screenshots of `/projects/[slug]` pages.
+4. **Don't re-verify by reloading.** One load per verification round; batch all checks
+   (console, network, snapshot, screenshot) against that single load.
+
+Safety net: `scripts/cleanup-stale-preview.ps1` runs every 30 min (logon watchdog) and on
+Claude SessionEnd; it kills unmanaged `next dev`/`next start` for this project after 2h
+(0.5h at session end). Servers registered with `preview-session` are exempt.
+
 ## Gotchas
 
 ### Remote Images

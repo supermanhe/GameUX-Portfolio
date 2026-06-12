@@ -12,7 +12,7 @@ export default function ProjectsPage() {
           <p className="text-sm font-semibold text-primary">Selected work</p>
           <h1 className="font-editorial mt-3 text-5xl font-black leading-tight md:text-7xl">{'\u53C2\u4E0E\u9879\u76EE'}</h1>
           <p className="mt-4 text-base leading-7 text-muted-foreground">
-          {'\u5C55\u793A\u4E24\u6B3E\u4E0A\u7EBF\u6E38\u620F\u7684\u5173\u952E\u5DE5\u4F5C\u4E0E\u6210\u679C\u3002'}
+          {'\u4E24\u6B3E\u4E0A\u7EBF\u6E38\u620F\u7684\u5173\u952E\u5DE5\u4F5C\u4E0E\u6210\u679C\uFF0C\u4EE5\u53CA\u4E00\u9879 AI First \u5DE5\u4F5C\u6D41\u7684\u63A2\u7D22\u3002'}
           </p>
         </div>
       </GsapReveal>

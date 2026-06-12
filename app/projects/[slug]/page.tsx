@@ -7,6 +7,7 @@ import { GsapReveal } from '@/components/motion/gsap-reveal'
 import { MarkReturnProject } from '@/components/projects/mark-return-project'
 import { ProjectDetailNav } from '@/components/projects/project-detail-nav'
 import { ProjectFeaturedCases } from '@/components/projects/project-featured-cases'
+import { MediaLightbox } from '@/components/projects/media-lightbox'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -17,7 +18,11 @@ export default async function ProjectDetail({ params }: { params: { slug: string
   if (!project) return notFound()
   const subtitleIsTag = project.tags.some((tag) => tag === project.subtitle)
   const featuredCaseIds =
-    project.slug === 'myth-quest' ? ['Consistency', 'UEprocess'] : project.slug === 'dahua2' ? ['manage'] : []
+    project.slug === 'myth-quest'
+      ? ['Consistency', 'UEprocess']
+      : project.slug === 'dahua2'
+        ? ['manage', 'ui-guidelines', 'desktop-to-mobile']
+        : []
 
   return (
     <div className="container space-y-16 pb-16 pt-4">
@@ -99,6 +104,7 @@ export default async function ProjectDetail({ params }: { params: { slug: string
         </div>
         <ProjectWorkWall project={project} hiddenCaseIds={featuredCaseIds} />
       </section>
+      <MediaLightbox scope=".key-design" />
     </div>
   )
 }
