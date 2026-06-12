@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/data/projects'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
 import { GsapReveal } from '@/components/motion/gsap-reveal'
+import { CoverVideo } from '@/components/projects/cover-video'
 
 export function ProjectCard({ p, index = 0 }: { p: Project; index?: number }) {
   return (
@@ -12,14 +13,23 @@ export function ProjectCard({ p, index = 0 }: { p: Project; index?: number }) {
         className="group block overflow-hidden rounded-lg border border-border/70 bg-card/80 transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-primary/45 hover:bg-card"
       >
         <div className="relative">
-          <SkeletonImage
-            src={p.cover}
-            alt={p.title}
-            fill
-            className="object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
-            containerClassName="relative aspect-[16/10] w-full overflow-hidden bg-muted"
-            sizes="(max-width:768px) 100vw, 50vw"
-          />
+          {p.coverVideo ? (
+            <CoverVideo
+              src={p.coverVideo}
+              poster={p.cover}
+              className="transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+              containerClassName="aspect-[16/10] w-full overflow-hidden bg-muted"
+            />
+          ) : (
+            <SkeletonImage
+              src={p.cover}
+              alt={p.title}
+              fill
+              className="object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+              containerClassName="relative aspect-[16/10] w-full overflow-hidden bg-muted"
+              sizes="(max-width:768px) 100vw, 50vw"
+            />
+          )}
           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background/92 to-transparent" />
         </div>
         <div className="p-5 md:p-6">

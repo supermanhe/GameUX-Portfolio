@@ -8,6 +8,7 @@ import { MarkReturnProject } from '@/components/projects/mark-return-project'
 import { ProjectDetailNav } from '@/components/projects/project-detail-nav'
 import { ProjectFeaturedCases } from '@/components/projects/project-featured-cases'
 import { MediaLightbox } from '@/components/projects/media-lightbox'
+import { CoverVideo } from '@/components/projects/cover-video'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -51,15 +52,23 @@ export default async function ProjectDetail({ params }: { params: { slug: string
               <p className="mt-8 max-w-2xl text-sm leading-7 text-muted-foreground">{project.summary}</p>
             </div>
             <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] p-2 shadow-soft">
-              <SkeletonImage
-                src={project.cover}
-                alt={project.title}
-                fill
-                className="object-cover"
-                containerClassName="relative aspect-[16/11] w-full overflow-hidden rounded-md bg-muted"
-                sizes="(max-width:1024px) 100vw, 58vw"
-                priority
-              />
+              {project.coverVideo ? (
+                <CoverVideo
+                  src={project.coverVideo}
+                  poster={project.cover}
+                  containerClassName="aspect-[16/11] w-full overflow-hidden rounded-md bg-muted"
+                />
+              ) : (
+                <SkeletonImage
+                  src={project.cover}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  containerClassName="relative aspect-[16/11] w-full overflow-hidden rounded-md bg-muted"
+                  sizes="(max-width:1024px) 100vw, 58vw"
+                  priority
+                />
+              )}
             </div>
           </div>
         </GsapReveal>
@@ -96,12 +105,6 @@ export default async function ProjectDetail({ params }: { params: { slug: string
       <ProjectFeaturedCases project={project} />
 
       <section className="key-design space-y-4">
-        <div className="featured-cases-heading">
-          <div>
-            <p className="font-pixel">KEY DESIGN</p>
-            <h2>关键设计点</h2>
-          </div>
-        </div>
         <ProjectWorkWall project={project} hiddenCaseIds={featuredCaseIds} />
       </section>
       <MediaLightbox scope=".key-design" />

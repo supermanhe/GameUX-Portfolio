@@ -13,6 +13,7 @@ import { DragonCaseStory } from '@/components/projects/dragon-case-story'
 import { PetCaseStory } from '@/components/projects/pet-case-story'
 import { DiyCaseStory } from '@/components/projects/diy-case-story'
 import { AiuxCaseStory } from '@/components/projects/aiux-case-story'
+import { AiuxSkillsShowcase } from '@/components/projects/aiux-skills-showcase'
 import { LoadableImage } from '@/components/ui/loadable-image'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -100,6 +101,7 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
 
   return (
     <div ref={rootRef}>
+      {project.slug === 'ai-ux' && <AiuxSkillsShowcase />}
       {project.cases.map((item) => {
         if (hiddenCaseIds.includes(item.id)) return null
         visibleIndex += 1

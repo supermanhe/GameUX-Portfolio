@@ -373,6 +373,8 @@ export type CaseStory = {
     kicker?: string
     title?: string
     intro?: string
+    /** 对应 skill / 工具的开源仓库（文档图标按钮） */
+    repo?: { label: string; href: string }
     steps: Array<{ label: string; sub?: string }>
     caption?: string
   }
@@ -391,6 +393,8 @@ export type CaseStory = {
     kicker?: string
     title?: string
     intro?: string
+    /** 对应 skill 的开源仓库（文档图标按钮） */
+    repo?: { label: string; href: string }
     doc: { title: string; source: string }
     human: { label: string; ascii: string; notes: string[] }
     machine: { label: string; table: { head: string[]; rows: string[][] }; notes: string[] }
@@ -408,6 +412,8 @@ export type CaseStory = {
     kicker?: string
     title?: string
     intro?: string
+    /** 对应 skill 的开源仓库（文档图标按钮） */
+    repo?: { label: string; href: string }
     agents: Array<{
       key: string
       /** 调用命令，如「/producer」 */
@@ -434,6 +440,8 @@ export type Project = {
   platform: string[]
   kpis?: { label: string; value: string }[]
   cover: string
+  /** 封面视频（可选）：存在时项目封面位渲染为静音循环视频，cover 图作为 poster 兜底 */
+  coverVideo?: string
   tags: string[]
   summary: string
   cases: Array<{
@@ -2213,6 +2221,7 @@ export const projects: Project[] = [
     platform: ['Claude Code', 'Unity', 'Figma'],
     kpis: [{ label: '六环节', value: '3 项已有可运行资产' }],
     cover: '/covers/ai-ux-cover.png',
+    coverVideo: '/ai-ux-cover.mp4',
     tags: ['AI 工作流', '设计工程化'],
     summary:
       '一项关于「未来五年游戏 UX 工作方式」的个人探索。我没有按环节收集 AI 工具，而是先画了一张地图——「一源双环」：设计意图成为唯一的源，上线前的 agent 仿真与上线后的玩家反馈构成两个闭环。地图上的六个环节，我已经亲手走出三步：人机双读的设计文档 skill、46 条可执行的评审清单、把 Figma 设计稿直接编译成 Unity UI Prefab 的管线。',
@@ -2229,6 +2238,10 @@ export const projects: Project[] = [
           oneLiner:
             '与其按环节收集 AI 工具，不如先回答一个问题：五年后游戏 UX 的工作方式是什么样？我的推演是「一源双环」——设计意图成为唯一的源，上线前的 agent 仿真验证与上线后的玩家反馈回流构成两个闭环。六个流程环节挂在这张图上，每一个都诚实标注：已落地、原型，还是规划。',
           heroKicker: '工具目录 → 一张地图 + 已走出的三步',
+          heroImage: {
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781274965/aiux1_i2e7ia.webp',
+            alt: 'AI First UX 流程蓝图',
+          },
           evolutionLadder: {
             kicker: '路线推演 · 三层进化',
             title: '从工具化到自适应：UX 工作方式的三层进化',
@@ -2355,7 +2368,7 @@ export const projects: Project[] = [
           },
           metrics: [
             {
-              value: '3 / 6',
+              value: '3/6',
               label: '六个环节中，三个已有可运行资产',
               meta: [
                 { k: '口径', v: '设计事实 · 以可运行代码 / skill 为准' },
@@ -2387,10 +2400,15 @@ export const projects: Project[] = [
           oneLiner:
             '传统交付里，交互稿到引擎之间隔着切图、拼 prefab、对坐标的人肉流水线——每一步都在损耗设计意图。我做了一个「设计编译器」：设计师在 Figma 里按一套命名 DSL 作图，右键一步把 Figma JSON 编译成挂好组件、绑好资源的 Unity UI Prefab。这是「设计即源码」最重的一块实证。',
           heroKicker: '设计稿不再被「实现」，而是被「编译」',
+          heroImage: {
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781274965/aiux2_q4qdoc.webp',
+            alt: '设计编译器 Figma 到 UI Prefab',
+          },
           flowStrip: {
             kicker: '管线 · 五步编译',
             title: '从 Figma JSON 到可运行 Prefab',
             intro: 'Unity 编辑器内右键触发，整条管线全自动：',
+            repo: { label: 'figma-json-assets-handoff', href: 'https://github.com/supermanhe/figma-json-assets-handoff' },
             steps: [
               { label: 'Figma JSON', sub: '设计稿原始数据' },
               { label: 'TreeParser', sub: '解析节点树' },
@@ -2447,11 +2465,16 @@ export const projects: Project[] = [
           oneLiner:
             '当 AI 开始消费设计文档，文档就不再只写给人看。game-ui-doc skill 约定了一种「人机双读」的文档格式：自然语言讲意图，结构化表格讲规则——同一份文档，人能顺着读，AI 能直接解析去写代码。这就是「设计源」的雏形；配套的 UE Checklist 把评审经验沉淀成 46 条可执行检查项。',
           heroKicker: '一份文档，两种读者',
+          heroImage: {
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781274965/aiux3_ebzijg.webp',
+            alt: '人机双读的设计源',
+          },
           docDuet: {
             kicker: '核心约定 · 人机双读',
             title: '同一份文档，人读意图，机读规则',
             intro:
               '以 skill 内置的真实示例「房间图纸列表」为例——左边是给人读的布局与意图，右边是给 AI 读的状态规则表，出自同一份 markdown。',
+            repo: { label: 'game-ui-doc-skill', href: 'https://github.com/supermanhe/game-ui-doc-skill' },
             doc: { title: '房间图纸列表 · 交互文档', source: 'game-ui-doc skill 内置示例（节选）' },
             human: {
               label: '人读 · 布局与意图',
@@ -2595,10 +2618,15 @@ export const projects: Project[] = [
           oneLiner:
             'UX 的上游是策划案，而策划案最大的问题是「纸上谈兵」：逻辑不透明、数值没验证。VibeGame Studio 用 5 个垂直 agent skill 把一句模糊的玩法想法跑成完整策划案——制作人定愿景，系统 / 世界观 / 数值 / 战斗并行展开，制作人回头 review 整合。它验证的是未来流程的第一环：需求在进入 UX 之前，先被 AI 跑通一遍逻辑。',
           heroKicker: '一句想法 → 一份逻辑闭环的策划案',
+          heroImage: {
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781274965/aiux4_bytyqm.webp',
+            alt: '多代理需求验证 VibeGame Studio',
+          },
           agentRoster: {
             kicker: '虚拟工作室 · 5 个 agent',
             title: '每个 agent 一个垂直职责，producer 负责收口',
             intro: '以 Claude Code skill 形式实现，命令即角色：',
+            repo: { label: 'vibegame-studio', href: 'https://github.com/supermanhe/vibegame-studio' },
             agents: [
               {
                 key: 'producer',

@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { ArrowUpRight, FileCode2 } from 'lucide-react'
 import type { CaseStory } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
@@ -14,6 +15,24 @@ type AiuxCaseStoryProps = {
   index: number
   title: string
   story: CaseStory
+}
+
+/** skill 开源仓库按钮：文档图标 + 仓库名，新窗口打开 GitHub。 */
+function RepoButton({ repo }: { repo: { label: string; href: string } }) {
+  return (
+    <a
+      className="aiux-repo"
+      href={repo.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`查看 ${repo.label} skill 仓库（GitHub，新窗口打开）`}
+    >
+      <FileCode2 className="aiux-repo-icon" aria-hidden="true" />
+      <span className="aiux-repo-label">{repo.label}</span>
+      <span className="aiux-repo-tag font-pixel">SKILL</span>
+      <ArrowUpRight className="aiux-repo-arrow" aria-hidden="true" />
+    </a>
+  )
 }
 
 /** 三层进化路线：时间轴式逐层点亮，层间可插「你在这里」标记。 */
@@ -86,46 +105,44 @@ function PipelineMap({ data }: { data: NonNullable<CaseStory['pipelineMap']> }) 
       {data.title && <h3 className="cs-block-title">{data.title}</h3>}
       {data.intro && <p className="cs-rationale">{data.intro}</p>}
 
+      {/* 核心行：双环收敛为「文字注释 + 发丝线」直连设计源，不再各占一个空盒 */}
       <div className="aiux-map-core-row">
         <div className="aiux-map-loop">
           <span className="aiux-map-loop-label font-pixel">{data.loops[0]?.label}</span>
           <span className="aiux-map-loop-desc">{data.loops[0]?.desc}</span>
         </div>
+        <span className="aiux-map-link" aria-hidden="true" />
         <div className="aiux-map-core">
           <span className="aiux-map-core-label">{data.core.label}</span>
           {data.core.sub && <span className="aiux-map-core-sub">{data.core.sub}</span>}
         </div>
+        <span className="aiux-map-link" aria-hidden="true" />
         <div className="aiux-map-loop is-right">
           <span className="aiux-map-loop-label font-pixel">{data.loops[1]?.label}</span>
           <span className="aiux-map-loop-desc">{data.loops[1]?.desc}</span>
         </div>
       </div>
 
+      {/* 六环节：一条整轨分段，序号即顺序（去箭头），状态点不再压编号 */}
       <div className="aiux-map-track" role="tablist" aria-label="流程环节">
         {data.stations.map((s, i) => (
-          <span key={s.key} className="aiux-map-seg">
-            {i > 0 && (
-              <span className="aiux-map-arrow" aria-hidden="true">
-                →
-              </span>
-            )}
-            <button
-              type="button"
-              role="tab"
-              aria-selected={i === active}
-              className={cn('aiux-station', `is-${s.status}`, i === active && 'is-active')}
-              onClick={() => setActive(i)}
-            >
-              <span className="aiux-station-no font-pixel">{s.no}</span>
-              <span className="aiux-station-label">{s.label}</span>
-              <span className="aiux-station-dot" aria-hidden="true" />
-            </button>
-          </span>
+          <button
+            key={s.key}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
+            className={cn('aiux-station', `is-${s.status}`, i === active && 'is-active')}
+            onClick={() => setActive(i)}
+          >
+            <span className="aiux-station-no font-pixel">{s.no}</span>
+            <span className="aiux-station-label">{s.label}</span>
+            <span className="aiux-station-dot" aria-hidden="true" />
+          </button>
         ))}
-        <span className="aiux-map-return font-pixel" aria-hidden="true">
-          ↺ 回到设计源
-        </span>
       </div>
+      <span className="aiux-map-return font-pixel" aria-hidden="true">
+        ↺ 六环节产出回流设计源
+      </span>
 
       {station && (
         <div className={cn('aiux-map-detail', `is-${station.status}`)}>
@@ -165,7 +182,9 @@ function PipelineMap({ data }: { data: NonNullable<CaseStory['pipelineMap']> }) 
 function FlowStrip({ data }: { data: NonNullable<CaseStory['flowStrip']> }) {
   return (
     <div className="cs-block aiux-flow work-copy">
-      {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      <div className="aiux-block-head">
+        {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      </div>
       {data.title && <h3 className="cs-block-title">{data.title}</h3>}
       {data.intro && <p className="cs-rationale">{data.intro}</p>}
 
@@ -232,7 +251,9 @@ function DslTable({ data }: { data: NonNullable<CaseStory['dslTable']> }) {
 function DocDuet({ data }: { data: NonNullable<CaseStory['docDuet']> }) {
   return (
     <div className="cs-block aiux-duet work-copy">
-      {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      <div className="aiux-block-head">
+        {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      </div>
       {data.title && <h3 className="cs-block-title">{data.title}</h3>}
       {data.intro && <p className="cs-rationale">{data.intro}</p>}
 
@@ -327,7 +348,9 @@ function ChecklistWall({ data }: { data: NonNullable<CaseStory['checklistWall']>
 function AgentRoster({ data }: { data: NonNullable<CaseStory['agentRoster']> }) {
   return (
     <div className="cs-block aiux-roster work-copy">
-      {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      <div className="aiux-block-head">
+        {data.kicker && <p className="cs-kicker font-pixel">{data.kicker}</p>}
+      </div>
       {data.title && <h3 className="cs-block-title">{data.title}</h3>}
       {data.intro && <p className="cs-rationale">{data.intro}</p>}
 
@@ -348,7 +371,7 @@ function AgentRoster({ data }: { data: NonNullable<CaseStory['agentRoster']> }) 
         <div className="aiux-artifact">
           <div className="aiux-artifact-head">
             <span className="aiux-artifact-title">{data.artifact.title}</span>
-            <span className="aiux-artifact-meta font-pixel">{data.artifact.meta}</span>
+            <span className="aiux-artifact-meta">{data.artifact.meta}</span>
           </div>
           <ul className="aiux-artifact-lines">
             {data.artifact.lines.map((line) => (
@@ -410,29 +433,36 @@ function HonestFacts({ metrics }: { metrics: NonNullable<CaseStory['metrics']> }
 }
 
 export function AiuxCaseStory({ id, index, title, story }: AiuxCaseStoryProps) {
-  const badges = story.pipelineMap
-    ? [story.pipelineMap.core.label, ...story.pipelineMap.loops.map((l) => l.label)]
-    : []
+  const heroRepo = story.flowStrip?.repo ?? story.docDuet?.repo ?? story.agentRoster?.repo
 
   return (
     <section id={id} className="work-item cs cs-linear aiux scroll-mt-24">
-      {/* 开场立论：无图封面，用 CSS 网格纹理 banner 承担案例分隔 */}
-      <header className="cs-hero cs-hero-linear aiux-hero work-copy">
-        <div className="aiux-hero-grid" aria-hidden="true" />
-        <div className="cs-hero-head">
-          <span className="font-pixel text-3xl text-primary tabular-nums">{String(index + 1).padStart(2, '0')}</span>
-          <span className="cs-archetype">{story.archetype}</span>
+      <header className={cn('cs-hero cs-hero-linear aiux-hero work-copy', story.heroImage && 'has-cover')}>
+        {story.heroImage ? (
+          <div className="cs-hero-cover" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={story.heroImage.src}
+              alt=""
+              style={story.heroImage.objectPosition ? { objectPosition: story.heroImage.objectPosition } : undefined}
+            />
+            <span className="cs-hero-cover-shade" />
+          </div>
+        ) : (
+          <div className="aiux-hero-grid" aria-hidden="true" />
+        )}
+        <div className="aiux-hero-copy">
+          <div className="cs-hero-head">
+            <span className="font-pixel text-3xl text-primary tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+            <span className="cs-archetype">{story.archetype}</span>
+          </div>
+          <h2 className="cs-title">{title}</h2>
+          <p className="cs-oneliner">{story.oneLiner}</p>
+          {story.heroKicker && <p className="cs-hero-kicker font-pixel">{story.heroKicker}</p>}
         </div>
-        <h2 className="cs-title">{title}</h2>
-        <p className="cs-oneliner">{story.oneLiner}</p>
-        {story.heroKicker && <p className="cs-hero-kicker font-pixel">{story.heroKicker}</p>}
-        {badges.length > 0 && (
-          <div className="cs-hero-funcs" aria-hidden="true">
-            {badges.map((b) => (
-              <span key={b} className="cs-hero-func font-pixel">
-                {b}
-              </span>
-            ))}
+        {heroRepo && (
+          <div className="aiux-hero-repo">
+            <RepoButton repo={heroRepo} />
           </div>
         )}
       </header>

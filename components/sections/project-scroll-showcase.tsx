@@ -8,6 +8,7 @@ import { useGSAP } from '@gsap/react'
 import { ArrowUpRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { SkeletonImage } from '@/components/ui/media-skeleton'
+import { CoverVideo } from '@/components/projects/cover-video'
 import type { Project } from '@/data/projects'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -125,15 +126,24 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
             className="project-panel group relative left-1/2 flex min-h-[100dvh] w-screen -translate-x-1/2 items-end overflow-hidden bg-card focus-ring"
           >
             <div className="absolute inset-0 overflow-hidden">
-              <SkeletonImage
-                src={project.cover}
-                alt={project.title}
-                fill
-                sizes="100vw"
-                priority={index === 0}
-                className="project-panel-media object-cover will-change-transform"
-                containerClassName="relative h-full w-full"
-              />
+              {project.coverVideo ? (
+                <CoverVideo
+                  src={project.coverVideo}
+                  poster={project.cover}
+                  className="project-panel-media will-change-transform"
+                  containerClassName="h-full w-full"
+                />
+              ) : (
+                <SkeletonImage
+                  src={project.cover}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  priority={index === 0}
+                  className="project-panel-media object-cover will-change-transform"
+                  containerClassName="relative h-full w-full"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-r from-background/92 via-background/52 to-background/12" />
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-background via-background/34 to-transparent" />
             </div>
