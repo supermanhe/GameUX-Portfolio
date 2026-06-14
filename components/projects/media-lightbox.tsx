@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronDown, ChevronUp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -178,6 +178,24 @@ export function MediaLightbox({ scope = '.key-design' }: { scope?: string }) {
         preload.src = item.src
       })
   }, [state])
+
+  const currentSrc = state?.items[state.index]?.src
+
+  useLayoutEffect(() => {
+    const stage = stageRef.current
+    if (!stage) return
+
+    if (!zoomed) {
+      stage.scrollTo({ left: 0, top: 0 })
+      return
+    }
+
+    // Zoomed media starts centered, while remaining fully reachable in both directions.
+    stage.scrollTo({
+      left: Math.max(0, (stage.scrollWidth - stage.clientWidth) / 2),
+      top: 0,
+    })
+  }, [zoomed, currentSrc])
 
   if (!state) return null
 

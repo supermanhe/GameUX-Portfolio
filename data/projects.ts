@@ -366,6 +366,8 @@ export type CaseStory = {
       note: string
       /** 指向同项目其他案例的锚点，如「#figma2prefab」 */
       caseHref?: string
+      /** 该环节对应的开源仓库（无对应案例时挂骨架仓库） */
+      repo?: { label: string; href: string }
     }>
   }
   /** 横向流程条（aiux 通用）：编译管线 / 多 agent 工作流的步骤序列 */
@@ -423,8 +425,8 @@ export type CaseStory = {
       /** true = 负责 review/整合 的收口角色，特殊样式 */
       loop?: boolean
     }>
-    /** 实证产出摘录（网页重绘，不放截图） */
-    artifact?: { title: string; meta: string; lines: string[] }
+    /** 可全屏查看的生成实例 */
+    artifact?: { title: string; meta: string; docUrl: string }
   }
   /** 反思 / 取舍 / 下一步（可选） */
   reflection?: { title: string; body: string }
@@ -1273,7 +1275,7 @@ export const projects: Project[] = [
       },
       {
         id: 'battlepass',
-        title: 'BP优化',
+        title: 'Battle pass优化',
         highlights: ['突出大奖', '价值换算', '付费率提升10%+'],
         media: [
           {
@@ -1532,7 +1534,7 @@ export const projects: Project[] = [
                   caption: '镶嵌 · 迭代前（独立全屏 · 转盘版式）',
                 },
                 after: {
-                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843487/%E9%95%B6%E5%B5%8C_gkkldj.png',
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1780843487/%E9%95%B6%E5%B5%8C_gkkldj.png',
                   caption: '镶嵌 · 迭代后（统一画框 + 右侧卡库 + 一键镶嵌）',
                 },
               },
@@ -1546,7 +1548,7 @@ export const projects: Project[] = [
                   caption: '强化 · 迭代前（独立全屏 · 大立绘版式）',
                 },
                 after: {
-                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843474/%E5%BC%BA%E5%8C%96_vy7kis.png',
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1780843474/%E5%BC%BA%E5%8C%96_vy7kis.png',
                   caption: '强化 · 迭代后（属性前后差值高亮 · 统一左导航）',
                 },
               },
@@ -1560,7 +1562,7 @@ export const projects: Project[] = [
                   caption: '铸命 · 迭代前（独立全屏 · 双栏属性）',
                 },
                 after: {
-                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1780843481/%E9%93%B8%E5%91%BD_dyofla.png',
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1780843481/%E9%93%B8%E5%91%BD_dyofla.png',
                   caption: '铸命 · 迭代后（原 / 新属性双栏 + 评分 + 统一卡库）',
                 },
               },
@@ -1752,10 +1754,9 @@ export const projects: Project[] = [
                 body:
                   '未开放的槽位在任何界面都不显示，随品质成长才依次出现：虚框（未开放）→ 锁（未解锁）→ + 号（可镶嵌）。新手不会一上来就被一排空槽劝退，槽位本身成了成长的可视进度。',
                 media: {
-                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781163309/pet-skill_llpmbr.png',
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781421281/pet_hsywiu.webp',
                   caption: '技能页 · 右侧被动槽位随品质开放',
                 },
-                annotations: [{ label: '随品质开放的槽位', xPct: 78, yPct: 42 }],
               },
               {
                 title: '孵化概率显式化',
@@ -1772,10 +1773,9 @@ export const projects: Project[] = [
                 body:
                   '幻兽达到当前品质等级上限时，升级模块隐藏，原地换成「前往合成」的跳转——界面主动告诉玩家「这条路走到头了，下一步去哪」，而不是让人自己找。',
                 media: {
-                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781163303/pet-info_qvnm7a.png',
+                  src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781421283/skill_zumllp.webp',
                   caption: '信息页 · 升满后引导前往合成',
                 },
-                annotations: [{ label: '升满 → 前往合成', xPct: 84, yPct: 88 }],
               },
             ],
           },
@@ -2186,11 +2186,11 @@ export const projects: Project[] = [
         media: [
           {
             type: 'image',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542847/68acf950-7254-43b1-a56b-c62a960bd885.png',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1761542847/68acf950-7254-43b1-a56b-c62a960bd885.png',
           },
           {
             type: 'image',
-            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png',
+            src: 'https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png',
           },
         ],
         articleMDX: md`
@@ -2206,7 +2206,7 @@ export const projects: Project[] = [
 </blockquote>
 <img
   class="rounded-xl border border-border/40"
-  src="https://res.cloudinary.com/dnhjgceru/image/upload/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png"
+  src="https://res.cloudinary.com/dnhjgceru/image/upload/f_auto,q_auto:good,w_1800,c_limit/v1761542708/eba52f3c-8d72-48df-977f-f8387643946e.png"
 />
         `,
       },
@@ -2224,7 +2224,7 @@ export const projects: Project[] = [
     coverVideo: '/ai-ux-cover.mp4',
     tags: ['AI 工作流', '设计工程化'],
     summary:
-      '一项关于「未来五年游戏 UX 工作方式」的个人探索。我没有按环节收集 AI 工具，而是先画了一张地图——「一源双环」：设计意图成为唯一的源，上线前的 agent 仿真与上线后的玩家反馈构成两个闭环。地图上的六个环节，我已经亲手走出三步：人机双读的设计文档 skill、46 条可执行的评审清单、把 Figma 设计稿直接编译成 Unity UI Prefab 的管线。',
+      '这是一次关于未来五年游戏 UX 工作方式的个人尝试。比起按环节收集 AI 工具，我更想先把整体工作流想清楚，所以先画了一张“一源双环”的地图：让设计意图成为唯一的信息源，在上线前用 agent 做仿真验证，在上线后把玩家反馈接回设计过程，形成两个闭环。围绕这张地图，我做了三件事：一个让人和 AI 一起阅读设计文档的 skill，46 条可以直接执行的评审清单，以及一条把 Figma 设计稿直接编译成 Unity UI Prefab 的管线。',
     cases: [
       {
         id: 'blueprint',
@@ -2236,7 +2236,7 @@ export const projects: Project[] = [
           layout: 'aiux',
           archetype: '工作流设计 · 未来推演',
           oneLiner:
-            '与其按环节收集 AI 工具，不如先回答一个问题：五年后游戏 UX 的工作方式是什么样？我的推演是「一源双环」——设计意图成为唯一的源，上线前的 agent 仿真验证与上线后的玩家反馈回流构成两个闭环。六个流程环节挂在这张图上，每一个都诚实标注：已落地、原型，还是规划。',
+            '比起按环节收集 AI 工具，我更想先把整体工作流想清楚，所以先画了一张「一源双环」的地图：让设计意图成为唯一的信息源，在上线前用 agent 做仿真验证，在上线后把玩家反馈接回设计过程，形成两个闭环。地图上的六个环节也都标清楚了现在的状态：哪些已经落地，哪些还在原型阶段，哪些只是下一步计划。',
           heroKicker: '工具目录 → 一张地图 + 已走出的三步',
           heroImage: {
             src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781274965/aiux1_i2e7ia.webp',
@@ -2274,12 +2274,12 @@ export const projects: Project[] = [
               {
                 key: 'l3',
                 era: '2029 – 2031+',
-                label: 'L3 自适应 · 活的 UX',
-                thesis: '界面不再是静态交付物，而在设计师定义的约束内按玩家实时重组',
+                label: 'L3 自适应 · 可变的 UX',
+                thesis: '同一套设计规则，不再只产出一版固定界面，而会根据玩家状态实时调整',
                 points: [
-                  '上线前：千级 persona agent（新手 / 老手 / 付费 / 弱网 / 单手）先把原型「玩」一遍',
-                  '上线后：社区与埋点自动映射回设计源节点，生成修改提案进入同一条评审管线',
-                  '设计师设计的不是界面，是界面的生成规则与边界',
+                  '上线前：让不同类型的 agent 先把原型“玩”一遍，提前暴露新手、付费、弱网、单手等场景问题',
+                  '上线后：把社区反馈和埋点自动对应回设计源节点，生成修改提案并进入同一条评审管线',
+                  '设计师交付的不只是界面稿，更是界面如何变化的规则和边界，并以此构建 agent loop',
                 ],
               },
             ],
@@ -2359,32 +2359,13 @@ export const projects: Project[] = [
                 label: '反馈回路',
                 status: 'plan',
                 statusLabel: '规划',
-                asset: '社群反馈提炼 skill',
+                asset: 'community-insights（骨架已开源）',
                 input: '社区舆情 + 埋点数据',
                 output: '映射回设计源节点的修改提案',
-                note: '目标：每条差评都能定位到具体界面与规则，修改提案进入同一条评审管线。',
+                note: '采集复用 DiscordChatExporter，提炼层自研 skill：清洗 → 聚类 → 设计源映射 → 三级提案。骨架已开源，待接真实社区数据跑通后升级为原型。',
+                repo: { label: 'community-insights', href: 'https://github.com/supermanhe/community-insights' },
               },
             ],
-          },
-          metrics: [
-            {
-              value: '3/6',
-              label: '六个环节中，三个已有可运行资产',
-              meta: [
-                { k: '口径', v: '设计事实 · 以可运行代码 / skill 为准' },
-                { k: '范围', v: '规则沉淀 / 设计评审 / 编译交付' },
-              ],
-            },
-            {
-              value: 'L1 → L2',
-              label: '当前位置：工具化已验证，正向「设计即源码」过渡',
-              meta: [{ k: '口径', v: '自评 · 按三层进化框架' }],
-            },
-          ],
-          reflection: {
-            title: '框架是推演，不是预言',
-            body:
-              '三层进化的年份基于当前模型能力曲线推演，需要按年校准。「一源双环」的价值不在预测准确，而在它给每个新工具一个明确的位置——接到图上哪个环节、推进哪一层，避免为了用 AI 而用 AI。',
           },
         },
       },
@@ -2437,13 +2418,10 @@ export const projects: Project[] = [
           },
           oneTap: {
             kicker: '跑通样例',
-            title: '右键「Figma 转 Prefab」，列表、页签、按钮直接可玩',
-            body:
-              '配套洁净重写的 fast_ui 运行时（CanvasRenderer 自绘 + 自研输入 + 复用列表），编译产物开箱即用：按钮可点、列表可滚、页签可切。',
+            title: 'Figma 转 Prefab',
             media: {
               type: 'image',
-              src: '/covers/ai-ux-cover.png',
-              caption: '跑通样例截图 · 待替换（当前为占位图）',
+              src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1781422509/Figma_to_prefab_s1g5sh.webp',
             },
           },
           reflection: {
@@ -2516,7 +2494,7 @@ export const projects: Project[] = [
             kicker: '评审权 · 工程化',
             title: '把交互评审沉淀成 46 条可执行检查',
             intro:
-              '评审经验最怕只活在资深设计师的脑子里。UE Checklist 把它拆成六大类 46 条——AI 按条预审、标出缺失项，人把精力留给真正需要品味的判断。点击分类查看条目。',
+              '评审经验最怕只活在资深设计师的脑子里。UE Checklist 把它拆成六大类 46 条——写文档时它是自检清单，评既有设计时它变成专家评估的走查基准：AI 按条预审、标出违反项与严重度，人把精力留给真正需要品味的判断。点击分类查看条目。',
             groups: [
               {
                 key: 'goal',
@@ -2597,7 +2575,7 @@ export const projects: Project[] = [
                 ],
               },
             ],
-            note: '使用方法：逐条核对文档，缺失项补充说明或标记「待确认」——AI 预审产出的就是这张核对结果。',
+            note: '这套清单进一步长成「写 → 评 → 测」方法链：写文档自检 → 专家评估按启发式走查打严重度 → 可用性测试脚本用真实玩家验证假设。三步共用同一套基准，评审权从「资深经验」变成可执行、可移交的流程。',
           },
           reflection: {
             title: '文档的下一站',
@@ -2643,14 +2621,7 @@ export const projects: Project[] = [
             artifact: {
               title: '《龙翼弹幕》策划案',
               meta: '实证产出 · Ver 0.1 · 飞行弹幕 × 卡牌构筑 × RPG',
-              lines: [
-                '核心愿景：「驾驭神龙，编织弹幕，构筑属于你的空战卡组」',
-                '支柱 1 弹幕战斗 —— 卡牌决定弹幕类型，龙伙伴提供被动增益',
-                '支柱 2 卡牌构筑 —— 战前组卡，战中按能量条件释放',
-                '支柱 3 龙伙伴养成 —— 属性克制影响战斗，龙技能可编入卡组',
-                '支柱 4 RPG 成长 —— 成长提升上限，解锁卡牌与龙',
-                '弹幕类型表：直射 / 扩散 / 追踪 / 护盾 / 召唤，逐型配卡…',
-              ],
+              docUrl: '/docs/dragon-wing-barrage-plan.md',
             },
           },
           flowStrip: {

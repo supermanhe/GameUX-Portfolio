@@ -4281,8 +4281,14 @@ body::before {
   color: hsl(var(--foreground) / 0.78);
 }
 
+.aiux-map-detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+}
+
 .aiux-map-detail-link {
-  justify-self: start;
   font-size: 0.66rem;
   letter-spacing: 0.06em;
   color: hsl(var(--primary));
@@ -5839,7 +5845,7 @@ img.is-image-loading {
 
 /* 长图放大态：按原始宽度铺开，可纵/横向滚动或按住拖动细看 */
 .media-lightbox-stage.is-zoomed {
-  place-items: start center;
+  place-items: start;
   overflow: auto;
   overscroll-behavior: contain;
   cursor: grab;
@@ -5920,5 +5926,289 @@ img.media-lightbox-media {
   .media-expand-btn,
   .media-lightbox-btn {
     transition: none;
+  }
+}
+
+/* ===== AI UX 生成实例卡片与全屏文档阅读器 ===== */
+.aiux-artifact {
+  position: relative;
+  display: grid;
+  width: 100%;
+  padding: 1.25rem 1.35rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+}
+
+.aiux-artifact:hover {
+  border-color: hsl(var(--primary) / 0.7);
+  background:
+    radial-gradient(120% 90% at 50% 0%, hsl(var(--primary) / 0.1), transparent 65%),
+    hsl(var(--background) / 0.7);
+  transform: translateY(-2px);
+}
+
+.aiux-artifact-kicker {
+  margin-bottom: 0.55rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: hsl(var(--primary));
+}
+
+.aiux-artifact .aiux-artifact-title {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 900;
+}
+
+.aiux-artifact .aiux-artifact-meta {
+  margin-top: 0.35rem;
+}
+
+.aiux-artifact-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.1rem;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: hsl(var(--primary));
+}
+
+.aiux-artifact-cta svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  transition: transform 220ms ease;
+}
+
+.aiux-artifact:hover .aiux-artifact-cta svg {
+  transform: translate(2px, -2px);
+}
+
+.aiux-artifact-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background:
+    radial-gradient(circle at 50% -20%, hsl(var(--primary) / 0.13), transparent 38rem),
+    hsl(var(--background));
+  animation: featured-viewer-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aiux-artifact-viewer-head {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.1rem 0.85rem 1.5rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.7);
+  background: hsl(var(--background) / 0.88);
+  backdrop-filter: blur(18px);
+}
+
+.aiux-artifact-viewer-head > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.aiux-artifact-viewer-head span {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: hsl(var(--primary));
+}
+
+.aiux-artifact-viewer-head strong {
+  overflow: hidden;
+  color: hsl(var(--foreground));
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiux-artifact-close {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: hsl(var(--foreground) / 0.06);
+  color: hsl(var(--foreground));
+  transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
+}
+
+.aiux-artifact-close:hover {
+  border-color: hsl(var(--primary) / 0.65);
+  background: hsl(var(--primary) / 0.12);
+  color: hsl(var(--primary));
+}
+
+.aiux-artifact-close svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.aiux-artifact-viewer-scroll {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(2rem, 5vw, 4.5rem) max(1.1rem, calc((100vw - 58rem) / 2)) 6rem;
+}
+
+.aiux-artifact-viewer-state {
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
+.aiux-artifact-document {
+  max-width: 58rem;
+  margin: 0 auto;
+  color: hsl(var(--foreground) / 0.84);
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.aiux-artifact-document h1,
+.aiux-artifact-document h2,
+.aiux-artifact-document h3,
+.aiux-artifact-document h4 {
+  color: hsl(var(--foreground));
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.aiux-artifact-document h1 {
+  margin: 0 0 1.6rem;
+  font-family: var(--font-editorial), 'Noto Serif SC', serif;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.aiux-artifact-document h2 {
+  margin: 4rem 0 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid hsl(var(--border) / 0.8);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.aiux-artifact-document h3 {
+  margin: 2.4rem 0 0.8rem;
+  font-size: 1.18rem;
+}
+
+.aiux-artifact-document h4 {
+  margin: 1.8rem 0 0.5rem;
+  color: hsl(var(--primary));
+  font-size: 1rem;
+}
+
+.aiux-artifact-document p,
+.aiux-artifact-document ul,
+.aiux-artifact-document ol,
+.aiux-artifact-document table,
+.aiux-artifact-document pre,
+.aiux-artifact-document blockquote {
+  margin: 0 0 1rem;
+}
+
+.aiux-artifact-document ul,
+.aiux-artifact-document ol {
+  padding-left: 1.4rem;
+}
+
+.aiux-artifact-document li {
+  margin-bottom: 0.28rem;
+}
+
+.aiux-artifact-document strong {
+  color: hsl(var(--foreground));
+}
+
+.aiux-artifact-document blockquote {
+  padding: 1rem 1.2rem;
+  border-left: 3px solid hsl(var(--primary));
+  background: hsl(var(--primary) / 0.06);
+  color: hsl(var(--foreground) / 0.72);
+}
+
+.aiux-artifact-document blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.aiux-artifact-document table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.aiux-artifact-document th,
+.aiux-artifact-document td {
+  min-width: 9rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid hsl(var(--border) / 0.8);
+  text-align: left;
+  vertical-align: top;
+}
+
+.aiux-artifact-document th {
+  background: hsl(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+}
+
+.aiux-artifact-document code {
+  border-radius: 0.25rem;
+  background: hsl(var(--foreground) / 0.07);
+  padding: 0.15em 0.35em;
+  font-size: 0.86em;
+}
+
+.aiux-artifact-document pre {
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+  border: 1px solid hsl(var(--border) / 0.75);
+  border-radius: 0.55rem;
+  background: hsl(var(--card) / 0.8);
+}
+
+.aiux-artifact-document pre code {
+  background: none;
+  padding: 0;
+}
+
+.aiux-artifact-document hr {
+  margin: 3rem 0;
+  border: 0;
+  border-top: 1px solid hsl(var(--border) / 0.8);
+}
+
+@media (max-width: 640px) {
+  .aiux-artifact-viewer-head {
+    padding-left: 1rem;
+  }
+
+  .aiux-artifact-viewer-head > div {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .aiux-artifact-viewer-scroll {
+    padding-bottom: 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiux-artifact,
+  .aiux-artifact-cta svg,
+  .aiux-artifact-close {
+    transition: none;
+  }
+
+  .aiux-artifact-viewer {
+    animation: none;
   }
 }

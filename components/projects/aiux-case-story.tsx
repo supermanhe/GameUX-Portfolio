@@ -1,10 +1,12 @@
 "use client"
 
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { ArrowUpRight, FileCode2 } from 'lucide-react'
+import { marked } from 'marked'
+import { ArrowUpRight, FileCode2, X } from 'lucide-react'
 import type { CaseStory } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
@@ -81,7 +83,7 @@ function EvolutionLadder({ data }: { data: NonNullable<CaseStory['evolutionLadde
               </ul>
             </div>
             {data.hereAfter === i && (
-              <div className="aiux-here" aria-label="当前所处位置">
+              <div className="aiux-here" aria-label="当前位置">
                 <span className="aiux-here-line" />
                 <span className="aiux-here-tag font-pixel">你在这里</span>
                 <span className="aiux-here-line" />
@@ -167,11 +169,14 @@ function PipelineMap({ data }: { data: NonNullable<CaseStory['pipelineMap']> }) 
             </span>
           </p>
           <p className="aiux-map-detail-note">{station.note}</p>
-          {station.caseHref && (
-            <a className="aiux-map-detail-link font-pixel" href={station.caseHref}>
-              查看对应案例 ↓
-            </a>
-          )}
+          <div className="aiux-map-detail-links">
+            {station.caseHref && (
+              <a className="aiux-map-detail-link font-pixel" href={station.caseHref}>
+                查看对应案例 →
+              </a>
+            )}
+            {station.repo && <RepoButton repo={station.repo} />}
+          </div>
         </div>
       )}
     </div>
@@ -344,8 +349,74 @@ function ChecklistWall({ data }: { data: NonNullable<CaseStory['checklistWall']>
   )
 }
 
-/** 多代理角色卡 + 实证产出摘录。 */
+function GeneratedArtifactModal({
+  artifact,
+  onClose,
+}: {
+  artifact: NonNullable<NonNullable<CaseStory['agentRoster']>['artifact']>
+  onClose: () => void
+}) {
+  const [html, setHtml] = useState('')
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    fetch(artifact.docUrl, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to load document: ${response.status}`)
+        return response.text()
+      })
+      .then((markdown) => setHtml(marked.parse(markdown) as string))
+      .catch((reason) => {
+        if (reason instanceof DOMException && reason.name === 'AbortError') return
+        setError(true)
+      })
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      controller.abort()
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [artifact.docUrl, onClose])
+
+  return createPortal(
+    <div className="aiux-artifact-viewer" role="dialog" aria-modal="true" aria-label={`${artifact.title}完整内容`}>
+      <header className="aiux-artifact-viewer-head">
+        <div>
+          <span className="font-pixel">生成实例</span>
+          <strong>{artifact.title}</strong>
+        </div>
+        <button type="button" className="aiux-artifact-close focus-ring" onClick={onClose} aria-label="关闭生成实例">
+          <X aria-hidden="true" />
+        </button>
+      </header>
+      <div className="aiux-artifact-viewer-scroll">
+        {error ? (
+          <p className="aiux-artifact-viewer-state">文档加载失败，请稍后重试。</p>
+        ) : html ? (
+          <article className="aiux-artifact-document" dangerouslySetInnerHTML={{ __html: html }} />
+        ) : (
+          <p className="aiux-artifact-viewer-state">正在加载完整策划案…</p>
+        )}
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
+/** 多代理角色卡 + 可全屏查看的生成实例。 */
 function AgentRoster({ data }: { data: NonNullable<CaseStory['agentRoster']> }) {
+  const [showArtifact, setShowArtifact] = useState(false)
+  const closeArtifact = useCallback(() => setShowArtifact(false), [])
+
   return (
     <div className="cs-block aiux-roster work-copy">
       <div className="aiux-block-head">
@@ -368,17 +439,18 @@ function AgentRoster({ data }: { data: NonNullable<CaseStory['agentRoster']> }) 
       </div>
 
       {data.artifact && (
-        <div className="aiux-artifact">
-          <div className="aiux-artifact-head">
+        <>
+          <button type="button" className="aiux-artifact focus-ring" onClick={() => setShowArtifact(true)}>
+            <span className="aiux-artifact-kicker font-pixel">生成实例</span>
             <span className="aiux-artifact-title">{data.artifact.title}</span>
             <span className="aiux-artifact-meta">{data.artifact.meta}</span>
-          </div>
-          <ul className="aiux-artifact-lines">
-            {data.artifact.lines.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-        </div>
+            <span className="aiux-artifact-cta">
+              查看完整策划案
+              <ArrowUpRight aria-hidden="true" />
+            </span>
+          </button>
+          {showArtifact && <GeneratedArtifactModal artifact={data.artifact} onClose={closeArtifact} />}
+        </>
       )}
     </div>
   )
@@ -402,32 +474,6 @@ function Spotlight({ data }: { data: NonNullable<CaseStory['oneTap']> }) {
         </div>
         {data.media.caption && <figcaption className="cs-cap">{data.media.caption}</figcaption>}
       </figure>
-    </div>
-  )
-}
-
-function HonestFacts({ metrics }: { metrics: NonNullable<CaseStory['metrics']> }) {
-  return (
-    <div className="cs-block cs-facts work-copy">
-      <p className="cs-kicker font-pixel">现状 · 设计事实</p>
-      <div className="cs-fact-list">
-        {metrics.map((m) => (
-          <div key={m.label} className="cs-fact-row">
-            <span className="cs-fact-value font-pixel">{m.value}</span>
-            <div className="cs-fact-body">
-              <span className="cs-fact-label">{m.label}</span>
-              <dl className="cs-fact-meta">
-                {m.meta.map((x) => (
-                  <div key={x.k} className="cs-fact-meta-row">
-                    <dt>{x.k}</dt>
-                    <dd>{x.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
@@ -476,14 +522,6 @@ export function AiuxCaseStory({ id, index, title, story }: AiuxCaseStoryProps) {
         {story.dslTable && <DslTable data={story.dslTable} />}
         {story.checklistWall && <ChecklistWall data={story.checklistWall} />}
         {story.oneTap && <Spotlight data={story.oneTap} />}
-        {story.metrics && story.metrics.length > 0 && <HonestFacts metrics={story.metrics} />}
-        {story.reflection && (
-          <div className="cs-block cs-reflection work-copy">
-            <p className="cs-kicker font-pixel">反思</p>
-            <h3 className="cs-block-title">{story.reflection.title}</h3>
-            <p className="cs-rationale">{story.reflection.body}</p>
-          </div>
-        )}
       </div>
     </section>
   )

@@ -14,9 +14,23 @@ export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
 }
 
+function orderProjectCases(project: NonNullable<Awaited<ReturnType<typeof getProjectBySlug>>>) {
+  if (project.slug !== 'myth-quest') return project
+
+  const cases = [...project.cases]
+  const payIndex = cases.findIndex((item) => item.id === 'pay process')
+  const battlepassIndex = cases.findIndex((item) => item.id === 'battlepass')
+  if (payIndex === -1 || battlepassIndex === -1 || battlepassIndex < payIndex) return project
+
+  const [battlepass] = cases.splice(battlepassIndex, 1)
+  cases.splice(payIndex, 0, battlepass)
+  return { ...project, cases }
+}
+
 export default async function ProjectDetail({ params }: { params: { slug: string } }) {
-  const project = await getProjectBySlug(params.slug)
-  if (!project) return notFound()
+  const sourceProject = await getProjectBySlug(params.slug)
+  if (!sourceProject) return notFound()
+  const project = orderProjectCases(sourceProject)
   const subtitleIsTag = project.tags.some((tag) => tag === project.subtitle)
   const featuredCaseIds =
     project.slug === 'myth-quest'
