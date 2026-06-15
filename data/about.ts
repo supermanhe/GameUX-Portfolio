@@ -24,7 +24,7 @@ export const aboutContent: AboutContent = {
   ],
   highlight: '游戏不只是给一部分人玩，而是让所有人都能享受。',
   resumeUrl:
-    'https://res.cloudinary.com/dnhjgceru/image/upload/v1761579250/Portfolio_avdl1u.jpg',
+    'https://res.cloudinary.com/dnhjgceru/image/upload/v1781529062/%E6%B8%B8%E6%88%8F%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1%E5%B8%88-%E4%BD%95%E6%A2%93%E8%B6%85-%E4%B9%90%E6%B8%B8%E6%96%B9%E8%88%9F_ru6tpj.pdf',
   email: 'chinagdmz@gmail.com',
   githubUrl: 'https://github.com/supermanhe',
 }
