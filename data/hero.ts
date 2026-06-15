@@ -20,7 +20,7 @@ const heroContent: HeroContent = {
   ],
   description: '网易游戏《大话西游2》、昆仑万维《圣境之塔》UX负责人；热爱游戏，专注游戏UX 9年',
   resumeUrl:
-    'https://res.cloudinary.com/dnhjgceru/image/upload/v1781529062/%E6%B8%B8%E6%88%8F%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1%E5%B8%88-%E4%BD%95%E6%A2%93%E8%B6%85-%E4%B9%90%E6%B8%B8%E6%96%B9%E8%88%9F_ru6tpj.pdf',
+    'https://res.cloudinary.com/dnhjgceru/image/upload/v1781530105/2026%E7%AE%80%E5%8E%86_kdmnwh.png',
   email: 'chinagdmz@gmail.com',
   githubUrl: 'https://github.com/supermanhe',
   skillsTitle: '技能 / 工具',
