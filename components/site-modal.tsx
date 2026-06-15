@@ -85,7 +85,22 @@ export function SiteModal({
         </div>
 
         {!isCompact && (
-          <p className="shrink-0 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+          <div className="shrink-0">
+            <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+            {item.controls && (
+              <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">基本操作</span>
+                {item.controls.map((control) => (
+                  <span key={control.keys} className="flex items-center gap-2">
+                    <kbd className="rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-mono text-xs font-bold text-primary shadow-[inset_0_-1px_0_hsl(var(--primary)/0.25)]">
+                      {control.keys}
+                    </kbd>
+                    <span>{control.action}</span>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         )}
 
         <div

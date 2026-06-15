@@ -9,6 +9,7 @@ export type SiteItem = {
   url: string
   description: string
   tech?: string[]
+  controls?: { keys: string; action: string }[]
   /** 竖屏游戏：详情页内嵌按 748x1098 渲染（默认横屏） */
   portrait?: boolean
   /** 紧凑模态：隐藏描述行、收紧高度预留，给游戏区腾出更多纵向空间 */
@@ -48,6 +49,11 @@ export const sites: SiteItem[] = [
     url: 'https://3dartgalleryonlinev2.netlify.app/',
     description: '游戏内核心指标实时可视化原型。',
     tech: ['Next.js', 'D3.js'],
+    controls: [
+      { keys: 'W A S D', action: '前后左右移动' },
+      { keys: '空格', action: '跳跃' },
+      { keys: 'ESC', action: '退出浏览' },
+    ],
   },
 ]
 
