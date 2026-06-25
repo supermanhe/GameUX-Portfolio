@@ -434,6 +434,7 @@ export type CaseStory = {
 
 export type Project = {
   slug: string
+  hidden?: boolean
   title: string
   subtitle?: string
   role: string
@@ -444,6 +445,9 @@ export type Project = {
   cover: string
   /** 封面视频（可选）：存在时项目封面位渲染为静音循环视频，cover 图作为 poster 兜底 */
   coverVideo?: string
+  showcaseCover?: string
+  showcaseVideo?: string
+  demoUrl?: string
   tags: string[]
   summary: string
   cases: Array<{
@@ -2645,15 +2649,381 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: 'vibegame-studio-webui',
+    title: 'VibeGame Studio WebUI',
+    subtitle: 'AI 游戏创作 Studio · Web 概念界面',
+    role: '产品概念 / Web UI / 动效实现',
+    period: '2026',
+    team: '个人项目 · AI 辅助开发',
+    platform: ['Web', 'GSAP', 'AI Agent'],
+    kpis: [{ label: '核心体验', value: '首页动效 + Studio 沉浸入口' }],
+    cover: 'https://res.cloudinary.com/dnhjgceru/video/upload/so_0/v1782360515/demo%E9%A6%96%E9%A1%B5%E6%B5%81%E7%A8%8B.compressed_ynamvq.jpg',
+    coverVideo: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1782360515/demo%E9%A6%96%E9%A1%B5%E6%B5%81%E7%A8%8B.compressed_ynamvq.mp4',
+    showcaseCover: 'https://res.cloudinary.com/dnhjgceru/video/upload/so_0/v1782356935/KF-02-loop_ohhzbk.jpg',
+    showcaseVideo: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1782356935/KF-02-loop_ohhzbk.mp4',
+    demoUrl: 'https://vibegame-studio.netlify.app/',
+    tags: ['AI Agent', 'Web UI', '动效原型'],
+    summary:
+      '一个面向 AI 游戏创作 Studio 的 WebUI 概念项目：用持续存在的虚拟人角色建立 Agent 的人格感，再通过 Studio 页的卡片选择与全屏沉浸入口，把“选择角色 / 世界 / 游戏方向”包装成更像创作开场的交互。',
+    cases: [
+      {
+        id: 'agent-home-animation',
+        title: '首页 Agent 虚拟人一镜到底',
+        highlights: ['虚拟人承载 Agent 人格', '一镜到底式滚动动效', '全宽视频展示'],
+        archetype: 'AI Agent · 首屏动效',
+        blurb:
+          '首页让代表 Agent 的虚拟人贯穿整段滚动，用连续镜头和姿态变化把产品从普通落地页变成一个“创作伙伴正在登场”的开场。',
+        cover: {
+          src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1782361012/KF-06_kccsh0.webp',
+          alt: 'VibeGame Studio 首页 Agent 虚拟人动画',
+        },
+        media: [
+          {
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1782360515/demo%E9%A6%96%E9%A1%B5%E6%B5%81%E7%A8%8B.compressed_ynamvq.mp4',
+            caption: '首页代表 Agent 的虚拟人动效片段。',
+          },
+        ],
+        articleMDX: md`
+<div class="work-fullbleed-media">
+  <video
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1782360515/demo%E9%A6%96%E9%A1%B5%E6%B5%81%E7%A8%8B.compressed_ynamvq.mp4"
+    controls
+    muted
+    loop
+    playsinline
+    preload="metadata"
+  ></video>
+</div>
+        `,
+      },
+      {
+        id: 'studio-card-immersion',
+        title: 'Studio 卡片交互与全屏沉浸入口',
+        highlights: ['卡片 hover / 选中反馈', '选择结果进入输入区', '点击后全屏 Studio 体验'],
+        archetype: 'Studio Entry · 卡片选择',
+        blurb:
+          'Studio 页把创作起点拆成可点选的角色、世界与游戏方向卡片；点选设定后，会有全屏的氛围展示，让用户创作体验更加直观和有沉浸感。',
+        cover: {
+          src: 'https://res.cloudinary.com/dnhjgceru/image/upload/v1782361213/%E5%B0%81%E9%9D%A22_xcausb.webp',
+          alt: 'VibeGame Studio 卡片交互与全屏入口',
+        },
+        media: [
+          {
+            type: 'video',
+            src: 'https://res.cloudinary.com/dnhjgceru/video/upload/v1782360202/demo_studio_%E6%B5%81%E7%A8%8B.compressed_dgm3hn.mp4',
+            caption: 'Studio 页卡片选择与全屏沉浸式入口演示。',
+          },
+        ],
+        articleMDX: md`
+<div class="work-fullbleed-media">
+  <video
+    src="https://res.cloudinary.com/dnhjgceru/video/upload/v1782360202/demo_studio_%E6%B5%81%E7%A8%8B.compressed_dgm3hn.mp4"
+    controls
+    muted
+    loop
+    playsinline
+    preload="metadata"
+  ></video>
+</div>
+        `,
+      },
+    ],
+  },
+  {
+    slug: 'halloween-editor',
+    hidden: true,
+    title: 'Halloween Survivors 3D',
+    subtitle: '独立开发 · 自研编辑器工具链',
+    role: '独立开发者 / 编辑器设计与实现',
+    period: '2025至今',
+    team: '个人项目 · AI 辅助开发',
+    platform: ['Web', 'iOS', 'Android'],
+    kpis: [{ label: '自研编辑器', value: '场景 + 数值 2 套' }],
+    cover: 'https://placehold.co/1280x800/12121a/e8e8ef.png?text=Halloween+Survivors+3D',
+    tags: ['B 端编辑器', '工具设计', 'AI 辅助开发'],
+    summary:
+      '一款我独立开发的 3D 幸存者类游戏。开发中真正卡住我的不是玩法，而是「改一个场景要手写 JSON 坐标、调一个数值要在十几个配置文件之间横跳、改完还得重启才能看效果」。于是我用 AI 给自己造了两套编辑器：一套所见即所得的 3D 场景编辑器，一套覆盖 13 个系统、能实时推送进运行中游戏、还自带数值模拟的调参台。把原本黑盒、易错、反复重启的流程，变成可视化、可预测、可热更的设计闭环——这也是我对「编辑器类工具产品」最完整的一次端到端实践。',
+    cases: [
+      {
+        id: 'scene-editor',
+        title: '3D 场景编辑器',
+        highlights: ['所见即所得搭建', 'W/E/R 业界通用变换手势', '场景即数据 · JSON / ZIP 管线'],
+        archetype: 'B 端编辑器 · 关卡搭建提效',
+        blurb:
+          '把「在 JSON 里手写坐标摆世界、改完重启看效果」的关卡搭建，做成拖拽落位、实时可见的可视化编辑器；场景导出为版本化 JSON，游戏运行时直接读取。',
+        cover: { src: '/illustrations/halloween/ph-scene.svg', alt: '3D 场景编辑器' },
+        media: [],
+        articleMDX: md`场景编辑器案例由结构化叙事渲染。`,
+        story: {
+          archetype: 'B 端编辑器 · 关卡搭建提效',
+          oneLiner:
+            '我自己做的关卡搭建工具：左侧调色板点选装饰物或拖入自定义 GLB 模型，中间 3D 画布里拖拽摆放、即时可见，右侧属性面板按 X / Y / Z 精修；搭好的场景导出为版本化 JSON，游戏运行时直接读取。把原来「在配置里手写坐标、改完重启」的黑盒流程，变成可视化的所见即所得。',
+          headlineMetric: { value: '所见即所得', label: '拖拽落位即时可见，告别手写坐标与反复重启' },
+          heroImage: {
+            src: '/illustrations/halloween/ph-scene.svg',
+            alt: '3D 场景编辑器界面：调色板 / 3D 画布 / 属性面板三栏布局',
+          },
+          framework: {
+            title: '把搭场景变成所见即所得',
+            steps: [
+              { key: 'place', label: '摆放', desc: '调色板点选 + 拖拽落位，自定义模型可上传' },
+              { key: 'transform', label: '变换', desc: 'W / E / R 平移旋转缩放 + 三轴数值精修' },
+              { key: 'pipeline', label: '出数据', desc: '一键导出版本化 JSON / ZIP，游戏直接读' },
+            ],
+          },
+          problem: {
+            title: '旧做法：在 JSON 里手摆一个 3D 世界',
+            points: [
+              '关卡布局散落在 JSON 配置里，物体的位置 / 旋转 / 缩放全靠手写坐标，很难在脑子里想象成品',
+              '改一版要重启游戏才能看到效果，试错一次就是一轮等待',
+              '想加一棵树、挪一个障碍都得回代码改数组，流程黑盒、容易出错',
+            ],
+            compare: {
+              interval: 5000,
+              slides: [
+                {
+                  label: '迭代前',
+                  tone: 'problem',
+                  title: '旧做法：在 JSON 里手摆世界',
+                  points: [
+                    '位置 / 旋转 / 缩放全靠手写坐标，想象不出成品',
+                    '改完必须重启游戏才能验证，试错成本高',
+                    '挪一个物体都要回代码改数组，非可视化',
+                  ],
+                  src: '/illustrations/halloween/ph-before.svg',
+                  caption: '迭代前 · 手写 JSON 坐标',
+                },
+                {
+                  label: '迭代后',
+                  tone: 'solution',
+                  title: '新做法：拖拽落位、实时可见',
+                  points: [
+                    '调色板点选 / 拖入 GLB，画布里拖拽摆放，所见即所得',
+                    'W / E / R 切平移旋转缩放，属性面板按轴精修',
+                    '一键导出 JSON / ZIP，游戏直接读，不再手写坐标',
+                  ],
+                  src: '/illustrations/halloween/ph-after.svg',
+                  caption: '迭代后 · 可视化场景编辑器',
+                },
+              ],
+            },
+          },
+          decisions: [
+            {
+              stepKey: 'place',
+              no: '01',
+              title: '三面板布局：调色板 / 画布 / 属性',
+              rationale:
+                '沿用专业 DCC 工具（Unity、Blender）的空间心智——左取物、中操作、右改参。装饰物点一下落到场景原点，自定义 GLB / GLTF 直接拖进调色板就能反复复用，让「取用素材」零学习成本。',
+              actions: ['调色板点选 + 拖拽落位', '上传 GLB / GLTF 自定义模型', '物体 / 上传数量实时计数'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-scene.svg', caption: '三面板布局 · 待替换为实际截图' },
+            },
+            {
+              stepKey: 'transform',
+              no: '02',
+              title: '复用 Unity / Blender 的 W / E / R 变换手势',
+              rationale:
+                '编辑器最高频的动作是「选中—变换」。直接复用业界通用的 W 平移 / E 旋转 / R 缩放快捷键，配 Del 删除、Esc 取消、一键复制，老手零迁移成本；属性面板再给 X / Y / Z 三轴数值精修，兼顾「手感摆放」与「精确对齐」。',
+              actions: ['W / E / R 变换 + Del / Esc 快捷键', 'Inspector 三轴数值精修', '选中 / 复制 / 删除'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-scene.svg', caption: '变换手势 + 属性精修 · 待替换为实际截图' },
+            },
+            {
+              stepKey: 'pipeline',
+              no: '03',
+              title: '场景即数据：版本化 JSON + 一键 ZIP 打包',
+              rationale:
+                '编辑器不是孤岛，得无缝接回游戏。场景序列化成带版本号的 JSON（防止格式升级时崩旧场景），游戏运行时按 ID 读取；导出 ZIP 会把引用的上传模型一起打包，换台机器也能还原。多场景支持「另存为 / 改名 / 切换」，像管理文档一样管理关卡。',
+              actions: ['版本化 JSON（SCENE_LAYOUT_VERSION）', 'ZIP 打包含上传模型', '多场景管理 · 另存为 / 切换'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-after.svg', caption: '场景导出为 JSON / ZIP · 待替换为实际截图' },
+            },
+          ],
+          metrics: [
+            {
+              value: '所见即所得',
+              label: '拖拽落位即时可见，取代手写坐标',
+              meta: [
+                { k: '口径', v: '关卡搭建方式' },
+                { k: '性质', v: '个人开发工具（定性，非线上指标）' },
+                { k: '范围', v: '设计 + 实现全包' },
+              ],
+            },
+            {
+              value: '场景即数据',
+              label: '导出版本化 JSON，游戏直接读取',
+              meta: [
+                { k: '口径', v: '编辑器 → 游戏数据管线' },
+                { k: '收益', v: '去掉手改配置与重启验证' },
+                { k: '说明', v: '自用工具，效率为定性判断' },
+              ],
+            },
+            {
+              value: 'AI 辅助实现',
+              label: '设计 + 用 AI 编码自建，独立完成',
+              meta: [
+                { k: '工具', v: 'Claude / Codex' },
+                { k: '技术栈', v: 'React + Three.js + Zustand' },
+                { k: '形态', v: '浏览器内编辑器' },
+              ],
+            },
+          ],
+          reflection: {
+            title: '下一步：让场景自己长出来',
+            body:
+              '现在是「人摆」，下一步想试「AI 摆」——给一句话（比如“一片有篝火和墓碑的林间空地”）让模型生成初始布局，人再在编辑器里微调。这正是我对 AIGC 进入编辑器最感兴趣的方向：AI 出草稿、人做主审。',
+          },
+        },
+      },
+      {
+        id: 'tuning-workbench',
+        title: '数值调参台 + 模拟器',
+        highlights: ['13 系统集中调参', '实时推送进游戏热更', '自带模拟器预测平衡'],
+        archetype: 'B 端编辑器 · 数值调参闭环',
+        blurb:
+          '把散落在十几个配置文件里的数值，收进一个分区清晰、可搜索的调参台；改完不重启、实时推进运行中的游戏，还能先用模拟器算出强度曲线再上手玩。',
+        cover: { src: '/illustrations/halloween/ph-tuning.svg', alt: '数值调参台 + 模拟器' },
+        media: [],
+        articleMDX: md`数值调参台案例由结构化叙事渲染。`,
+        story: {
+          archetype: 'B 端编辑器 · 数值调参闭环',
+          oneLiner:
+            '我自己做的数值工作台：把散落在十几个配置文件里的数值，收进一个分区清晰、可全局搜索的面板；改完不用重启，自动 / 手动实时推进运行中的游戏；上手玩之前，还能用内置模拟器把一局的 DPS 与生存曲线先算出来，平衡问题在开玩前就暴露。',
+          headlineMetric: { value: '实时热更', label: '改一个数立刻推进运行中的游戏，无需重启' },
+          heroImage: {
+            src: '/illustrations/halloween/ph-tuning.svg',
+            alt: '数值调参台界面：左侧 13 系统分区，右侧参数与模拟',
+          },
+          framework: {
+            title: '数值调参闭环',
+            steps: [
+              { key: 'organize', label: '收拢', desc: '13 系统分区 + 全局搜索，秒级定位任意参数' },
+              { key: 'simulate', label: '预演', desc: '模拟器算出 DPS / 生存曲线，先验证再开玩' },
+              { key: 'push', label: '热更', desc: '自动 / 手动推送进运行中游戏，即时验证' },
+              { key: 'persist', label: '固化', desc: '校验后写回默认配置，沉淀为版本' },
+            ],
+          },
+          problem: {
+            title: '旧做法：在十几个配置文件之间反复横跳',
+            points: [
+              '职业、道具、共鸣、变异、怪物、Boss、经济……数值散在十几个 config 里，调一套 build 要开好几个文件对着改',
+              '改完得重启进游戏、打到对应阶段，才知道强了还是弱了，验证一次成本极高',
+              '平衡靠手感和反复试玩，很难在开玩前判断一套 build 的强度曲线',
+            ],
+            compare: {
+              interval: 5000,
+              slides: [
+                {
+                  label: '迭代前',
+                  tone: 'problem',
+                  title: '旧做法：散落的配置 + 重启验证',
+                  points: [
+                    '数值散在十几个文件，改一套 build 要开多个文件',
+                    '改完重启、打到对应阶段才知强弱，验证慢',
+                    '平衡靠手感试玩，开玩前判断不了强度',
+                  ],
+                  src: '/illustrations/halloween/ph-before.svg',
+                  caption: '迭代前 · 多文件 + 重启验证',
+                },
+                {
+                  label: '迭代后',
+                  tone: 'solution',
+                  title: '新做法：一处调齐 + 模拟 + 热更',
+                  points: [
+                    '13 系统集中在一个面板，搜索直达目标参数',
+                    '模拟器先算出玩家 vs 怪物的曲线，开玩前暴露问题',
+                    '改完自动推进运行中的游戏，边玩边调闭环验证',
+                  ],
+                  src: '/illustrations/halloween/ph-after.svg',
+                  caption: '迭代后 · 集中调参 + 模拟 + 实时热更',
+                },
+              ],
+            },
+          },
+          decisions: [
+            {
+              stepKey: 'organize',
+              no: '01',
+              title: '把 13 个系统收进一个可搜索的面板',
+              rationale:
+                '数值调参的第一痛点是「找参数」。左侧按职业 / 成长卡 / 核心·放大·诅咒件 / 共鸣武器 / 万圣预兆 / 局内变异 / 小怪 / Boss / 经验 / 金币 / 局外升级分区，配全局关键词搜索并高亮命中分区——把「翻文件」变成「搜一下」。',
+              actions: ['13 系统分区导航', '跨系统关键词搜索 + 命中高亮', '成长卡 / 道具按 build 标签归类'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-tuning.svg', caption: '13 系统分区 + 搜索 · 待替换为实际截图' },
+            },
+            {
+              stepKey: 'simulate',
+              no: '02',
+              title: '开玩之前，先把这一局算一遍',
+              rationale:
+                '内置模拟器让你选职业、难度、随机种子和升级路线，把整局推演成曲线：玩家 DPS（还拆出每个技能 / 来源的基础公式与加成因子）、生存、攻速、暴击、吸血，对位怪物的生命 / 伤害 / 护甲 / 速度按阶段波次变化。强度问题不必等试玩，开玩前就看得见。',
+              actions: ['选职业 / 难度 / 种子 / build 路线', 'DPS 来源逐项拆解（公式 + 因子）', '玩家 vs 怪物随时间曲线 + 金币经济'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-sim.svg', caption: '数值模拟器 · 待替换为实际截图' },
+            },
+            {
+              stepKey: 'push',
+              no: '03',
+              title: '改完不重启，实时推进运行中的游戏',
+              rationale:
+                '调参的反馈环越短越好。通过一条 BalanceChannel，面板的改动可以「自动推送」实时灌进正在跑的游戏，也可切「手动推送」在满意时一次性生效——边玩边调，省掉每次重启、重新打到目标阶段的时间。',
+              actions: ['BalanceChannel 实时推送', '自动 / 手动两档', '改动即时在游戏内生效'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-after.svg', caption: '实时推送热更 · 待替换为实际录屏' },
+            },
+            {
+              stepKey: 'persist',
+              no: '04',
+              title: '调好的数值，一键写回出厂默认',
+              rationale:
+                '试出来的平衡得能沉淀。校验数据结构完整（11 项必备字段齐全）后，一键写回 balance.default.json，把当前数值固化成游戏的出厂默认；也支持一键恢复默认，让人放心大胆地试。',
+              actions: ['写回 balance.default.json（带校验）', '一键恢复默认', '数值版本可沉淀'],
+              media: { type: 'image', src: '/illustrations/halloween/ph-tuning.svg', caption: '写回默认 / 恢复默认 · 待替换为实际截图' },
+            },
+          ],
+          metrics: [
+            {
+              value: '13 系统',
+              label: '职业 / 卡片 / 道具 / 共鸣 / 变异 / 怪物 / Boss / 经济一处调齐',
+              meta: [
+                { k: '口径', v: '集中调参覆盖范围' },
+                { k: '性质', v: '个人开发工具（定性）' },
+                { k: '范围', v: '设计 + 实现全包' },
+              ],
+            },
+            {
+              value: '实时热更',
+              label: '改完即推进运行中游戏，无需重启',
+              meta: [
+                { k: '口径', v: 'BalanceChannel 推送' },
+                { k: '收益', v: '去掉重启 + 重新打到目标阶段' },
+                { k: '说明', v: '自用工具，效率为定性判断' },
+              ],
+            },
+            {
+              value: '开玩前预测',
+              label: '模拟器先算出强度曲线再试玩',
+              meta: [
+                { k: '口径', v: 'DPS / 生存曲线模拟' },
+                { k: '方法', v: '逐技能来源拆解' },
+                { k: '技术栈', v: 'React + TypeScript' },
+              ],
+            },
+          ],
+          reflection: {
+            title: '下一步：让 agent 自己找平衡点',
+            body:
+              '现在是「人调参 + 人看模拟」。既然模拟器已经能把一局算成数字，下一步想让 agent 自动跑成百上千组 build、自己找出过强 / 过弱的组合并给出调参建议——把数值平衡从「手感试玩」推向「可仿真验证」。',
+          },
+        },
+      },
+    ],
+  },
 ]
 
 export async function getProjects() {
-  return withMinimumDelay(Promise.resolve(projects))
+  return withMinimumDelay(Promise.resolve(projects.filter((project) => !project.hidden)))
 }
 
 export async function getProjectBySlug(slug: string) {
-  const list = await getProjects()
-  return list.find((project) => project.slug === slug) ?? null
+  return projects.find((project) => project.slug === slug) ?? null
 }
 
 export async function getProjectCases(slug: string) {

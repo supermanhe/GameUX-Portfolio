@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/projects`, lastModified: new Date() },
     { url: `${base}/sites`, lastModified: new Date() },
   ]
-  projects.forEach((p) => {
+  projects.filter((p) => !p.hidden).forEach((p) => {
     items.push({ url: `${base}/projects/${p.slug}`, lastModified: new Date() })
     p.cases.forEach((c) => items.push({ url: `${base}/projects/${p.slug}/${c.id}`, lastModified: new Date() }))
   })

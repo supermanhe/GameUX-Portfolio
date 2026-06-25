@@ -9,6 +9,7 @@ import { ProjectDetailNav } from '@/components/projects/project-detail-nav'
 import { ProjectFeaturedCases } from '@/components/projects/project-featured-cases'
 import { MediaLightbox } from '@/components/projects/media-lightbox'
 import { CoverVideo } from '@/components/projects/cover-video'
+import { ArrowUpRight } from 'lucide-react'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -65,7 +66,7 @@ export default async function ProjectDetail({ params }: { params: { slug: string
               </div>
               <p className="mt-8 max-w-2xl text-sm leading-7 text-muted-foreground">{project.summary}</p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] p-2 shadow-soft">
+            <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] p-2 shadow-soft">
               {project.coverVideo ? (
                 <CoverVideo
                   src={project.coverVideo}
@@ -82,6 +83,17 @@ export default async function ProjectDetail({ params }: { params: { slug: string
                   sizes="(max-width:1024px) 100vw, 58vw"
                   priority
                 />
+              )}
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="absolute bottom-5 right-5 z-10 inline-flex items-center gap-2 rounded-full border border-primary/70 bg-primary px-5 py-3 text-sm font-black text-primary-foreground shadow-[0_18px_46px_hsl(var(--primary)/0.38),0_0_0_1px_hsl(0_0%_100%/0.14)_inset] backdrop-blur transition duration-300 hover:scale-[1.035] hover:bg-primary/95 hover:shadow-[0_22px_58px_hsl(var(--primary)/0.48),0_0_0_1px_hsl(0_0%_100%/0.2)_inset] focus-ring md:px-6 md:text-base"
+                >
+                  查看 Demo
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
               )}
             </div>
           </div>

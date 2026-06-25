@@ -6,6 +6,9 @@ import { GsapReveal } from '@/components/motion/gsap-reveal'
 import { CoverVideo } from '@/components/projects/cover-video'
 
 export function ProjectCard({ p, index = 0 }: { p: Project; index?: number }) {
+  const cover = p.showcaseCover ?? p.cover
+  const coverVideo = p.showcaseVideo ?? p.coverVideo
+
   return (
     <GsapReveal delay={index * 0.08}>
       <Link
@@ -13,16 +16,16 @@ export function ProjectCard({ p, index = 0 }: { p: Project; index?: number }) {
         className="group block overflow-hidden rounded-lg border border-border/70 bg-card/80 transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-primary/45 hover:bg-card"
       >
         <div className="relative">
-          {p.coverVideo ? (
+          {coverVideo ? (
             <CoverVideo
-              src={p.coverVideo}
-              poster={p.cover}
+              src={coverVideo}
+              poster={cover}
               className="transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
               containerClassName="aspect-[16/10] w-full overflow-hidden bg-muted"
             />
           ) : (
             <SkeletonImage
-              src={p.cover}
+              src={cover}
               alt={p.title}
               fill
               className="object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"

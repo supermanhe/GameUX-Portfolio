@@ -64,6 +64,7 @@ function CaseArticle({ markdown }: { markdown: string }) {
 export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWallProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)
   let visibleIndex = -1
+  const showLegacyHighlights = project.slug !== 'dahua2' && project.slug !== 'vibegame-studio-webui'
 
   useGSAP(
     () => {
@@ -150,8 +151,8 @@ export function ProjectWorkWall({ project, hiddenCaseIds = [] }: ProjectWorkWall
               </div>
             )}
 
-            <div className={`mt-16 grid gap-8 md:mt-24 lg:gap-14${project.slug === 'dahua2' ? '' : ' lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)]'}`}>
-              {project.slug !== 'dahua2' && (
+            <div className={`mt-16 grid gap-8 md:mt-24 lg:gap-14${showLegacyHighlights ? ' lg:grid-cols-[minmax(260px,0.34fr)_minmax(0,0.66fr)]' : ''}`}>
+              {showLegacyHighlights && (
                 <aside className="work-copy lg:sticky lg:top-28 lg:self-start">
                   <p className="font-pixel text-[0.72rem] uppercase tracking-wider text-primary">重点</p>
                   <div className="mt-5 grid gap-2">
