@@ -110,7 +110,11 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
   return (
     <section ref={rootRef} id="projects" className="relative">
       <div className="overflow-x-clip">
-        {projects.map((project, index) => (
+        {projects.map((project, index) => {
+          const cover = project.showcaseCover ?? project.cover
+          const coverVideo = project.showcaseVideo ?? project.coverVideo
+
+          return (
           <Link
             key={project.slug}
             id={`project-${project.slug}`}
@@ -126,16 +130,16 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
             className="project-panel group relative left-1/2 flex min-h-[100dvh] w-screen -translate-x-1/2 items-end overflow-hidden bg-card focus-ring"
           >
             <div className="absolute inset-0 overflow-hidden">
-              {project.coverVideo ? (
+              {coverVideo ? (
                 <CoverVideo
-                  src={project.coverVideo}
-                  poster={project.cover}
+                  src={coverVideo}
+                  poster={cover}
                   className="project-panel-media will-change-transform"
                   containerClassName="h-full w-full"
                 />
               ) : (
                 <SkeletonImage
-                  src={project.cover}
+                  src={cover}
                   alt={project.title}
                   fill
                   sizes="100vw"
@@ -192,7 +196,8 @@ export function ProjectScrollShowcase({ projects }: ProjectScrollShowcaseProps) 
               </div>
             </div>
           </Link>
-        ))}
+          )
+        })}
       </div>
     </section>
   )

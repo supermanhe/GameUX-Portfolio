@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800" role="img" aria-label="新做法截图待替换">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1714"/>
+      <stop offset="1" stop-color="#0b0b10"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#bg)"/>
+  <rect width="1280" height="800" fill="url(#grid)"/>
+  <rect x="40" y="40" width="1200" height="720" rx="18" fill="none" stroke="#34d399" stroke-opacity="0.4" stroke-dasharray="10 8" stroke-width="2"/>
+  <text x="640" y="360" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="40" font-weight="600" fill="#34d399" letter-spacing="4">AFTER · 新做法</text>
+  <text x="640" y="424" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" fill="#9aa0b5">截图 / 录屏待替换</text>
+  <text x="640" y="470" text-anchor="middle" font-family="ui-monospace, monospace" font-size="18" fill="#6a6f85">/illustrations/halloween/ph-after.svg</text>
+</svg>
